@@ -19,18 +19,32 @@
 
 #include "Object.hpp"
 
-struct UConverter;
-
 namespace lupus {
 	namespace system {
+		/// Represents a unicode character
 		class LUPUS_API Char : public Object
 		{
 		public:
 			Char();
 			Char(char);
 			Char(wchar_t);
+			Char(ushort);
+			Char(uint);
+			bool IsBlank() const;
+			bool IsDigit() const;
+			bool IsGraph() const;
+			bool IsLetter() const;
+			bool IsLetterOrDigit() const;
+			bool IsLower() const;
+			bool IsPunct() const;
+			bool IsTitle() const;
+			bool IsUpper() const;
+			bool IsWhiteSpace() const;
+			Char ToLower() const;
+			Char ToUpper() const;
+			Char ToTitle() const;
 		private:
-			UConverter* mConverter;
+			uint mValue;
 		};
 	}
 }

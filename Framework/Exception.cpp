@@ -16,7 +16,6 @@
 
 #include "Exception.hpp"
 #include "String.hpp"
-#include "Char.hpp"
 #include <memory>
 
 namespace lupus {
@@ -93,6 +92,41 @@ namespace lupus {
 
 		FormatException::FormatException(const String& message, const Exception& innerException) :
 			Exception(message, innerException)
+		{
+		}
+
+		ArgumentException::ArgumentException(const ArgumentException& argumentException) :
+			Exception(argumentException)
+		{
+		}
+
+		ArgumentException::ArgumentException(const String& message) :
+			Exception(message)
+		{
+		}
+
+		ArgumentException::ArgumentException(const String& message, const Exception& innerException) :
+			Exception(message, innerException)
+		{
+		}
+
+		ArgumentNullException::ArgumentNullException(const String& message) :
+			ArgumentException(message)
+		{
+		}
+
+		ArgumentNullException::ArgumentNullException(const String& message, const Exception& innerException) :
+			ArgumentException(message, innerException)
+		{
+		}
+
+		ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String& message) :
+			ArgumentException(message)
+		{
+		}
+
+		ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String& message, const Exception& innerException) :
+			ArgumentException(message, innerException)
 		{
 		}
 	}

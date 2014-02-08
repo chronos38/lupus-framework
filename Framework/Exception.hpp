@@ -64,6 +64,34 @@ namespace lupus {
 			FormatException(const String& message);
 			FormatException(const String& message, const Exception& innerException);
 		};
+
+		class LUPUS_API ArgumentException : public Exception
+		{
+		public:
+			ArgumentException() = default;
+			virtual ~ArgumentException() = default;
+			ArgumentException(const ArgumentException&);
+			ArgumentException(const String& message);
+			ArgumentException(const String& message, const Exception& innerException);
+		};
+
+		class LUPUS_API ArgumentNullException : public ArgumentException
+		{
+		public:
+			ArgumentNullException() = default;
+			virtual ~ArgumentNullException() = default;
+			ArgumentNullException(const String& message);
+			ArgumentNullException(const String& message, const Exception& innerException);
+		};
+
+		class LUPUS_API ArgumentOutOfRangeException : public ArgumentException
+		{
+		public:
+			ArgumentOutOfRangeException() = default;
+			virtual ~ArgumentOutOfRangeException() = default;
+			ArgumentOutOfRangeException(const String& message);
+			ArgumentOutOfRangeException(const String& message, const Exception& innerException);
+		};
 	}
 }
 

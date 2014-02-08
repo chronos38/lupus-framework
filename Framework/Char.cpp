@@ -19,31 +19,99 @@
 #include "Integer.hpp"
 #include "Exception.hpp"
 #include <unicode/utypes.h>
-#include <unicode/ucnv.h>
+#include <unicode/uchar.h>
+#include <climits>
 
 namespace lupus {
 	namespace system {
-		Char::Char()
-		{
-			UErrorCode status = U_ZERO_ERROR;
-			mConverter = ucnv_open(nullptr, &status);
-
-			if (!mConverter) {
-				throw OutOfMemoryException("couldn't allocate memory for unicode converter");
-			} else if (U_FAILURE(status)) {
-				throw Exception("error: " + Integer::ToString(status));
-				// TODO: add exceptions
-			}
-
-
-		}
-
-		Char::Char(char ch)
+		Char::Char() :
+			mValue(0)
 		{
 		}
 
-		Char::Char(wchar_t wc)
+		Char::Char(char ch) :
+			mValue(ch)
 		{
+		}
+
+		Char::Char(wchar_t ch) :
+			mValue(ch)
+		{
+		}
+
+		Char::Char(ushort ch) :
+			mValue(ch)
+		{
+		}
+
+		Char::Char(uint ch) :
+			mValue(ch)
+		{
+		}
+
+		bool Char::IsBlank() const
+		{
+			return (u_isblank(mValue) == TRUE);
+		}
+
+		bool Char::IsDigit() const
+		{
+			return (u_isdigit(mValue) == TRUE);
+		}
+
+		bool Char::IsGraph() const
+		{
+			return (u_isgraph(mValue) == TRUE);
+		}
+
+		bool Char::IsLetter() const
+		{
+			return (u_isalpha(mValue) == TRUE);
+		}
+
+		bool Char::IsLetterOrDigit() const
+		{
+			return (IsLetter() || IsDigit());
+		}
+
+		bool Char::IsLower() const
+		{
+			return (u_islower(mValue) == TRUE);
+		}
+
+		bool Char::IsPunct() const
+		{
+			return (u_ispunct(mValue) == TRUE);
+		}
+
+		bool Char::IsTitle() const
+		{
+			return (u_istitle(mValue) == TRUE);
+		}
+
+		bool Char::IsUpper() const
+		{
+			return (u_isupper(mValue) == TRUE);
+		}
+
+		bool Char::IsWhiteSpace() const
+		{
+			return (u_isWhitespace(mValue) == TRUE);
+		}
+
+		Char Char::ToLower() const
+		{
+			return static_cast<uint>(u_tolower(mValue));
+		}
+
+		Char Char::ToUpper() const
+		{
+			return static_cast<uint>(u_toupper(mValue));
+		}
+
+		Char Char::ToTitle() const
+		{
+			return static_cast<uint>(u_totitle(mValue));
 		}
 	}
 }

@@ -21,28 +21,29 @@
 
 namespace lupus {
 	namespace system {
+		// forwared declaration for char class
 		class Char;
 
+		/// String class used for internal string operations
 		class LUPUS_API String : public Object
 		{
 		public:
 			String();
 			String(const char*, int startIndex = 0, int length = -1);
-			String(const wchar_t*, int startIndex = 0, int length = -1);
 			String(const Char*, int startIndex = 0, int length = -1);
 			String(const String&);
 			String(String&&);
 			virtual ~String();
 			Char* Data();
 			const Char* Data() const;
-			String& operator=(Char);
+			String& operator=(const char*);
 			String& operator=(const Char*);
 			String& operator=(const String&);
 			String& operator=(String&&);
 			String operator+(const String&);
 		private:
-			Char* mData;
-			uint mLength;
+			Char* mData = nullptr;
+			uint mLength = 0;
 		};
 
 		template <typename CharT>
