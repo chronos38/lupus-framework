@@ -75,5 +75,25 @@ namespace lupus {
 			Exception(message, innerException)
 		{
 		}
+
+		OutOfMemoryException::OutOfMemoryException(const String& message) :
+			Exception(message)
+		{
+		}
+
+		OutOfMemoryException::OutOfMemoryException(const String& message, const Exception& innerException) :
+			Exception(message, innerException)
+		{
+		}
+
+		FormatException::FormatException(const String& message) :
+			Exception(message)
+		{
+		}
+
+		FormatException::FormatException(const String& message, const Exception& innerException) :
+			Exception(message, innerException)
+		{
+		}
 	}
 }

@@ -14,6 +14,7 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Char.hpp"
 #include "String.hpp"
 
 namespace lupus {
@@ -50,6 +51,32 @@ namespace lupus {
 		const Char* String::Data() const
 		{
 			return mData;
+		}
+
+		String& String::operator=(Char ch)
+		{
+			return (*this);
+		}
+
+		String& String::operator=(const Char* str)
+		{
+			return (*this);
+		}
+
+		String& String::operator=(const String& string)
+		{
+			return (*this);
+		}
+
+		String& String::operator=(String&& string)
+		{
+			return (*this);
+		}
+
+		String String::operator+(const String& string)
+		{
+			String result;
+			return result;
 		}
 	}
 }

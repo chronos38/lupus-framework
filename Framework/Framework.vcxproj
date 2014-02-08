@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClInclude Include="Char.hpp" />
     <ClInclude Include="Exception.hpp" />
+    <ClInclude Include="Integer.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
@@ -86,8 +87,12 @@
   <ItemGroup>
     <ClCompile Include="Char.cpp" />
     <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="Integer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="String.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="String.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

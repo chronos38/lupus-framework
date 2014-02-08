@@ -35,11 +35,24 @@ namespace lupus {
 			virtual ~String();
 			Char* Data();
 			const Char* Data() const;
+			String& operator=(Char);
+			String& operator=(const Char*);
+			String& operator=(const String&);
+			String& operator=(String&&);
+			String operator+(const String&);
 		private:
 			Char* mData;
 			uint mLength;
 		};
+
+		template <typename CharT>
+		String operator+(const CharT* lhs, const String& rhs);
+
+		template <typename CharT>
+		String operator+(const String& lhs, const CharT* rhs);
 	}
 }
+
+#include "String.inl"
 
 #endif

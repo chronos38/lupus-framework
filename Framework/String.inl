@@ -14,25 +14,18 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_CHAR_HPP
-#define LUPUS_CHAR_HPP
-
-#include "Object.hpp"
-
-struct UConverter;
-
 namespace lupus {
 	namespace system {
-		class LUPUS_API Char : public Object
+		template <typename CharT>
+		String operator+(const CharT* lhs, const String& rhs)
 		{
-		public:
-			Char();
-			Char(char);
-			Char(wchar_t);
-		private:
-			UConverter* mConverter;
-		};
+			return (String(lhs) + rhs);
+		}
+
+		template <typename CharT>
+		String operator+(const String& lhs, const CharT* rhs)
+		{
+			return (lhs + String(rhs));
+		}
 	}
 }
-
-#endif

@@ -15,6 +15,9 @@
  */
 
 #include "Char.hpp"
+#include "String.hpp"
+#include "Integer.hpp"
+#include "Exception.hpp"
 #include <unicode/utypes.h>
 #include <unicode/ucnv.h>
 
@@ -24,6 +27,15 @@ namespace lupus {
 		{
 			UErrorCode status = U_ZERO_ERROR;
 			mConverter = ucnv_open(nullptr, &status);
+
+			if (!mConverter) {
+				throw OutOfMemoryException("couldn't allocate memory for unicode converter");
+			} else if (U_FAILURE(status)) {
+				throw Exception("error: " + Integer::ToString(status));
+				// TODO: add exceptions
+			}
+
+
 		}
 
 		Char::Char(char ch)

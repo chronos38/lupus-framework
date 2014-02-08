@@ -23,28 +23,46 @@ namespace lupus {
 	namespace system {
 		class String;
 
-		class Exception : public Object
+		class LUPUS_API Exception : public Object
 		{
 		public:
 			Exception() = default;
+			Exception(const Exception&);
 			Exception(const String& message);
 			Exception(const String& message, const Exception& innerException);
 			virtual ~Exception();
 			virtual String Message() const final;
 			virtual Exception InnerException() const final;
 		private:
-			Exception(const Exception&);
-		private:
 			const String* mMessage = nullptr;
 			const Exception* mInnerException = nullptr;
 		};
 
-		class NullPointerException : public Exception
+		class LUPUS_API NullPointerException : public Exception
 		{
 		public:
 			NullPointerException() = default;
+			virtual ~NullPointerException() = default;
 			NullPointerException(const String& message);
 			NullPointerException(const String& message, const Exception& innerException);
+		};
+
+		class LUPUS_API OutOfMemoryException : public Exception
+		{
+		public:
+			OutOfMemoryException() = default;
+			virtual ~OutOfMemoryException() = default;
+			OutOfMemoryException(const String& message);
+			OutOfMemoryException(const String& message, const Exception& innerException);
+		};
+
+		class LUPUS_API FormatException : public Exception
+		{
+		public:
+			FormatException() = default;
+			virtual ~FormatException() = default;
+			FormatException(const String& message);
+			FormatException(const String& message, const Exception& innerException);
 		};
 	}
 }
