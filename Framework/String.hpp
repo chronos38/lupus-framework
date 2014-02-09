@@ -41,11 +41,14 @@ namespace lupus {
 			Char* Data();
 			const Char* Data() const;
 			uint Length() const;
+			Char& operator[](uint);
+			const Char& operator[](uint) const;
 			String& operator=(const char*);
 			String& operator=(const Char*);
 			String& operator=(const String&);
 			String& operator=(String&&);
 			String operator+(const String&);
+			String& operator+=(const String&);
 		protected:
 			static uint GetLength(const Char*);
 		private:

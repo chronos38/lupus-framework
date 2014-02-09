@@ -84,6 +84,9 @@ namespace lupus {
 				throw ArgumentNullException("source string must have a valid value");;
 			}
 
+			// initialize converter
+			InitializeConverter();
+
 			// variables
 			uint length = GetLength(source);
 
@@ -170,11 +173,11 @@ namespace lupus {
 				throw ArgumentOutOfRangeException("startIndex is equal to or greater than length");
 			}
 
-			// variables
-			size_t sourceLength = GetLength(source);
-			
 			// initialize converter
 			InitializeConverter();
+
+			// variables
+			size_t sourceLength = GetLength(source);
 
 			// in case the string is empty, apply it now
 			if (!sourceLength) {
@@ -193,9 +196,7 @@ namespace lupus {
 			mData = new Char[length + 1];
 
 			// set internal buffer
-			for (int i = 0; i < length; i++) {
-				mData[i] = source[i + startIndex];
-			}
+			memcpy(mData, source + startIndex, sizeof(Char) * length);
 
 			// terminate with zero and free not needed memory
 			mData[length] = 0;
@@ -206,23 +207,33 @@ namespace lupus {
 			mData(new Char[string.Length() + 1]),
 			mLength(string.Length())
 		{
+			// initialize converter
+			InitializeConverter();
+
+			// set variables
 			memcpy(mData, string.Data(), sizeof(Char) * mLength);
 			mData[mLength] = 0;
 		}
 
 		String::String(String&& string) :
-			mData(new Char[string.Length() + 1]),
-			mLength(string.Length())
+			String()
 		{
-			// copy memory
-			memcpy(mData, string.Data(), sizeof(Char) * mLength);
-			mData[mLength] = 0;
+			// initialize converter
+			InitializeConverter();
 
-			// delete old buffer
-			delete string.Data();
+			// variables
+			Char* swapData = mData;
+			uint swapLength = mLength;
+			UConverter* swapConverter = mConverter;
 
-			// reset string
-			string = String();
+			// swap memory
+			mData = string.mData;
+			mLength = string.mLength;
+			mConverter = string.mConverter;
+
+			string.mData = swapData;
+			string.mLength = swapLength;
+			string.mConverter = mConverter;
 		}
 
 		String::~String()
@@ -251,25 +262,108 @@ namespace lupus {
 			return mLength;
 		}
 
-		String& String::operator=(const Char* str)
+		Char& String::operator[](uint index)
 		{
+			if (index >= mLength) {
+				throw ArgumentOutOfRangeException("index exceeds string size");
+			}
+
+			return mData[index];
+		}
+
+		const Char& String::operator[](uint index) const
+		{
+			if (index >= mLength) {
+				throw ArgumentOutOfRangeException("index exceeds string size");
+			}
+
+			return mData[index];
+		}
+
+		String& String::operator=(const Char* string)
+		{
+			// variables 
+			uint length = GetLength(string);
+
+			// reallocate buffer
+			delete mData;
+			mData = new Char[length + 1];
+
+			// set new values
+			memcpy(mData, string, sizeof(Char) * length);
+			mData[length] = 0;
+			mLength = length;
+
 			return (*this);
 		}
 
 		String& String::operator=(const String& string)
 		{
+			// variables 
+			uint length = string.Length();
+
+			// reallocate buffer
+			delete mData;
+			mData = new Char[length + 1];
+
+			// set new values
+			memcpy(mData, string.Data(), sizeof(Char)* length);
+			mData[length] = 0;
+			mLength = length;
+
 			return (*this);
 		}
 
 		String& String::operator=(String&& string)
 		{
+			// variables
+			String tmp;
+
+			// move memory
+			mData = string.mData;
+			mLength = string.mLength;
+			mConverter = string.mConverter;
+
+			string.mData = tmp.mData;
+			string.mLength = tmp.mLength;
+			string.mConverter = tmp.mConverter;
+
 			return (*this);
 		}
 
 		String String::operator+(const String& string)
 		{
+			// variables
 			String result;
+			Char* buffer = new Char[mLength + string.Length() + 1];
+
+			// copy new buffer
+			memcpy(buffer, mData, sizeof(Char) * mLength);
+			memcpy(buffer + mLength, string.Data(), sizeof(Char) * string.Length());
+			buffer[mLength + string.Length()] = 0;
+
+			// set result and delete buffer
+			result = buffer;
+			delete buffer;
+
 			return result;
+		}
+
+		String& String::operator+=(const String& string)
+		{
+			// variables
+			Char* buffer = new Char[mLength * string.Length() + 1];
+
+			// copy new buffer
+			memcpy(buffer, mData, sizeof(Char) * mLength);
+			memcpy(buffer + mLength, string.Data(), sizeof(Char) * string.Length());
+			buffer[mLength + string.Length()] = 0;
+
+			// set result and delete buffer
+			*this = buffer;
+			delete buffer;
+
+			return (*this);
 		}
 
 		uint String::GetLength(const Char* string)
