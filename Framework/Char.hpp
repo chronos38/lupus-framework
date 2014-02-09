@@ -45,9 +45,13 @@ namespace lupus {
 			Char ToLower() const;
 			Char ToUpper() const;
 			Char ToTitle() const;
-			ushort Unicode() const;
+			int Unicode() const;
+			Char operator+(const Char&) const;
+			Char operator-(const Char&) const;
+			bool operator==(const Char&) const;
+			bool operator!=(const Char&) const;
 		private:
-			ushort mValue;
+			int mValue;
 		};
 
 		template <typename T>
@@ -59,6 +63,16 @@ namespace lupus {
 		bool operator!=(const Char& lhs, const T& rhs);
 		template <typename T>
 		bool operator!=(const T& lhs, const Char& rhs);
+
+		template<typename T>
+		Char operator+(const Char& lhs, const T& rhs);
+		template <typename T>
+		Char operator+(const T& lhs, const Char& rhs);
+
+		template<typename T>
+		Char operator-(const Char& lhs, const T& rhs);
+		template <typename T>
+		Char operator-(const T& lhs, const Char& rhs);
 	}
 }
 

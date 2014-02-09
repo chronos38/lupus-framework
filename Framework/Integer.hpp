@@ -30,7 +30,7 @@ namespace lupus {
 			Hexadecimal
 		};
 
-		class Integer : public Object
+		class LUPUS_API Integer : public Object
 		{
 		public:
 			static String ToString(byte, Base = Base::Decimal);

@@ -19,8 +19,6 @@
 
 #include "Object.hpp"
 
-struct UConverter;
-
 namespace lupus {
 	namespace system {
 		// forwared declaration for char class
@@ -38,30 +36,59 @@ namespace lupus {
 			String(const String&);
 			String(String&&);
 			virtual ~String();
+			String& Append(const String&);
+			int Capacity() const;
+			int Compare(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			bool Contains(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			//void CopyTo(uint, Array<Char>&, uint, uint) const;
 			Char* Data();
 			const Char* Data() const;
-			uint Length() const;
+			int IndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			int IndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			//int IndexOfAny(const Array<Char>&, uint = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			bool IsEmpty() const;
+			int LastIndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			int LastIndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			int Length() const;
+			String& Remove(int);
+			String& Remove(int, int);
+			String& Replace(const Char&, const Char&, CaseSensitivity = CaseSensitivity::CaseSensitive);
+			String& Replace(const String&, const String&, CaseSensitivity = CaseSensitivity::CaseSensitive);
 			Char& operator[](uint);
 			const Char& operator[](uint) const;
-			String& operator=(const char*);
+			Char& operator[](int);
+			const Char& operator[](int) const;
 			String& operator=(const Char*);
 			String& operator=(const String&);
 			String& operator=(String&&);
-			String operator+(const String&);
+			String operator+(const String&) const;
 			String& operator+=(const String&);
+			bool operator==(const String&) const;
+			bool operator!=(const String&) const;
 		protected:
-			static uint GetLength(const Char*);
+			static int GetLength(const Char*);
+			static int KnuthMorrisPrattSensitive(const Char*, int, const Char*, int);
+			static int KnuthMorrisPrattInsensitive(const Char*, int, const Char*, int);
+			static int KnuthMorrisPrattSensitiveLast(const Char*, int, const Char*, int);
+			static int KnuthMorrisPrattInsensitiveLast(const Char*, int, const Char*, int);
 		private:
-			void InitializeConverter();
-		private:
-			UConverter* mConverter = nullptr;
 			Char* mData = nullptr;
-			uint mLength = 0;
+			int mLength = 0;
+			int mCapacity = 0;
 		};
+
+		template <typename T>
+		bool operator==(const String& lhs, const T& rhs);
+		template <typename T>
+		bool operator==(const T& lhs, const String& rhs);
+
+		template <typename T>
+		bool operator!=(const String& lhs, const T& rhs);
+		template <typename T>
+		bool operator!=(const T& lhs, const String& rhs);
 
 		template <typename CharT>
 		String operator+(const CharT* lhs, const String& rhs);
-
 		template <typename CharT>
 		String operator+(const String& lhs, const CharT* rhs);
 	}

@@ -19,25 +19,49 @@ namespace lupus {
 		template <typename T>
 		bool operator==(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Unicode() == static_cast<ushort>(rhs));
+			return (lhs.Unicode() == static_cast<int>(rhs));
 		}
 
 		template <typename T>
 		bool operator==(const T& lhs, const Char& rhs)
 		{
-			return (rhs.Unicode() == static_cast<ushort>(lhs));
+			return (rhs.Unicode() == static_cast<int>(lhs));
 		}
 
 		template <typename T>
 		bool operator!=(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Unicode() == static_cast<ushort>(rhs));
+			return (lhs.Unicode() == static_cast<int>(rhs));
 		}
 
 		template <typename T>
 		bool operator!=(const T& lhs, const Char& rhs)
 		{
-			return (rhs.Unicode() == static_cast<ushort>(lhs));
+			return (rhs.Unicode() == static_cast<int>(lhs));
+		}
+
+		template <typename T>
+		Char operator+(const Char& lhs, const T& rhs)
+		{
+			return (lhs.Unicode() + static_cast<int>(rhs));
+		}
+
+		template <typename T>
+		Char operator+(const T& lhs, const Char& rhs)
+		{
+			return (rhs.Unicode() + static_cast<int>(lhs));
+		}
+
+		template <typename T>
+		Char operator-(const Char& lhs, const T& rhs)
+		{
+			return (lhs.Unicode() - static_cast<int>(rhs));
+		}
+
+		template <typename T>
+		Char operator-(const T& lhs, const Char& rhs)
+		{
+			return (static_cast<int>(lhs) - rhs.Unicode());
 		}
 	}
 }

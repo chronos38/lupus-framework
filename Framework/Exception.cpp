@@ -130,12 +130,22 @@ namespace lupus {
 		{
 		}
 
-		BufferOverflowException::BufferOverflowException(const String& message) :
+		NotSupportedException::NotSupportedException(const String& message) :
 			Exception(message)
 		{
 		}
 
-		BufferOverflowException::BufferOverflowException(const String& message, const Exception& innerException) :
+		NotSupportedException::NotSupportedException(const String& message, const Exception& innerException) :
+			Exception(message, innerException)
+		{
+		}
+
+		NotImplementedException::NotImplementedException(const String& message) :
+			Exception(message)
+		{
+		}
+
+		NotImplementedException::NotImplementedException(const String& message, const Exception& innerException) :
 			Exception(message, innerException)
 		{
 		}

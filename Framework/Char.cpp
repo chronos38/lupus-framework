@@ -30,32 +30,32 @@ namespace lupus {
 		}
 
 		Char::Char(char ch) :
-			mValue(static_cast<ushort>(ch))
+			mValue(static_cast<int>(ch))
 		{
 		}
 
 		Char::Char(wchar_t ch) :
-			mValue(static_cast<ushort>(ch))
+			mValue(static_cast<int>(ch))
 		{
 		}
 
 		Char::Char(short ch) :
-			mValue(static_cast<ushort>(ch))
+			mValue(static_cast<int>(ch))
 		{
 		}
 
 		Char::Char(ushort ch) :
-			mValue(ch)
+			mValue(static_cast<int>(ch))
 		{
 		}
 
 		Char::Char(int ch) :
-			mValue(static_cast<ushort>(ch & 0xffff))
+			mValue(ch)
 		{
 		}
 
 		Char::Char(uint ch) :
-			mValue(static_cast<ushort>(ch & 0xffff))
+			mValue(static_cast<int>(ch))
 		{
 		}
 
@@ -111,22 +111,42 @@ namespace lupus {
 
 		Char Char::ToLower() const
 		{
-			return static_cast<uint>(u_tolower(static_cast<UChar>(mValue)));
+			return static_cast<uint>(u_tolower(static_cast<UChar32>(mValue)));
 		}
 
 		Char Char::ToUpper() const
 		{
-			return static_cast<uint>(u_toupper(static_cast<UChar>(mValue)));
+			return static_cast<uint>(u_toupper(static_cast<UChar32>(mValue)));
 		}
 
 		Char Char::ToTitle() const
 		{
-			return static_cast<uint>(u_totitle(static_cast<UChar>(mValue)));
+			return static_cast<uint>(u_totitle(static_cast<UChar32>(mValue)));
 		}
 
-		ushort Char::Unicode() const
+		int Char::Unicode() const
 		{
 			return mValue;
+		}
+
+		Char Char::operator+(const Char& ch) const
+		{
+			return (mValue + ch.Unicode());
+		}
+
+		Char Char::operator-(const Char& ch) const
+		{
+			return (mValue - ch.Unicode());
+		}
+
+		bool Char::operator==(const Char& ch) const
+		{
+			return (mValue == ch.Unicode());
+		}
+
+		bool Char::operator!=(const Char& ch) const
+		{
+			return (mValue != ch.Unicode());
 		}
 	}
 }

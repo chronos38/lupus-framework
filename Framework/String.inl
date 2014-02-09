@@ -16,6 +16,30 @@
 
 namespace lupus {
 	namespace system {
+		template <typename T>
+		bool operator==(const String& lhs, const T& rhs)
+		{
+			return (lhs == String(rhs));
+		}
+
+		template <typename T>
+		bool operator==(const T& lhs, const String& rhs)
+		{
+			return (String(lhs) == rhs);
+		}
+		
+		template <typename T>
+		bool operator!=(const String& lhs, const T& rhs)
+		{
+			return (lhs != String(rhs));
+		}
+
+		template <typename T>
+		bool operator!=(const T& lhs, const String& rhs)
+		{
+			return (String(lhs) != rhs);
+		}
+
 		template <typename CharT>
 		String operator+(const CharT* lhs, const String& rhs)
 		{

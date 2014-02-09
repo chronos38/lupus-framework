@@ -93,13 +93,22 @@ namespace lupus {
 			ArgumentOutOfRangeException(const String& message, const Exception& innerException);
 		};
 
-		class LUPUS_API BufferOverflowException : public Exception
+		class LUPUS_API NotSupportedException : public Exception
 		{
 		public:
-			BufferOverflowException() = default;
-			virtual ~BufferOverflowException() = default;
-			BufferOverflowException(const String& message);
-			BufferOverflowException(const String& message, const Exception& innerException);
+			NotSupportedException() = default;
+			virtual ~NotSupportedException() = default;
+			NotSupportedException(const String& message);
+			NotSupportedException(const String& message, const Exception& innerException);
+		};
+
+		class LUPUS_API NotImplementedException : public Exception
+		{
+		public:
+			NotImplementedException() = default;
+			virtual ~NotImplementedException() = default;
+			NotImplementedException(const String& message);
+			NotImplementedException(const String& message, const Exception& innerException);
 		};
 	}
 }
