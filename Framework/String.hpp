@@ -40,11 +40,16 @@ namespace lupus {
 			virtual ~String();
 			Char* Data();
 			const Char* Data() const;
+			uint Length() const;
 			String& operator=(const char*);
 			String& operator=(const Char*);
 			String& operator=(const String&);
 			String& operator=(String&&);
 			String operator+(const String&);
+		protected:
+			static uint GetLength(const Char*);
+		private:
+			void InitializeConverter();
 		private:
 			UConverter* mConverter = nullptr;
 			Char* mData = nullptr;

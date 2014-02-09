@@ -54,5 +54,8 @@
     <None Include="String.inl">
       <Filter>Inline Files</Filter>
     </None>
+    <None Include="Char.inl">
+      <Filter>Inline Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -123,5 +123,10 @@ namespace lupus {
 		{
 			return static_cast<uint>(u_totitle(static_cast<UChar>(mValue)));
 		}
+
+		ushort Char::Unicode() const
+		{
+			return mValue;
+		}
 	}
 }

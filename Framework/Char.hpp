@@ -45,10 +45,23 @@ namespace lupus {
 			Char ToLower() const;
 			Char ToUpper() const;
 			Char ToTitle() const;
+			ushort Unicode() const;
 		private:
 			ushort mValue;
 		};
+
+		template <typename T>
+		bool operator==(const Char& lhs, const T& rhs);
+		template <typename T>
+		bool operator==(const T& lhs, const Char& rhs);
+
+		template <typename T>
+		bool operator!=(const Char& lhs, const T& rhs);
+		template <typename T>
+		bool operator!=(const T& lhs, const Char& rhs);
 	}
 }
+
+#include "Char.inl"
 
 #endif
