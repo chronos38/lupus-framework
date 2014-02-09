@@ -129,5 +129,15 @@ namespace lupus {
 			ArgumentException(message, innerException)
 		{
 		}
+
+		BufferOverflowException::BufferOverflowException(const String& message) :
+			Exception(message)
+		{
+		}
+
+		BufferOverflowException::BufferOverflowException(const String& message, const Exception& innerException) :
+			Exception(message, innerException)
+		{
+		}
 	}
 }

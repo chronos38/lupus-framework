@@ -19,6 +19,8 @@
 
 #include "Object.hpp"
 
+struct UConverter;
+
 namespace lupus {
 	namespace system {
 		// forwared declaration for char class
@@ -29,8 +31,10 @@ namespace lupus {
 		{
 		public:
 			String();
-			String(const char*, int startIndex = 0, int length = -1);
-			String(const Char*, int startIndex = 0, int length = -1);
+			String(const char*);
+			String(const Char*);
+			String(const char*, int startIndex, int length);
+			String(const Char*, int startIndex, int length);
 			String(const String&);
 			String(String&&);
 			virtual ~String();
@@ -42,6 +46,7 @@ namespace lupus {
 			String& operator=(String&&);
 			String operator+(const String&);
 		private:
+			UConverter* mConverter = nullptr;
 			Char* mData = nullptr;
 			uint mLength = 0;
 		};

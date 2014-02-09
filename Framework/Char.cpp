@@ -30,12 +30,17 @@ namespace lupus {
 		}
 
 		Char::Char(char ch) :
-			mValue(ch)
+			mValue(static_cast<ushort>(ch))
 		{
 		}
 
 		Char::Char(wchar_t ch) :
-			mValue(ch)
+			mValue(static_cast<ushort>(ch))
+		{
+		}
+
+		Char::Char(short ch) :
+			mValue(static_cast<ushort>(ch))
 		{
 		}
 
@@ -44,29 +49,34 @@ namespace lupus {
 		{
 		}
 
+		Char::Char(int ch) :
+			mValue(static_cast<ushort>(ch & 0xffff))
+		{
+		}
+
 		Char::Char(uint ch) :
-			mValue(ch)
+			mValue(static_cast<ushort>(ch & 0xffff))
 		{
 		}
 
 		bool Char::IsBlank() const
 		{
-			return (u_isblank(mValue) == TRUE);
+			return (u_isblank(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsDigit() const
 		{
-			return (u_isdigit(mValue) == TRUE);
+			return (u_isdigit(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsGraph() const
 		{
-			return (u_isgraph(mValue) == TRUE);
+			return (u_isgraph(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsLetter() const
 		{
-			return (u_isalpha(mValue) == TRUE);
+			return (u_isalpha(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsLetterOrDigit() const
@@ -76,42 +86,42 @@ namespace lupus {
 
 		bool Char::IsLower() const
 		{
-			return (u_islower(mValue) == TRUE);
+			return (u_islower(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsPunct() const
 		{
-			return (u_ispunct(mValue) == TRUE);
+			return (u_ispunct(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsTitle() const
 		{
-			return (u_istitle(mValue) == TRUE);
+			return (u_istitle(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsUpper() const
 		{
-			return (u_isupper(mValue) == TRUE);
+			return (u_isupper(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		bool Char::IsWhiteSpace() const
 		{
-			return (u_isWhitespace(mValue) == TRUE);
+			return (u_isWhitespace(static_cast<UChar>(mValue)) == TRUE);
 		}
 
 		Char Char::ToLower() const
 		{
-			return static_cast<uint>(u_tolower(mValue));
+			return static_cast<uint>(u_tolower(static_cast<UChar>(mValue)));
 		}
 
 		Char Char::ToUpper() const
 		{
-			return static_cast<uint>(u_toupper(mValue));
+			return static_cast<uint>(u_toupper(static_cast<UChar>(mValue)));
 		}
 
 		Char Char::ToTitle() const
 		{
-			return static_cast<uint>(u_totitle(mValue));
+			return static_cast<uint>(u_totitle(static_cast<UChar>(mValue)));
 		}
 	}
 }

@@ -26,30 +26,115 @@ namespace lupus {
 		String::String() :
 			mData(new Char[1])
 		{
+			UErrorCode status = U_ZERO_ERROR;
+			mConverter = ucnv_open(nullptr, &status);
+			mData[0] = 0;
+			
+			if (!mConverter || U_FAILURE(status)) {
+				throw NullPointerException("couldn't create unicode converter");
+			}
 		}
 
-		String::String(const char* str, int startIndex, int length)
+		String::String(const char* source)
 		{
 			// check arguments
-			if (!str) {
+			if (!source) {
 				throw ArgumentNullException("argument string must have a valid value");
 			}
 
 			// variables
+			size_t sourceLength = strlen(source);
+			int32_t resultLength = 0;
 			UChar* destination = nullptr;
 			UErrorCode status = U_ZERO_ERROR;
-			UConverter* converter = ucnv_open(nullptr, &status);
+			mConverter = ucnv_open(nullptr, &status);
+
+			// in case the string is empty, apply it now
+			if (!sourceLength) {
+				*this = String();
+				return;
+			}
 
 			// check for errors
-			if (!converter || U_FAILURE(status)) {
+			if (!mConverter || U_FAILURE(status)) {
 				throw NullPointerException("couldn't create unicode converter");
 			}
 
-			// conversion
-			if (!length) {
-			} else if (length < 0) {
-			} else {
+			// create buffer
+			destination = new UChar[sourceLength];
+			mData = new Char[sourceLength];
+
+			// read unicode characters
+			resultLength = ucnv_toUChars(mConverter, destination, sourceLength, source, sourceLength, &status);
+
+			if (static_cast<size_t>(resultLength) != sourceLength || U_FAILURE(status)) {
+				throw BufferOverflowException("resulting string length is unequal to requested string length");
 			}
+
+			// set internal buffer
+			for (size_t i = 0; i < sourceLength; i++) {
+				mData[i] = destination[i];
+			}
+
+			// terminate with zero and free not needed memory
+			mData[resultLength] = 0;
+			delete destination;
+		}
+
+		String::String(const char* source, int startIndex, int length)
+		{
+			// check arguments
+			if (!source) {
+				throw ArgumentNullException("argument string must have a valid value");
+			} else if (length < 0) {
+				throw ArgumentOutOfRangeException("length must be minus one or greater than zero");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex is less than zero");
+			} else if (startIndex >= length) {
+				throw ArgumentOutOfRangeException("startIndex is equal to or greater than length");
+			}
+
+			// variables
+			size_t sourceLength = strlen(source);
+			int32_t resultLength = 0;
+			UChar* destination = nullptr;
+			UErrorCode status = U_ZERO_ERROR;
+			mConverter = ucnv_open(nullptr, &status);
+			
+			// in case the string is empty, apply it now
+			if (!sourceLength) {
+				*this = String();
+				return;
+			}
+
+			// check for errors
+			if (static_cast<size_t>(length) > sourceLength) {
+				throw ArgumentOutOfRangeException("length exceeds actual string length");
+			} else if (static_cast<size_t>(startIndex) >= sourceLength) {
+				throw ArgumentOutOfRangeException("startIndex exceeds actual string length");
+			} else if (!mConverter || U_FAILURE(status)) {
+				throw NullPointerException("couldn't create unicode converter");
+			}
+
+			// create buffer
+			destination = new UChar[length];
+			mData = new Char[length];
+
+			// read unicode characters
+			resultLength = ucnv_toUChars(mConverter, destination, length, source + startIndex, length, &status);
+
+			if (static_cast<int>(resultLength) != length || U_FAILURE(status)) {
+				throw BufferOverflowException("resulting string length is unequal to requested string length");
+			}
+
+			// set internal buffer
+			for (int i = 0; i < length; i++) {
+				mData[i] = destination[i];
+			}
+
+			// terminate with zero and free not needed memory
+			mData[resultLength] = 0;
+			delete destination;
 		}
 
 		String::String(const Char* str, int startIndex, int length)
@@ -66,6 +151,9 @@ namespace lupus {
 
 		String::~String()
 		{
+			if (mConverter) {
+				ucnv_close(mConverter);
+			}
 		}
 
 		Char* String::Data()

@@ -28,7 +28,9 @@ namespace lupus {
 			Char();
 			Char(char);
 			Char(wchar_t);
+			Char(short);
 			Char(ushort);
+			Char(int);
 			Char(uint);
 			bool IsBlank() const;
 			bool IsDigit() const;
@@ -44,7 +46,7 @@ namespace lupus {
 			Char ToUpper() const;
 			Char ToTitle() const;
 		private:
-			uint mValue;
+			ushort mValue;
 		};
 	}
 }
