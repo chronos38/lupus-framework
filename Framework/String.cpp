@@ -429,12 +429,43 @@ namespace lupus {
 
 		String& String::Remove(int startIndex)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (startIndex >= mLength) {
+				throw ArgumentOutOfRangeException("startIndex exceedes string length");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
+			}
+
+			// set range to zero
+			memset(mData + startIndex, 0, sizeof(Char) * (mLength - startIndex));
+
+			// update length
+			mLength = startIndex;
+
+			return (*this);
 		}
 
 		String& String::Remove(int startIndex, int count)
 		{
-			throw NotImplementedException();
+			// check argument
+			if ((startIndex + count) > mLength) {
+				throw ArgumentOutOfRangeException("startIndex plus count exceedes string length");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
+			} else if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			}
+
+			// variables
+			int length = mLength - (startIndex + count);
+
+			// set range to zero
+			memmove(mData + startIndex, mData + (startIndex + count), sizeof(Char) * length);
+
+			// update length
+			mLength -= count;
+
+			return (*this);
 		}
 
 		String& String::Replace(const Char& before, const Char& after, CaseSensitivity sensitivity)
