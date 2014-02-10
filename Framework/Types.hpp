@@ -21,11 +21,11 @@
 #  define LUPUS_LINUX_PLATFORM
 #elif defined(__APPLE__) || defined(__MACH__)
 #  define LUPUS_APPLE_PLATTFORM
-#elif defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+#elif defined(_WIN32) || defined(_WIN64)
 #  define LUPUS_WINDOWS_PLATFORM
 #endif
 
-#if defined(__unix) || defined(__unix__) || defined(LUPUS_APPLE_PLATFORM) || defined(LUPUS_LINUX_PLATFORM)
+#if defined(__unix) || defined(__unix__) || defined(LUPUS_APPLE_PLATFORM) || defined(LUPUS_LINUX_PLATFORM) || defined(__CYGWIN__)
 #  define LUPUS_UNIX_PLATFORM
 #endif
 

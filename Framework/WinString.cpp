@@ -76,8 +76,8 @@ namespace lupus {
 			// variables
 			int allocSize = MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, nullptr, 0);
 			wchar_t* converted = new wchar_t[allocSize];
-			mData = new Char[allocSize];
 			memset(converted, 0, sizeof(wchar_t)* allocSize);
+			mData = new Char[length + 1];
 
 			// convert source string
 			if (!MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, converted, length)) {
@@ -86,11 +86,11 @@ namespace lupus {
 
 			// set internal buffer
 			for (int i = 0; i < length; i++) {
-				mData[i] = converted[i];
+				mData[i] = converted[i + startIndex];
 			}
 
-			mData[length - 1] = 0;
-			mLength = mCapacity = (length - 1);
+			mData[length] = 0;
+			mLength = mCapacity = length;
 			delete converted;
 		}
 
@@ -140,8 +140,8 @@ namespace lupus {
 			// set internal buffer
 			mData = new Char[length + 1];
 
-			for (int i = startIndex; i < limit; i++) {
-				mData[i] = source[i];
+			for (int i = 0; i < length; i++) {
+				mData[i] = source[i + startIndex];
 			}
 
 			mData[length] = 0;

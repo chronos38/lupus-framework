@@ -64,6 +64,9 @@
     <ClCompile Include="WinString.cpp">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="UnixString.cpp">
+      <Filter>Unix</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="String.inl">

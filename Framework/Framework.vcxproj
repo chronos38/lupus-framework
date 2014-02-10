@@ -91,6 +91,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="String.cpp" />
     <ClCompile Include="UnixChar.cpp" />
+    <ClCompile Include="UnixString.cpp" />
     <ClCompile Include="WinChar.cpp" />
     <ClCompile Include="WinString.cpp" />
   </ItemGroup>
