@@ -41,15 +41,15 @@ namespace lupus {
 		}
 
 		template <typename CharT>
-		String operator+(const CharT* lhs, const String& rhs)
-		{
-			return (String(lhs) + rhs);
-		}
-
-		template <typename CharT>
 		String operator+(const String& lhs, const CharT* rhs)
 		{
 			return (lhs + String(rhs));
+		}
+
+		template <typename CharT>
+		String operator+(const CharT* lhs, const String& rhs)
+		{
+			return (String(lhs) + rhs);
 		}
 	}
 }

@@ -26,12 +26,7 @@ namespace lupus {
 		{
 		public:
 			Char();
-			Char(char);
-			Char(wchar_t);
-			Char(short);
-			Char(ushort);
 			Char(int);
-			Char(uint);
 			bool IsBlank() const;
 			bool IsDigit() const;
 			bool IsGraph() const;
@@ -39,19 +34,27 @@ namespace lupus {
 			bool IsLetterOrDigit() const;
 			bool IsLower() const;
 			bool IsPunct() const;
-			bool IsTitle() const;
 			bool IsUpper() const;
-			bool IsWhiteSpace() const;
+			bool IsSpace() const;
+			bool IsPrint() const;
+			bool IsControl() const;
+			bool IsHexadecimal() const;
 			Char ToLower() const;
 			Char ToUpper() const;
-			Char ToTitle() const;
-			int Unicode() const;
+			int Value() const;
 			Char operator+(const Char&) const;
 			Char operator-(const Char&) const;
 			bool operator==(const Char&) const;
 			bool operator!=(const Char&) const;
+		public:
+			static const int MaxValue;
+			static const int MinValue;
 		private:
-			int mValue;
+#if defined(LUPUS_WINDOWS_PLATFORM)
+			wchar_t mValue;
+#elif defined(LUPUS_UNIX_PLATFORM)
+			char mValue;
+#endif
 		};
 
 		template <typename T>

@@ -19,43 +19,43 @@ namespace lupus {
 		template <typename T>
 		bool operator==(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Unicode() == static_cast<int>(rhs));
+			return (lhs.Value() == static_cast<int>(rhs));
 		}
 
 		template <typename T>
 		bool operator==(const T& lhs, const Char& rhs)
 		{
-			return (rhs.Unicode() == static_cast<int>(lhs));
+			return (static_cast<int>(lhs) == rhs.Value());
 		}
 
 		template <typename T>
 		bool operator!=(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Unicode() == static_cast<int>(rhs));
+			return (lhs.Value() != static_cast<int>(rhs));
 		}
 
 		template <typename T>
 		bool operator!=(const T& lhs, const Char& rhs)
 		{
-			return (rhs.Unicode() == static_cast<int>(lhs));
+			return (static_cast<int>(lhs) != rhs.Value());
 		}
 
 		template <typename T>
 		Char operator+(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Unicode() + static_cast<int>(rhs));
+			return (lhs.Value() + static_cast<int>(rhs));
 		}
 
 		template <typename T>
 		Char operator+(const T& lhs, const Char& rhs)
 		{
-			return (rhs.Unicode() + static_cast<int>(lhs));
+			return (static_cast<int>(lhs) + rhs.Value());
 		}
 
 		template <typename T>
 		Char operator-(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Unicode() - static_cast<int>(rhs));
+			return (lhs.Value() - static_cast<int>(rhs));
 		}
 
 		template <typename T>

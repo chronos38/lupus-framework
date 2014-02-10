@@ -15,12 +15,6 @@
  */
 
 #include "Char.hpp"
-#include "String.hpp"
-#include "Integer.hpp"
-#include "Exception.hpp"
-#include <unicode/utypes.h>
-#include <unicode/uchar.h>
-#include <climits>
 
 namespace lupus {
 	namespace system {
@@ -29,124 +23,29 @@ namespace lupus {
 		{
 		}
 
-		Char::Char(char ch) :
-			mValue(static_cast<int>(ch))
-		{
-		}
-
-		Char::Char(wchar_t ch) :
-			mValue(static_cast<int>(ch))
-		{
-		}
-
-		Char::Char(short ch) :
-			mValue(static_cast<int>(ch))
-		{
-		}
-
-		Char::Char(ushort ch) :
-			mValue(static_cast<int>(ch))
-		{
-		}
-
-		Char::Char(int ch) :
-			mValue(ch)
-		{
-		}
-
-		Char::Char(uint ch) :
-			mValue(static_cast<int>(ch))
-		{
-		}
-
-		bool Char::IsBlank() const
-		{
-			return (u_isblank(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsDigit() const
-		{
-			return (u_isdigit(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsGraph() const
-		{
-			return (u_isgraph(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsLetter() const
-		{
-			return (u_isalpha(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsLetterOrDigit() const
-		{
-			return (IsLetter() || IsDigit());
-		}
-
-		bool Char::IsLower() const
-		{
-			return (u_islower(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsPunct() const
-		{
-			return (u_ispunct(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsTitle() const
-		{
-			return (u_istitle(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsUpper() const
-		{
-			return (u_isupper(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		bool Char::IsWhiteSpace() const
-		{
-			return (u_isWhitespace(static_cast<UChar>(mValue)) == TRUE);
-		}
-
-		Char Char::ToLower() const
-		{
-			return static_cast<uint>(u_tolower(static_cast<UChar32>(mValue)));
-		}
-
-		Char Char::ToUpper() const
-		{
-			return static_cast<uint>(u_toupper(static_cast<UChar32>(mValue)));
-		}
-
-		Char Char::ToTitle() const
-		{
-			return static_cast<uint>(u_totitle(static_cast<UChar32>(mValue)));
-		}
-
-		int Char::Unicode() const
+		int Char::Value() const
 		{
 			return mValue;
 		}
 
 		Char Char::operator+(const Char& ch) const
 		{
-			return (mValue + ch.Unicode());
+			return (mValue + ch.Value());
 		}
 
 		Char Char::operator-(const Char& ch) const
 		{
-			return (mValue - ch.Unicode());
+			return (mValue - ch.Value());
 		}
 
 		bool Char::operator==(const Char& ch) const
 		{
-			return (mValue == ch.Unicode());
+			return (mValue == ch.Value());
 		}
 
 		bool Char::operator!=(const Char& ch) const
 		{
-			return (mValue != ch.Unicode());
+			return (mValue != ch.Value());
 		}
 	}
 }

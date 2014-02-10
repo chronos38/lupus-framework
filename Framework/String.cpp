@@ -14,12 +14,10 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "String.hpp"
 #include "Char.hpp"
+#include "String.hpp"
 #include "Exception.hpp"
-#include <unicode/utypes.h>
-#include <unicode/uchar.h>
-#include <unicode/ucnv.h>
+#include <cstring>
 
 namespace lupus {
 	namespace system {
@@ -29,54 +27,6 @@ namespace lupus {
 			mCapacity(0)
 		{
 			mData[0] = 0;
-		}
-
-		String::String(const char* source)
-		{
-			// check arguments
-			if (!source) {
-				throw ArgumentNullException("source string must have a valid value");
-			}
-
-			// variables
-			size_t sourceLength = strlen(source);
-			const char* sourceLimit = source + sourceLength;
-			Char* iterator = nullptr;
-			UChar32 target = 0;
-			UErrorCode status = U_ZERO_ERROR;
-			UConverter* converter = ucnv_open(nullptr, &status);
-
-			// in case the string is empty, apply it now
-			if (!sourceLength) {
-				*this = String();
-				return;
-			}
-
-			// check for errors
-			if (U_FAILURE(status)) {
-				throw NullPointerException(u_errorName(status));
-			}
-
-			// create buffer and set iterator
-			mData = new Char[sourceLength + 1];
-			iterator = mData;
-
-			// read unicode characters
-			while (source < sourceLimit) {
-				target = ucnv_getNextUChar(converter, &source, sourceLimit, &status);
-
-				if (U_FAILURE(status)) {
-					throw FormatException(u_errorName(status));
-				}
-
-				// save unicode char and increment iterator
-				*iterator = target;
-				iterator++;
-			}
-
-			// terminate with zero and set length
-			mData[sourceLength] = 0;
-			mLength = mCapacity = static_cast<int>(sourceLength);
 		}
 
 		String::String(const Char* source)
@@ -100,61 +50,6 @@ namespace lupus {
 			memcpy(mData, source, sizeof(Char) * length);
 			mData[length] = 0;
 			mLength = mCapacity = length;
-		}
-
-		String::String(const char* source, int startIndex, int length)
-		{
-			// check arguments
-			if (!source) {
-				throw ArgumentNullException("source string must have a valid value");
-			} else if (length <= 0) {
-				throw ArgumentOutOfRangeException("length must be greater than zero");
-			} else if (startIndex < 0) {
-				throw ArgumentOutOfRangeException("startIndex is less than zero");
-			}
-
-			// variables
-			size_t sourceLength = strlen(source);
-			const char* sourceString = source + startIndex;
-			const char* sourceLimit = source + startIndex + length;
-			Char* iterator = nullptr;
-			UChar32 target = 0;
-			UErrorCode status = U_ZERO_ERROR;
-			UConverter* converter = ucnv_open(nullptr, &status);
-			
-			// in case the string is empty, apply it now
-			if (!sourceLength) {
-				*this = String();
-				return;
-			}
-
-			// check for errors
-			if (static_cast<size_t>(startIndex + length) > sourceLength) {
-				throw ArgumentOutOfRangeException("length exceeds actual string length");
-			} else if (U_FAILURE(status)) {
-				throw NullPointerException(u_errorName(status));
-			}
-
-			// create buffer and set iterator
-			mData = new Char[length + 1];
-			iterator = mData;
-
-			// read unicode characters
-			while (sourceString < sourceLimit) {
-				target = ucnv_getNextUChar(converter, &sourceString, sourceLimit, &status);
-
-				if (U_FAILURE(status)) {
-					throw FormatException(u_errorName(status));
-				}
-
-				// save unicode char and increment iterator
-				*iterator = target;
-				iterator++;
-			}
-
-			// terminate with zero and free not needed memory
-			mData[length] = 0;
-			mLength = mCapacity = static_cast<int>(length);
 		}
 
 		String::String(const Char* source, int startIndex, int length)
@@ -257,14 +152,14 @@ namespace lupus {
 			case CaseSensitivity::CaseSensitive:
 				for (int i = 0; i < mLength; i++) {
 					if (mData[i] != data[i]) {
-						return (mData[i] - data[i]).Unicode();
+						return (mData[i] - data[i]).Value();
 					}
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = 0; i < mLength; i++) {
 					if (mData[i].ToLower() != data[i].ToLower()) {
-						return (mData[i] - data[i]).Unicode();
+						return (mData[i] - data[i]).Value();
 					}
 				}
 				break;
@@ -291,6 +186,8 @@ namespace lupus {
 			case CaseSensitivity::CaseInsensitive:
 				return (KnuthMorrisPrattInsensitive(mData, mLength, string.Data(), string.Length()) != -1);
 			}
+
+			return -1;
 		}
 
 		/*
@@ -358,6 +255,8 @@ namespace lupus {
 			case CaseSensitivity::CaseInsensitive:
 				return KnuthMorrisPrattInsensitive(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
 			}
+
+			return -1;
 		}
 
 		/*
@@ -420,6 +319,8 @@ namespace lupus {
 			case CaseSensitivity::CaseInsensitive:
 				return KnuthMorrisPrattInsensitiveLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
 			}
+
+			return -1;
 		}
 
 		int String::Length() const

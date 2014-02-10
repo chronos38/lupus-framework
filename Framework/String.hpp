@@ -65,6 +65,10 @@ namespace lupus {
 			String& operator+=(const String&);
 			bool operator==(const String&) const;
 			bool operator!=(const String&) const;
+#if defined(LUPUS_WINDOWS_PLATFORM)
+			String(const wchar_t*);
+			String(const wchar_t*, int startIndex, int length);
+#endif
 		protected:
 			static int GetLength(const Char*);
 			static int KnuthMorrisPrattSensitive(const Char*, int, const Char*, int);
