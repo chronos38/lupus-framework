@@ -187,7 +187,7 @@ namespace lupus {
 				return (KnuthMorrisPrattInsensitive(mData, mLength, string.Data(), string.Length()) != -1);
 			}
 
-			return -1;
+			return false;
 		}
 
 		/*
@@ -392,6 +392,74 @@ namespace lupus {
 		String& String::Replace(const String& before, const String& after, CaseSensitivity sensitivity)
 		{
 			throw NotImplementedException();
+		}
+		
+		/*
+		Array<String> String::Split(const Array<Char>&, StringSplitOptions)
+		{
+		}
+
+		Array<String> String::Split(const Array<Char>&, int, StringSplitOptions)
+		{
+		}
+
+		Array<String> String::Split(const String&, StringSplitOptions)
+		{
+		}
+
+		Array<String> String::Split(const String&, int, StringSplitOptions)
+		{
+		}
+		*/
+
+		String String::Substring(int startIndex) const
+		{
+			if (startIndex >= mLength) {
+				throw ArgumentOutOfRangeException("startIndex exceeds string length");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
+			}
+
+			return String(mData + startIndex);
+		}
+
+		String String::Substring(int startIndex, int length) const
+		{
+			if ((startIndex + length) >= mLength) {
+				throw ArgumentOutOfRangeException("startIndex exceeds string length");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
+			} else if (length <= 0) {
+				throw ArgumentOutOfRangeException("length must be greater than zero");
+			}
+
+			return String(mData, startIndex, length);
+		}
+
+		String& String::ToLower()
+		{
+			// variables
+			const Char* limit = mData + mLength;
+
+			// compute result
+			for (Char* ch = mData; ch != limit; ch++) {
+				(*ch) = (*ch).ToLower();
+			}
+
+			return (*this);
+		}
+
+		String& String::ToUpper()
+		{
+			// variables
+			const Char* limit = mData + mLength;
+
+			// compute result
+			for (Char* ch = mData; ch != limit; ch++) {
+				(*ch) = (*ch).ToUpper();
+			}
+
+			return (*this);
 		}
 
 		Char& String::operator[](uint index)

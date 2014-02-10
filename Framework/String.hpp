@@ -54,6 +54,14 @@ namespace lupus {
 			String& Remove(int, int);
 			String& Replace(const Char&, const Char&, CaseSensitivity = CaseSensitivity::CaseSensitive);
 			String& Replace(const String&, const String&, CaseSensitivity = CaseSensitivity::CaseSensitive);
+			//Array<String> Split(const Array<Char>&, StringSplitOptions = StringSplitOptions::None) const;
+			//Array<String> Split(const Array<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
+			//Array<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
+			//Array<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
+			String Substring(int) const;
+			String Substring(int, int) const;
+			String& ToLower();
+			String& ToUpper();
 			Char& operator[](uint);
 			const Char& operator[](uint) const;
 			Char& operator[](int);

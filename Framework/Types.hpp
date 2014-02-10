@@ -72,6 +72,10 @@ namespace lupus {
 			CaseSensitive,
 			CaseInsensitive
 		};
+		enum class StringSplitOptions {
+			None,
+			RemoveEmptyEntries
+		};
 	}
 }
 

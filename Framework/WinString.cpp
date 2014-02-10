@@ -19,28 +19,133 @@
 #ifdef LUPUS_WINDOWS_PLATFORM
 #include "Char.hpp"
 #include "Exception.hpp"
+#include <Windows.h>
 #include <cwchar>
 
 namespace lupus {
 	namespace system {
 		String::String(const char* source)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (!source) {
+				throw ArgumentNullException("source string must have a valid value");
+			}
+
+			// variables
+			int length = MultiByteToWideChar(CP_UTF8, 0, source, -1, nullptr, 0);
+			wchar_t* converted = new wchar_t[length];
+			mData = new Char[length];
+			memset(converted, 0, sizeof(wchar_t) * length);
+
+			// convert source string
+			if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, converted, length)) {
+				throw FormatException("couldn't convert source string to (wchar_t*) format");
+			}
+
+			// set internal buffer
+			for (int i = 0; i < length; i++) {
+				mData[i] = converted[i];
+			}
+
+			mData[length - 1] = 0;
+			mLength = mCapacity = (length - 1);
+			delete converted;
 		}
 
 		String::String(const char* source, int startIndex, int length)
 		{
-			throw NotImplementedException();
+			// check source string
+			if (!source) {
+				throw ArgumentNullException("source string must have a valid value");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
+			} else if (length <= 0) {
+				throw ArgumentOutOfRangeException("length must be greater than zero");
+			}
+
+			// variables
+			{
+				// check other arguments
+				size_t sourceLength = strlen(source);
+
+				if ((startIndex + length) > static_cast<int>(sourceLength)) {
+					throw ArgumentOutOfRangeException("startIndex plus length exceeds source length");
+				}
+			}
+
+			// variables
+			int allocSize = MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, nullptr, 0);
+			wchar_t* converted = new wchar_t[allocSize];
+			mData = new Char[allocSize];
+			memset(converted, 0, sizeof(wchar_t)* allocSize);
+
+			// convert source string
+			if (!MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, converted, length)) {
+				throw FormatException("couldn't convert source string to (wchar_t*) format");
+			}
+
+			// set internal buffer
+			for (int i = 0; i < length; i++) {
+				mData[i] = converted[i];
+			}
+
+			mData[length - 1] = 0;
+			mLength = mCapacity = (length - 1);
+			delete converted;
 		}
 
 		String::String(const wchar_t* source)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (!source) {
+				throw ArgumentNullException("source string must have a valid value");
+			}
+
+			// variables
+			size_t length = wcslen(source);
+
+			// set internal buffer
+			mData = new Char[length + 1];
+
+			for (size_t i = 0; i < length; i++) {
+				mData[i] = source[i];
+			}
+
+			mData[length] = 0;
+			mLength = mCapacity = length;
 		}
 
 		String::String(const wchar_t* source, int startIndex, int length)
 		{
-			throw NotImplementedException();
+			// check source string
+			if (!source) {
+				throw ArgumentNullException("source string must have a valid value");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
+			} else if (length <= 0) {
+				throw ArgumentOutOfRangeException("length must be greater than zero");
+			}
+
+			// variables
+			int limit = startIndex + length;
+			{
+				// check other arguments
+				size_t sourceLength = wcslen(source);
+
+				if (limit > static_cast<int>(sourceLength)) {
+					throw ArgumentOutOfRangeException("startIndex plus length exceeds source length");
+				}
+			}
+
+			// set internal buffer
+			mData = new Char[length + 1];
+
+			for (int i = startIndex; i < limit; i++) {
+				mData[i] = source[i];
+			}
+
+			mData[length] = 0;
+			mLength = mCapacity = length;
 		}
 	}
 }
