@@ -79,8 +79,9 @@
   <ItemGroup>
     <ClInclude Include="Char.hpp" />
     <ClInclude Include="Exception.hpp" />
-    <ClInclude Include="IContainer.hpp" />
-    <ClInclude Include="IIterator.hpp" />
+    <ClInclude Include="IDictionary.hpp" />
+    <ClInclude Include="ISequence.hpp" />
+    <ClInclude Include="Iterator.hpp" />
     <ClInclude Include="Integer.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="String.hpp" />
@@ -97,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Char.inl" />
+    <None Include="Iterator.inl" />
     <None Include="String.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

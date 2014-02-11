@@ -16,32 +16,30 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_ICONTAINER_HPP
-#define LUPUS_ICONTAINER_HPP
-
-#include "IIterator.hpp"
-
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class IContainer
+		bool Iterator<T>::Next()
 		{
-		public:
-			virtual ~IContainer() { }
-			virtual void Add(const T&) = 0;
-			virtual IIterator<T> Begin() = 0;
-			virtual T& Back() = 0;
-			virtual const T& Back() const = 0;
-			virtual void Clear() = 0;
-			virtual int Count() const = 0;
-			virtual T& Front() = 0;
-			virtual const T& Front() const = 0;
-			virtual bool IsEmpty() const = 0;
-			virtual void Remove(const IIterator<T>&) = 0;
-			virtual void Remove(int) = 0;
-			virtual void Resize(int) = 0;
-		};
+			return false;
+		}
+
+		template <typename T>
+		void Iterator<T>::Reset()
+		{
+			// do nothing
+		}
+
+		template <typename T>
+		T* Iterator<T>::Value()
+		{
+			return nullptr;
+		}
+
+		template <typename T>
+		const T* Iterator<T>::Value() const
+		{
+			return nullptr;
+		}
 	}
 }
-
-#endif

@@ -16,21 +16,24 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_IITERATOR_HPP
-#define LUPUS_IITERATOR_HPP
+#ifndef LUPUS_ITERATOR_HPP
+#define LUPUS_ITERATOR_HPP
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class IIterator
+		class Iterator
 		{
 		public:
-			virtual ~IIterator() { }
-			virtual bool Next() = 0;
-			virtual T& Value() = 0;
-			virtual const T& Value() const = 0;
+			virtual ~Iterator() { }
+			virtual bool Next();
+			virtual void Reset();
+			virtual T* Value();
+			virtual const T* Value() const;
 		};
 	}
 }
+
+#include "Iterator.inl"
 
 #endif

@@ -20,12 +20,13 @@
 #define LUPUS_STRING_HPP
 
 #include "Object.hpp"
-#include "IContainer.hpp"
 
 namespace Lupus {
 	namespace System {
 		// forwared declaration for char class
 		class Char;
+		template <typename T>
+		class ISequence;
 
 		/// String class used for internal string operations
 		class LUPUS_API String : public Object
@@ -43,12 +44,12 @@ namespace Lupus {
 			int Capacity() const;
 			int Compare(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			bool Contains(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			void CopyTo(uint, IContainer<Char>&, uint, uint) const;
+			void CopyTo(int, ISequence<Char>&, int, int) const;
 			Char* Data();
 			const Char* Data() const;
 			int IndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int IndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			int IndexOfAny(const IContainer<Char>&, uint = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			int IndexOfAny(const ISequence<Char>&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			bool IsEmpty() const;
 			int LastIndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int LastIndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;

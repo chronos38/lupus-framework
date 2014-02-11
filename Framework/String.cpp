@@ -16,8 +16,9 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Char.hpp"
 #include "String.hpp"
+#include "Char.hpp"
+#include "ISequence.hpp"
 #include "Exception.hpp"
 #include <cstring>
 
@@ -192,9 +193,24 @@ namespace Lupus {
 			return false;
 		}
 
-		void String::CopyTo(uint sourceIndex, IContainer<Char>& destination, uint destinationIndex, uint count) const
+		void String::CopyTo(int startIndex, ISequence<Char>& sequence, int destinationIndex, int count) const
 		{
-			throw NotImplementedException();
+			// check argument
+			if ((startIndex + count) > mLength) {
+				throw ArgumentOutOfRangeException("startIndex plus count exceedes string length");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
+			} else if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			}
+
+			// variables
+			int limit = destinationIndex + count;
+
+			// copy
+			for (int i = destinationIndex, j = startIndex; i < limit; i++, j++) {
+				sequence.Insert(i, mData[j]);
+			}
 		}
 
 		Char* String::Data()
@@ -260,9 +276,51 @@ namespace Lupus {
 			return -1;
 		}
 
-		int String::IndexOfAny(const IContainer<Char>& sequence, uint startIndex, CaseSensitivity sensitivity) const
+		int String::IndexOfAny(const ISequence<Char>& sequence, int startIndex, CaseSensitivity sensitivity) const
 		{
-			throw NotImplementedException();
+			// check arguments
+			if (startIndex >= mLength) {
+				throw ArgumentNullException("startIndex exceeds string length");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
+			} else if (sequence.IsEmpty()) {
+				return -1;
+			}
+
+			// variables
+			Iterator<Char> iterator = sequence.Begin();
+
+			// comput result
+			switch (sensitivity) {
+			case CaseSensitivity::CaseSensitive:
+				for (int i = startIndex; i < mLength; i++) {
+					Char& ch = mData[i];
+
+					do {
+						if (ch == (*iterator.Value())) {
+							return i;
+						}
+					} while (iterator.Next());
+
+					iterator.Reset();
+				}
+				break;
+			case CaseSensitivity::CaseInsensitive:
+				for (int i = startIndex; i < mLength; i++) {
+					Char ch = mData[i].ToLower();
+
+					do {
+						if (ch == (*iterator.Value()).ToLower()) {
+							return i;
+						}
+					} while (iterator.Next());
+
+					iterator.Reset();
+				}
+				break;
+			}
+
+			return -1;
 		}
 
 		bool String::IsEmpty() const

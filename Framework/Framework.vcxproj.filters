@@ -38,10 +38,13 @@
     <ClInclude Include="Char.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IContainer.hpp">
+    <ClInclude Include="Iterator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISequence.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="IIterator.hpp">
+    <ClInclude Include="IDictionary.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
@@ -73,6 +76,9 @@
       <Filter>Inline Files</Filter>
     </None>
     <None Include="Char.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="Iterator.inl">
       <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>

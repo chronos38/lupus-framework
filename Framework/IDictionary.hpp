@@ -15,27 +15,31 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "stdafx.h"
-#include "CppUnitTest.h"
-#include "..\Framework\Char.hpp"
-#include "..\Framework\String.hpp"
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace Lupus::System;
+#ifndef LUPUS_IDICTIONARY_HPP
+#define LUPUS_IDICTIONARY_HPP
 
-namespace FrameworkTest
-{
-	TEST_CLASS(StringTest)
-	{
-	public:
-		TEST_METHOD(StringConstructorTest)
+#include "Iterator.hpp"
+
+namespace Lupus {
+	namespace System {
+		template <typename Key, typename Value>
+		class IDictionary
 		{
-			// variables
-			String string;
-
-			// default constructor
-			Assert::AreEqual(0, string.Length(), L"default constructor", LINE_INFO());
-			Assert::AreEqual(0, string[0].Value(), L"default constructor", LINE_INFO());
-		}
-	};
+		public:
+			virtual ~IDictionary() { }
+			virtual void Add(const Key&, const Value&) = 0;
+			virtual void Clear() = 0;
+			virtual bool Contains(const Value&) const = 0;
+			virtual bool ContainsKey(const Key&) const = 0;
+			virtual void CopyTo(ISequence<Value>&, int);
+			virtual int Count() = 0;
+			virtual bool Remove(const Value&) = 0;
+			virtual bool RemoveKey(const Key&) = 0;
+			virtual bool IsEmpty() const = 0;
+			// TODO: add some more methods
+		};
+	}
 }
+
+#endif
