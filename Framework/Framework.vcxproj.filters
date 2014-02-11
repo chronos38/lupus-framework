@@ -15,6 +15,9 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{9cc93814-438d-41b7-97a6-3036be355bd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{be843cd8-9dd2-49db-a843-c783a0271b6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.hpp">
@@ -34,6 +37,12 @@
     </ClInclude>
     <ClInclude Include="Char.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IContainer.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IIterator.hpp">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

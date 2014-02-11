@@ -20,6 +20,7 @@
 #define LUPUS_STRING_HPP
 
 #include "Object.hpp"
+#include "IContainer.hpp"
 
 namespace Lupus {
 	namespace System {
@@ -42,12 +43,12 @@ namespace Lupus {
 			int Capacity() const;
 			int Compare(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			bool Contains(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			//void CopyTo(uint, Array<Char>&, uint, uint) const;
+			void CopyTo(uint, IContainer<Char>&, uint, uint) const;
 			Char* Data();
 			const Char* Data() const;
 			int IndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int IndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			//int IndexOfAny(const Array<Char>&, uint = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			int IndexOfAny(const IContainer<Char>&, uint = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			bool IsEmpty() const;
 			int LastIndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int LastIndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
@@ -56,10 +57,10 @@ namespace Lupus {
 			String& Remove(int, int);
 			String& Replace(const Char&, const Char&, CaseSensitivity = CaseSensitivity::CaseSensitive);
 			String& Replace(const String&, const String&, CaseSensitivity = CaseSensitivity::CaseSensitive);
-			//Array<String> Split(const Array<Char>&, StringSplitOptions = StringSplitOptions::None) const;
-			//Array<String> Split(const Array<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
-			//Array<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
-			//Array<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
+			//Vector<String> Split(const Array<Char>&, StringSplitOptions = StringSplitOptions::None) const;
+			//Vector<String> Split(const Array<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
+			//Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
+			//Vector<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
 			String Substring(int) const;
 			String Substring(int, int) const;
 			String& ToLower();

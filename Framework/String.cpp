@@ -35,7 +35,7 @@ namespace Lupus {
 		{
 			// check argument
 			if (!source) {
-				throw ArgumentNullException("source string must have a valid value");;
+				throw ArgumentNullException("source string must have a valid value");
 			}
 
 			// variables
@@ -192,11 +192,10 @@ namespace Lupus {
 			return false;
 		}
 
-		/*
-		void String::CopyTo(uint sourceIndex, Char* destination, uint destinationIndex, uint count) const
+		void String::CopyTo(uint sourceIndex, IContainer<Char>& destination, uint destinationIndex, uint count) const
 		{
+			throw NotImplementedException();
 		}
-		*/
 
 		Char* String::Data()
 		{
@@ -261,11 +260,10 @@ namespace Lupus {
 			return -1;
 		}
 
-		/*
-		int String::IndexOfAny(const Array<Char>& sequence, uint startIndex, CaseSensitivity sensitivity) const
+		int String::IndexOfAny(const IContainer<Char>& sequence, uint startIndex, CaseSensitivity sensitivity) const
 		{
+			throw NotImplementedException();
 		}
-		*/
 
 		bool String::IsEmpty() const
 		{

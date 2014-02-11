@@ -79,6 +79,8 @@
   <ItemGroup>
     <ClInclude Include="Char.hpp" />
     <ClInclude Include="Exception.hpp" />
+    <ClInclude Include="IContainer.hpp" />
+    <ClInclude Include="IIterator.hpp" />
     <ClInclude Include="Integer.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="String.hpp" />
