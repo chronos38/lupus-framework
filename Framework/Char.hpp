@@ -19,8 +19,8 @@
 
 #include "Object.hpp"
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		/// Represents a unicode character
 		class LUPUS_API Char : public Object
 		{
@@ -44,6 +44,8 @@ namespace lupus {
 			int Value() const;
 			Char operator+(const Char&) const;
 			Char operator-(const Char&) const;
+			Char& operator+=(const Char&);
+			Char& operator-=(const Char&);
 			bool operator==(const Char&) const;
 			bool operator!=(const Char&) const;
 		public:

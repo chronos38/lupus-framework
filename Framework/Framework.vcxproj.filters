@@ -12,11 +12,8 @@
     <Filter Include="Inline Files">
       <UniqueIdentifier>{0b9fb750-076e-41b5-8679-4ae496609570}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Windows">
-      <UniqueIdentifier>{eb6d16e0-7d9c-4ef0-82a2-aadee4a50019}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Unix">
-      <UniqueIdentifier>{1a222aab-2933-4be5-993b-04fbb48e850b}</UniqueIdentifier>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{9cc93814-438d-41b7-97a6-3036be355bd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,17 +52,11 @@
     <ClCompile Include="Char.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WinChar.cpp">
-      <Filter>Windows</Filter>
+    <ClCompile Include="Platform\Windows\WinChar.cpp">
+      <Filter>Platform</Filter>
     </ClCompile>
-    <ClCompile Include="UnixChar.cpp">
-      <Filter>Unix</Filter>
-    </ClCompile>
-    <ClCompile Include="WinString.cpp">
-      <Filter>Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="UnixString.cpp">
-      <Filter>Unix</Filter>
+    <ClCompile Include="Platform\Windows\WinString.cpp">
+      <Filter>Platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

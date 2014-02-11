@@ -16,8 +16,8 @@
 
 #include "Char.hpp"
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		Char::Char() :
 			mValue(0)
 		{
@@ -36,6 +36,18 @@ namespace lupus {
 		Char Char::operator-(const Char& ch) const
 		{
 			return (mValue - ch.Value());
+		}
+
+		Char& Char::operator+=(const Char& ch)
+		{
+			mValue += static_cast<decltype(mValue)>(ch.Value());
+			return (*this);
+		}
+
+		Char& Char::operator-=(const Char& ch)
+		{
+			mValue -= static_cast<decltype(mValue)>(ch.Value());
+			return (*this);
 		}
 
 		bool Char::operator==(const Char& ch) const

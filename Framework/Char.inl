@@ -14,8 +14,8 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		template <typename T>
 		bool operator==(const Char& lhs, const T& rhs)
 		{
@@ -61,7 +61,7 @@ namespace lupus {
 		template <typename T>
 		Char operator-(const T& lhs, const Char& rhs)
 		{
-			return (static_cast<int>(lhs) - rhs.Unicode());
+			return (static_cast<int>(lhs) - rhs.Value());
 		}
 	}
 }

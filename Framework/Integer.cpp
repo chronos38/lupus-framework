@@ -24,191 +24,191 @@
 #include <cstdio>
 #include <cstring>
 
-namespace lupus {
-	namespace system {
-		String Integer::ToString(byte value, Base base)
+namespace Lupus {
+	namespace System {
+		String Integer::ToString(byte value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%o", (int)value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%d", (int)value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%x", (int)value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(short value, Base base)
+		String Integer::ToString(short value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%o", (int)value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%d", (int)value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%x", (int)value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(int value, Base base)
+		String Integer::ToString(int value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%o", value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%d", value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%x", value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(long value, Base base)
+		String Integer::ToString(long value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%lo", value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%ld", value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%lx", value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(llong value, Base base)
+		String Integer::ToString(llong value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%llo", value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%lld", value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%llx", value);
 				break;
 			}
 			return result;
 		}
-		String Integer::ToString(ubyte value, Base base)
+		String Integer::ToString(ubyte value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%o", (uint)value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%u", (uint)value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%x", (uint)value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(ushort value, Base base)
+		String Integer::ToString(ushort value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%o", (uint)value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%u", (uint)value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%x", (uint)value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(uint value, Base base)
+		String Integer::ToString(uint value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%o", value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%u", value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%x", value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(ulong value, Base base)
+		String Integer::ToString(ulong value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%lo", value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%lu", value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%lx", value);
 				break;
 			}
 			return result;
 		}
 
-		String Integer::ToString(ullong value, Base base)
+		String Integer::ToString(ullong value, IntegerBase base)
 		{
 			char result[32] = { 0 };
 			memset(result, 0, 32);
 
 			switch (base) {
-			case Base::Octal:
+			case IntegerBase::Octal:
 				sprintf(result, "%llo", value);
 				break;
-			case Base::Decimal:
+			case IntegerBase::Decimal:
 				sprintf(result, "%llu", value);
 				break;
-			case Base::Hexadecimal:
+			case IntegerBase::Hexadecimal:
 				sprintf(result, "%llx", value);
 				break;
 			}

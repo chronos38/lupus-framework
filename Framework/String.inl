@@ -14,8 +14,8 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		template <typename T>
 		bool operator==(const String& lhs, const T& rhs)
 		{

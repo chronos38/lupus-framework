@@ -19,18 +19,18 @@
 
 #include "Types.hpp"
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		class String;
-
-		class LUPUS_API Object
-		{
-		public:
-			virtual ~Object();
-			virtual ulong GetHashCode() const;
-			virtual String GetName() const final;
-		};
 	}
+
+	class LUPUS_API Object
+	{
+	public:
+		virtual ~Object();
+		virtual ulong GetHashCode() const;
+		virtual System::String GetName() const final;
+	};
 }
 
 #endif

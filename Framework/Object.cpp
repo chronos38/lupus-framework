@@ -18,22 +18,22 @@
 #include "String.hpp"
 #include <typeinfo>
 
-namespace lupus {
-	namespace system {
-		Object::~Object()
-		{
-		}
+using namespace Lupus::System;
 
-		String Object::GetName() const
-		{
-			const std::type_info& info = typeid(*this);
-			return info.name();
-		}
+namespace Lupus {
+	Object::~Object()
+	{
+	}
 
-		ulong Object::GetHashCode() const
-		{
-			const std::type_info& info = typeid(*this);
-			return static_cast<ulong>(info.hash_code());
-		}
+	String Object::GetName() const
+	{
+		const std::type_info& info = typeid(*this);
+		return info.name();
+	}
+
+	ulong Object::GetHashCode() const
+	{
+		const std::type_info& info = typeid(*this);
+		return static_cast<ulong>(info.hash_code());
 	}
 }

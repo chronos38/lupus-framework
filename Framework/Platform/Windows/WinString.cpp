@@ -14,16 +14,16 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "String.hpp"
+#include "..\..\String.hpp"
 
 #ifdef LUPUS_WINDOWS_PLATFORM
-#include "Char.hpp"
-#include "Exception.hpp"
+#include "..\..\Char.hpp"
+#include "..\..\Exception.hpp"
 #include <Windows.h>
 #include <cwchar>
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		String::String(const char* source)
 		{
 			// check argument

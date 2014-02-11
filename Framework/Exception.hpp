@@ -19,98 +19,98 @@
 
 #include "Object.hpp"
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		class String;
-
-		class LUPUS_API Exception : public Object
-		{
-		public:
-			Exception() = default;
-			Exception(const Exception&);
-			Exception(const String& message);
-			Exception(const String& message, const Exception& innerException);
-			virtual ~Exception();
-			virtual String Message() const final;
-			virtual Exception InnerException() const final;
-		private:
-			const String* mMessage = nullptr;
-			const Exception* mInnerException = nullptr;
-		};
-
-		class LUPUS_API NullPointerException : public Exception
-		{
-		public:
-			NullPointerException() = default;
-			virtual ~NullPointerException() = default;
-			NullPointerException(const String& message);
-			NullPointerException(const String& message, const Exception& innerException);
-		};
-
-		class LUPUS_API OutOfMemoryException : public Exception
-		{
-		public:
-			OutOfMemoryException() = default;
-			virtual ~OutOfMemoryException() = default;
-			OutOfMemoryException(const String& message);
-			OutOfMemoryException(const String& message, const Exception& innerException);
-		};
-
-		class LUPUS_API FormatException : public Exception
-		{
-		public:
-			FormatException() = default;
-			virtual ~FormatException() = default;
-			FormatException(const String& message);
-			FormatException(const String& message, const Exception& innerException);
-		};
-
-		class LUPUS_API ArgumentException : public Exception
-		{
-		public:
-			ArgumentException() = default;
-			virtual ~ArgumentException() = default;
-			ArgumentException(const ArgumentException&);
-			ArgumentException(const String& message);
-			ArgumentException(const String& message, const Exception& innerException);
-		};
-
-		class LUPUS_API ArgumentNullException : public ArgumentException
-		{
-		public:
-			ArgumentNullException() = default;
-			virtual ~ArgumentNullException() = default;
-			ArgumentNullException(const String& message);
-			ArgumentNullException(const String& message, const Exception& innerException);
-		};
-
-		class LUPUS_API ArgumentOutOfRangeException : public ArgumentException
-		{
-		public:
-			ArgumentOutOfRangeException() = default;
-			virtual ~ArgumentOutOfRangeException() = default;
-			ArgumentOutOfRangeException(const String& message);
-			ArgumentOutOfRangeException(const String& message, const Exception& innerException);
-		};
-
-		class LUPUS_API NotSupportedException : public Exception
-		{
-		public:
-			NotSupportedException() = default;
-			virtual ~NotSupportedException() = default;
-			NotSupportedException(const String& message);
-			NotSupportedException(const String& message, const Exception& innerException);
-		};
-
-		class LUPUS_API NotImplementedException : public Exception
-		{
-		public:
-			NotImplementedException() = default;
-			virtual ~NotImplementedException() = default;
-			NotImplementedException(const String& message);
-			NotImplementedException(const String& message, const Exception& innerException);
-		};
 	}
+	
+	class LUPUS_API Exception : public Object
+	{
+	public:
+		Exception() = default;
+		Exception(const Exception&);
+		Exception(const System::String& message);
+		Exception(const System::String& message, const Exception& innerException);
+		virtual ~Exception();
+		virtual System::String Message() const final;
+		virtual Exception InnerException() const final;
+	private:
+		const System::String* mMessage = nullptr;
+		const Exception* mInnerException = nullptr;
+	};
+
+	class LUPUS_API NullPointerException : public Exception
+	{
+	public:
+		NullPointerException() = default;
+		virtual ~NullPointerException() = default;
+		NullPointerException(const System::String& message);
+		NullPointerException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API OutOfMemoryException : public Exception
+	{
+	public:
+		OutOfMemoryException() = default;
+		virtual ~OutOfMemoryException() = default;
+		OutOfMemoryException(const System::String& message);
+		OutOfMemoryException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API FormatException : public Exception
+	{
+	public:
+		FormatException() = default;
+		virtual ~FormatException() = default;
+		FormatException(const System::String& message);
+		FormatException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API ArgumentException : public Exception
+	{
+	public:
+		ArgumentException() = default;
+		virtual ~ArgumentException() = default;
+		ArgumentException(const ArgumentException&);
+		ArgumentException(const System::String& message);
+		ArgumentException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API ArgumentNullException : public ArgumentException
+	{
+	public:
+		ArgumentNullException() = default;
+		virtual ~ArgumentNullException() = default;
+		ArgumentNullException(const System::String& message);
+		ArgumentNullException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API ArgumentOutOfRangeException : public ArgumentException
+	{
+	public:
+		ArgumentOutOfRangeException() = default;
+		virtual ~ArgumentOutOfRangeException() = default;
+		ArgumentOutOfRangeException(const System::String& message);
+		ArgumentOutOfRangeException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API NotSupportedException : public Exception
+	{
+	public:
+		NotSupportedException() = default;
+		virtual ~NotSupportedException() = default;
+		NotSupportedException(const System::String& message);
+		NotSupportedException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API NotImplementedException : public Exception
+	{
+	public:
+		NotImplementedException() = default;
+		virtual ~NotImplementedException() = default;
+		NotImplementedException(const System::String& message);
+		NotImplementedException(const System::String& message, const Exception& innerException);
+	};
 }
 
 #endif

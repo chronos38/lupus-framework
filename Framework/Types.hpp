@@ -55,7 +55,7 @@
 #  endif
 #endif
 
-namespace lupus {
+namespace Lupus {
 	// standard types
 	typedef char byte;
 	typedef unsigned char ubyte;
@@ -66,8 +66,13 @@ namespace lupus {
 	typedef unsigned long long ullong;
 	typedef long double real;
 
-	namespace system {
+	namespace System {
 		// enumerations
+		enum class IntegerBase {
+			Octal,
+			Decimal,
+			Hexadecimal
+		};
 		enum class CaseSensitivity {
 			CaseSensitive,
 			CaseInsensitive

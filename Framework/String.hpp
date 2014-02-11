@@ -19,8 +19,8 @@
 
 #include "Object.hpp"
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		// forwared declaration for char class
 		class Char;
 

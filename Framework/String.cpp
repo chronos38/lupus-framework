@@ -19,8 +19,8 @@
 #include "Exception.hpp"
 #include <cstring>
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		String::String() :
 			mData(new Char[1]),
 			mLength(0),

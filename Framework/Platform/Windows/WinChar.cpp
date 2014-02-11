@@ -14,16 +14,16 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Char.hpp"
+#include "..\..\Char.hpp"
 
 #ifdef LUPUS_WINDOWS_PLATFORM
-#include "Integer.hpp"
-#include "Exception.hpp"
+#include "..\..\Integer.hpp"
+#include "..\..\Exception.hpp"
 #include <cwchar>
 #include <cwctype>
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		const int Char::MaxValue = WCHAR_MAX;
 		const int Char::MinValue = WCHAR_MIN;
 

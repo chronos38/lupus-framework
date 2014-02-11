@@ -19,30 +19,23 @@
 
 #include "Object.hpp"
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		class String;
-
-		enum class Base
-		{
-			Octal,
-			Decimal,
-			Hexadecimal
-		};
 
 		class LUPUS_API Integer : public Object
 		{
 		public:
-			static String ToString(byte, Base = Base::Decimal);
-			static String ToString(short, Base = Base::Decimal);
-			static String ToString(int, Base = Base::Decimal);
-			static String ToString(long, Base = Base::Decimal);
-			static String ToString(llong, Base = Base::Decimal);
-			static String ToString(ubyte, Base = Base::Decimal);
-			static String ToString(ushort, Base = Base::Decimal);
-			static String ToString(uint, Base = Base::Decimal);
-			static String ToString(ulong, Base = Base::Decimal);
-			static String ToString(ullong, Base = Base::Decimal);
+			static String ToString(byte, IntegerBase = IntegerBase::Decimal);
+			static String ToString(short, IntegerBase = IntegerBase::Decimal);
+			static String ToString(int, IntegerBase = IntegerBase::Decimal);
+			static String ToString(long, IntegerBase = IntegerBase::Decimal);
+			static String ToString(llong, IntegerBase = IntegerBase::Decimal);
+			static String ToString(ubyte, IntegerBase = IntegerBase::Decimal);
+			static String ToString(ushort, IntegerBase = IntegerBase::Decimal);
+			static String ToString(uint, IntegerBase = IntegerBase::Decimal);
+			static String ToString(ulong, IntegerBase = IntegerBase::Decimal);
+			static String ToString(ullong, IntegerBase = IntegerBase::Decimal);
 		};
 	}
 }

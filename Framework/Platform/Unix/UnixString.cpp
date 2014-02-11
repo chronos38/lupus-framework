@@ -23,8 +23,8 @@
 #include <Windows.h>
 #include <cwchar>
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		String::String(const char* source)
 		{
 			// check argument

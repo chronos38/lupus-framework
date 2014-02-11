@@ -18,136 +18,136 @@
 #include "String.hpp"
 #include <memory>
 
-namespace lupus {
-	namespace system {
-		Exception::Exception(const String& message) :
-			mMessage(new String(message))
-		{
+using namespace Lupus::System;
+
+namespace Lupus {
+	Exception::Exception(const String& message) :
+		mMessage(new String(message))
+	{
+	}
+
+	Exception::Exception(const String& message, const Exception& innerException) :
+		mMessage(new String(message)),
+		mInnerException(new Exception(innerException))
+	{
+	}
+
+	Exception::Exception(const Exception& exception) :
+		mMessage(new String(exception.Message()))
+	{
+	}
+
+	Exception::~Exception()
+	{
+		if (mMessage) {
+			delete mMessage;
 		}
 
-		Exception::Exception(const String& message, const Exception& innerException) :
-			mMessage(new String(message)),
-			mInnerException(new Exception(innerException))
-		{
+		if (mInnerException) {
+			delete mInnerException;
+		}
+	}
+
+	String Exception::Message() const
+	{
+		if (mMessage) {
+			return (*mMessage);
 		}
 
-		Exception::Exception(const Exception& exception) :
-			mMessage(new String(exception.Message()))
-		{
+		return "";
+	}
+
+	Exception Exception::InnerException() const
+	{
+		if (mInnerException) {
+			return (*mInnerException);
 		}
 
-		Exception::~Exception()
-		{
-			if (mMessage) {
-				delete mMessage;
-			}
+		return Exception();
+	}
 
-			if (mInnerException) {
-				delete mInnerException;
-			}
-		}
+	NullPointerException::NullPointerException(const String& message) :
+		Exception(message)
+	{
+	}
 
-		String Exception::Message() const
-		{
-			if (mMessage) {
-				return (*mMessage);
-			}
+	NullPointerException::NullPointerException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 
-			return "";
-		}
+	OutOfMemoryException::OutOfMemoryException(const String& message) :
+		Exception(message)
+	{
+	}
 
-		Exception Exception::InnerException() const
-		{
-			if (mInnerException) {
-				return (*mInnerException);
-			}
+	OutOfMemoryException::OutOfMemoryException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 
-			return Exception();
-		}
+	FormatException::FormatException(const String& message) :
+		Exception(message)
+	{
+	}
 
-		NullPointerException::NullPointerException(const String& message) :
-			Exception(message)
-		{
-		}
+	FormatException::FormatException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 
-		NullPointerException::NullPointerException(const String& message, const Exception& innerException) :
-			Exception(message, innerException)
-		{
-		}
+	ArgumentException::ArgumentException(const ArgumentException& argumentException) :
+		Exception(argumentException)
+	{
+	}
 
-		OutOfMemoryException::OutOfMemoryException(const String& message) :
-			Exception(message)
-		{
-		}
+	ArgumentException::ArgumentException(const String& message) :
+		Exception(message)
+	{
+	}
 
-		OutOfMemoryException::OutOfMemoryException(const String& message, const Exception& innerException) :
-			Exception(message, innerException)
-		{
-		}
+	ArgumentException::ArgumentException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 
-		FormatException::FormatException(const String& message) :
-			Exception(message)
-		{
-		}
+	ArgumentNullException::ArgumentNullException(const String& message) :
+		ArgumentException(message)
+	{
+	}
 
-		FormatException::FormatException(const String& message, const Exception& innerException) :
-			Exception(message, innerException)
-		{
-		}
+	ArgumentNullException::ArgumentNullException(const String& message, const Exception& innerException) :
+		ArgumentException(message, innerException)
+	{
+	}
 
-		ArgumentException::ArgumentException(const ArgumentException& argumentException) :
-			Exception(argumentException)
-		{
-		}
+	ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String& message) :
+		ArgumentException(message)
+	{
+	}
 
-		ArgumentException::ArgumentException(const String& message) :
-			Exception(message)
-		{
-		}
+	ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String& message, const Exception& innerException) :
+		ArgumentException(message, innerException)
+	{
+	}
 
-		ArgumentException::ArgumentException(const String& message, const Exception& innerException) :
-			Exception(message, innerException)
-		{
-		}
+	NotSupportedException::NotSupportedException(const String& message) :
+		Exception(message)
+	{
+	}
 
-		ArgumentNullException::ArgumentNullException(const String& message) :
-			ArgumentException(message)
-		{
-		}
+	NotSupportedException::NotSupportedException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 
-		ArgumentNullException::ArgumentNullException(const String& message, const Exception& innerException) :
-			ArgumentException(message, innerException)
-		{
-		}
+	NotImplementedException::NotImplementedException(const String& message) :
+		Exception(message)
+	{
+	}
 
-		ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String& message) :
-			ArgumentException(message)
-		{
-		}
-
-		ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String& message, const Exception& innerException) :
-			ArgumentException(message, innerException)
-		{
-		}
-
-		NotSupportedException::NotSupportedException(const String& message) :
-			Exception(message)
-		{
-		}
-
-		NotSupportedException::NotSupportedException(const String& message, const Exception& innerException) :
-			Exception(message, innerException)
-		{
-		}
-
-		NotImplementedException::NotImplementedException(const String& message) :
-			Exception(message)
-		{
-		}
-
-		NotImplementedException::NotImplementedException(const String& message, const Exception& innerException) :
-			Exception(message, innerException)
-		{
-		}
+	NotImplementedException::NotImplementedException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
 	}
 }

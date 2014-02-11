@@ -22,8 +22,8 @@
 #include <climits>
 #include <cctype>
 
-namespace lupus {
-	namespace system {
+namespace Lupus {
+	namespace System {
 		const int Char::MaxValue = CHAR_MAX;
 		const int Char::MinValue = CHAR_MIN;
 
