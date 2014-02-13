@@ -19,8 +19,10 @@
 #include "CppUnitTest.h"
 #include "..\Framework\Char.hpp"
 #include "..\Framework\String.hpp"
+#include "..\Framework\Exception.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace Lupus;
 using namespace Lupus::System;
 
 namespace FrameworkTest
@@ -36,6 +38,20 @@ namespace FrameworkTest
 			// default constructor
 			Assert::AreEqual(0, string.Length(), L"default constructor", LINE_INFO());
 			Assert::AreEqual(0, string[0].Value(), L"default constructor", LINE_INFO());
+
+			// (const char*)
+			try {
+				string = String((char*)0);
+				string = String((wchar_t*)0);
+				string = String((Char*)0);
+			} catch (ArgumentNullException& e) {
+				// do nothing
+			}
+			string = String("abc");
+			Assert::AreEqual(3, string.Length(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual((int)'a', string[0].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual((int)'b', string[1].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual((int)'c', string[2].Value(), L"(const char*) constructor", LINE_INFO());
 		}
 	};
 }

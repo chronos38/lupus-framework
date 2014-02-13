@@ -37,7 +37,7 @@ namespace Lupus {
 			virtual bool Remove(const Value&) = 0;
 			virtual bool RemoveKey(const Key&) = 0;
 			virtual bool IsEmpty() const = 0;
-			// TODO: add some more methods
+			// TODO: add some more methods and a Pair-Class
 		};
 	}
 }
