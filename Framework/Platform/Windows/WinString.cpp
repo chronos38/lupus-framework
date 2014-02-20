@@ -26,7 +26,8 @@
 
 namespace Lupus {
 	namespace System {
-		String::String(const char* source)
+		String::String(const char* source) :
+			mData(nullptr)
 		{
 			// check argument
 			if (!source) {
@@ -49,12 +50,13 @@ namespace Lupus {
 				mData[i] = converted[i];
 			}
 
-			mData[length - 1] = 0;
+			mData[length - 1] = L'\0';
 			mLength = mCapacity = (length - 1);
-			delete converted;
+			delete[] converted;
 		}
 
-		String::String(const char* source, int startIndex, int length)
+		String::String(const char* source, int startIndex, int length) :
+			mData(nullptr)
 		{
 			// check source string
 			if (!source) {
@@ -88,15 +90,16 @@ namespace Lupus {
 
 			// set internal buffer
 			for (int i = 0; i < length; i++) {
-				mData[i] = converted[i + startIndex];
+				mData[i] = converted[i];
 			}
 
-			mData[length] = 0;
+			mData[length] = L'\0';
 			mLength = mCapacity = length;
-			delete converted;
+			delete[] converted;
 		}
 
-		String::String(const wchar_t* source)
+		String::String(const wchar_t* source) :
+			mData(nullptr)
 		{
 			// check argument
 			if (!source) {
@@ -113,11 +116,12 @@ namespace Lupus {
 				mData[i] = source[i];
 			}
 
-			mData[length] = 0;
+			mData[length] = L'\0';
 			mLength = mCapacity = length;
 		}
 
-		String::String(const wchar_t* source, int startIndex, int length)
+		String::String(const wchar_t* source, int startIndex, int length) :
+			mData(nullptr)
 		{
 			// check source string
 			if (!source) {
@@ -146,7 +150,7 @@ namespace Lupus {
 				mData[i] = source[i + startIndex];
 			}
 
-			mData[length] = 0;
+			mData[length] = L'\0';
 			mLength = mCapacity = length;
 		}
 	}

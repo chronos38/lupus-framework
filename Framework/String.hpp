@@ -58,8 +58,8 @@ namespace Lupus {
 			String& Remove(int, int);
 			String& Replace(const Char&, const Char&, CaseSensitivity = CaseSensitivity::CaseSensitive);
 			String& Replace(const String&, const String&, CaseSensitivity = CaseSensitivity::CaseSensitive);
-			//Vector<String> Split(const Array<Char>&, StringSplitOptions = StringSplitOptions::None) const;
-			//Vector<String> Split(const Array<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
+			//Vector<String> Split(const Vector<Char>&, StringSplitOptions = StringSplitOptions::None) const;
+			//Vector<String> Split(const Vector<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
 			//Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
 			//Vector<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
 			String Substring(int) const;
@@ -88,9 +88,9 @@ namespace Lupus {
 			static int KnuthMorrisPrattSensitiveLast(const Char*, int, const Char*, int);
 			static int KnuthMorrisPrattInsensitiveLast(const Char*, int, const Char*, int);
 		private:
-			Char* mData = nullptr;
-			int mLength = 0;
-			int mCapacity = 0;
+			Char* mData;
+			int mLength;
+			int mCapacity;
 		};
 
 		template <typename T>

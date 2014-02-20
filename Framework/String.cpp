@@ -29,7 +29,7 @@ namespace Lupus {
 			mLength(0),
 			mCapacity(0)
 		{
-			mData[0] = 0;
+			mData[0] = '\0';
 		}
 
 		String::String(const Char* source)
@@ -40,7 +40,7 @@ namespace Lupus {
 			}
 
 			// variables
-			uint length = GetLength(source);
+			int length = GetLength(source);
 
 			// in case the string is empty, apply it now
 			if (!length) {
@@ -51,7 +51,7 @@ namespace Lupus {
 			// set values
 			mData = new Char[length + 1];
 			memcpy(mData, source, sizeof(Char) * length);
-			mData[length] = 0;
+			mData[length] = '\0';
 			mLength = mCapacity = length;
 		}
 
@@ -67,7 +67,7 @@ namespace Lupus {
 			}
 
 			// variables
-			size_t sourceLength = GetLength(source);
+			int sourceLength = GetLength(source);
 
 			// in case the string is empty, apply it now
 			if (!sourceLength) {
@@ -76,7 +76,7 @@ namespace Lupus {
 			}
 
 			// check for errors
-			if (static_cast<size_t>(startIndex + length) > sourceLength) {
+			if ((startIndex + length) > sourceLength) {
 				throw ArgumentOutOfRangeException("length exceeds actual string length");
 			}
 
@@ -87,7 +87,7 @@ namespace Lupus {
 			memcpy(mData, source + startIndex, sizeof(Char) * length);
 
 			// terminate with zero and free not needed memory
-			mData[length] = 0;
+			mData[length] = '\0';
 			mLength = mCapacity = static_cast<int>(length);
 		}
 
@@ -102,7 +102,7 @@ namespace Lupus {
 			}
 
 			memcpy(mData, string.Data(), sizeof(Char) * mLength);
-			mData[mLength] = 0;
+			mData[mLength] = '\0';
 		}
 
 		String::String(String&& string) :
@@ -126,7 +126,7 @@ namespace Lupus {
 		String::~String()
 		{
 			if (mData) {
-				delete mData;
+				delete[] mData;
 			}
 		}
 
@@ -577,16 +577,16 @@ namespace Lupus {
 
 				// set new values
 				memcpy(mData, string, sizeof(Char)* length);
-				mData[length] = 0;
+				mData[length] = '\0';
 				mLength = length;
 			} else {
 				// reallocate buffer
-				delete mData;
+				delete[] mData;
 				mData = new Char[length + 1];
 
 				// set new values
 				memcpy(mData, string, sizeof(Char) * length);
-				mData[length] = 0;
+				mData[length] = '\0';
 				mLength = mCapacity = length;
 			}
 
@@ -605,16 +605,16 @@ namespace Lupus {
 
 				// set new values
 				memcpy(mData, string.Data(), sizeof(Char) * length);
-				mData[length] = 0;
+				mData[length] = '\0';
 				mLength = length;
 			} else {
 				// reallocate buffer
-				delete mData;
+				delete[] mData;
 				mData = new Char[length + 1];
 
 				// set new values
 				memcpy(mData, string.Data(), sizeof(Char) * length);
-				mData[length] = 0;
+				mData[length] = '\0';
 				mLength = mCapacity = length;
 			}
 
@@ -623,20 +623,18 @@ namespace Lupus {
 
 		String& String::operator=(String&& string)
 		{
-			// variables
-			String tmp;
-
-			// delete current buffer
-			delete mData;
+			// delete[] current buffer
+			delete[] mData;
 
 			// move memory
 			mData = string.mData;
 			mLength = string.mLength;
 			mCapacity = string.mCapacity;
 
-			string.mData = tmp.mData;
-			string.mLength = tmp.mLength;
-			string.mCapacity = tmp.mCapacity;
+			// reset string
+			string.mData = new Char[1];
+			string.mLength = 0;
+			string.mCapacity = 0;
 
 			return (*this);
 		}
@@ -650,11 +648,11 @@ namespace Lupus {
 			// copy new buffer
 			memcpy(buffer, mData, sizeof(Char) * mLength);
 			memcpy(buffer + mLength, string.Data(), sizeof(Char) * string.Length());
-			buffer[mLength + string.Length()] = 0;
+			buffer[mLength + string.Length()] = '\0';
 
-			// set result and delete buffer
+			// set result and delete[] buffer
 			result = buffer;
-			delete buffer;
+			delete[] buffer;
 
 			return result;
 		}
@@ -675,11 +673,11 @@ namespace Lupus {
 				// copy new buffer
 				memcpy(buffer, mData, sizeof(Char) * mLength);
 				memcpy(buffer + mLength, string.Data(), sizeof(Char) * length);
-				buffer[mLength + length] = 0;
+				buffer[mLength + length] = '\0';
 
-				// set result and delete buffer
+				// set result and delete[] buffer
 				*this = buffer;
-				delete buffer;
+				delete[] buffer;
 			}
 
 			return (*this);
@@ -735,12 +733,12 @@ namespace Lupus {
 				j++;
 
 				if (j == searchLength) {
-					delete n;
+					delete[] n;
 					return (i - j);
 				}
 			}
 
-			delete n;
+			delete[] n;
 			return -1;
 		}
 
@@ -773,12 +771,12 @@ namespace Lupus {
 				j++;
 
 				if (j == searchLength) {
-					delete n;
+					delete[] n;
 					return (i - j);
 				}
 			}
 
-			delete n;
+			delete[] n;
 			return -1;
 		}
 

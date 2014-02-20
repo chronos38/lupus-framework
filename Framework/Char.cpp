@@ -25,30 +25,53 @@ namespace Lupus {
 		{
 		}
 
-		int Char::Value() const
+		Char::Char(const Char& ch)
+		{
+			mValue = ch.mValue;
+		}
+
+		Char::Char(Char&& ch)
+		{
+			mValue = ch.mValue;
+			ch.mValue = 0;
+		}
+
+		Char::~Char()
+		{
+		}
+
+		wchar_t Char::Value() const
 		{
 			return mValue;
 		}
 
-		Char Char::operator+(const Char& ch) const
+		Char& Char::operator=(const Char& ch)
 		{
-			return (mValue + ch.Value());
-		}
-
-		Char Char::operator-(const Char& ch) const
-		{
-			return (mValue - ch.Value());
-		}
-
-		Char& Char::operator+=(const Char& ch)
-		{
-			mValue += static_cast<decltype(mValue)>(ch.Value());
+			mValue = ch.mValue;
 			return (*this);
 		}
 
-		Char& Char::operator-=(const Char& ch)
+		Char& Char::operator+=(int value)
 		{
-			mValue -= static_cast<decltype(mValue)>(ch.Value());
+			mValue += value;
+			return (*this);
+		}
+
+		Char& Char::operator-=(int value)
+		{
+			mValue -= value;
+			return (*this);
+		}
+
+		Char& Char::operator++()
+		{
+			mValue++;
+			return (*this);
+		}
+
+		Char& Char::operator--()
+		{
+			mValue--;
 			return (*this);
 		}
 

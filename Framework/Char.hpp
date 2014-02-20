@@ -28,35 +28,48 @@ namespace Lupus {
 		{
 		public:
 			Char();
-			Char(int);
-			bool IsBlank() const;
-			bool IsDigit() const;
-			bool IsGraph() const;
-			bool IsLetter() const;
-			bool IsLetterOrDigit() const;
-			bool IsLower() const;
-			bool IsPunct() const;
-			bool IsUpper() const;
-			bool IsSpace() const;
-			bool IsPrint() const;
-			bool IsControl() const;
-			bool IsHexadecimal() const;
-			Char ToLower() const;
-			Char ToUpper() const;
-			int Value() const;
+			Char(char);
+			Char(const Char&);
+			Char(Char&&);
+			virtual ~Char();
+			virtual bool IsBlank() const final;
+			virtual bool IsDigit() const final;
+			virtual bool IsGraph() const final;
+			virtual bool IsLetter() const final;
+			virtual bool IsLetterOrDigit() const final;
+			virtual bool IsLower() const final;
+			virtual bool IsPunct() const final;
+			virtual bool IsUpper() const final;
+			virtual bool IsSpace() const final;
+			virtual bool IsPrint() const final;
+			virtual bool IsControl() const final;
+			virtual bool IsHexadecimal() const final;
+			virtual Char ToLower() const final;
+			virtual Char ToUpper() const final;
+			Char& operator=(char);
+			Char& operator=(const Char&);
 			Char operator+(const Char&) const;
 			Char operator-(const Char&) const;
-			Char& operator+=(const Char&);
-			Char& operator-=(const Char&);
+			Char& operator+=(int);
+			Char& operator-=(int);
+			Char& operator++();
+			Char& operator--();
 			bool operator==(const Char&) const;
 			bool operator!=(const Char&) const;
 		public:
 			static const int MaxValue;
 			static const int MinValue;
-		private:
 #if defined(LUPUS_WINDOWS_PLATFORM)
+		public:
+			Char(wchar_t);
+			virtual wchar_t Value() const final;
+			Char& operator=(wchar_t);
+		private:
 			wchar_t mValue;
 #elif defined(LUPUS_UNIX_PLATFORM)
+		public:
+			virtual char Value() const final;
+		private:
 			char mValue;
 #endif
 		};

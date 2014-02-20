@@ -20,6 +20,7 @@
 #include "..\Framework\Char.hpp"
 #include "..\Framework\String.hpp"
 #include "..\Framework\Exception.hpp"
+#include <memory>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Lupus;
@@ -33,25 +34,53 @@ namespace FrameworkTest
 		TEST_METHOD(StringConstructorTest)
 		{
 			// variables
+			Char ch[] = { L'a', L'b', L'c', L'd', L'e', L'f', L'\0' };
 			String string;
 
 			// default constructor
 			Assert::AreEqual(0, string.Length(), L"default constructor", LINE_INFO());
-			Assert::AreEqual(0, string[0].Value(), L"default constructor", LINE_INFO());
 
-			// (const char*)
-			try {
-				string = String((char*)0);
-				string = String((wchar_t*)0);
-				string = String((Char*)0);
-			} catch (ArgumentNullException& e) {
-				// do nothing
-			}
+			// (const char*) constructor
 			string = String("abc");
 			Assert::AreEqual(3, string.Length(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual((int)'a', string[0].Value(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual((int)'b', string[1].Value(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual((int)'c', string[2].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'a', string[0].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'b', string[1].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', string[2].Value(), L"(const char*) constructor", LINE_INFO());
+
+			// (const wchar_t*) constructor
+			string = String(L"abc");
+			Assert::AreEqual(3, string.Length(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(L'a', string[0].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(L'b', string[1].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', string[2].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+
+			// (const Char*) constructor
+			string = String(ch);
+			Assert::AreEqual(6, string.Length(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(L'a', string[0].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'b', string[1].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', string[2].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', string[3].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'e', string[4].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'f', string[5].Value(), L"(const Char*) constructor", LINE_INFO());
+
+			// (char*,int,int) constructor
+			string = String("abcdef", 2, 2);
+			Assert::AreEqual(2, string.Length(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', string[0].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', string[1].Value(), L"(const char*) constructor", LINE_INFO());
+
+			// (wchar_t*,int,int) constructor
+			string = String(L"abcdef", 2, 2);
+			Assert::AreEqual(2, string.Length(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', string[0].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', string[1].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+
+			// (Char*,int,int) constructor
+			string = String(ch, 2, 2);
+			Assert::AreEqual(2, string.Length(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', string[0].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', string[1].Value(), L"(const Char*) constructor", LINE_INFO());
 		}
 	};
 }

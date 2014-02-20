@@ -19,6 +19,7 @@
 #include "..\..\Char.hpp"
 
 #ifdef LUPUS_WINDOWS_PLATFORM
+#include "..\..\String.hpp"
 #include "..\..\Integer.hpp"
 #include "..\..\Exception.hpp"
 #include <cwchar>
@@ -29,8 +30,22 @@ namespace Lupus {
 		const int Char::MaxValue = WCHAR_MAX;
 		const int Char::MinValue = WCHAR_MIN;
 
-		Char::Char(int ch) :
-			mValue(static_cast<wchar_t>(ch))
+		Char::Char(char ch) :
+			mValue(0)
+		{
+			if (ch == '\0') {
+				return;
+			}
+
+			mbstate_t state = mbstate_t();
+
+			if (mbrtowc(&mValue, &ch, sizeof(ch), &state) != sizeof(ch)) {
+				throw FormatException("couldn't convert character to wide character");
+			}
+		}
+
+		Char::Char(wchar_t ch) :
+			mValue(ch)
 		{
 		}
 
@@ -96,12 +111,44 @@ namespace Lupus {
 
 		Char Char::ToLower() const
 		{
-			return static_cast<int>(towlower(mValue));
+			return static_cast<wchar_t>(towlower(mValue));
 		}
 
 		Char Char::ToUpper() const
 		{
-			return static_cast<int>(towupper(mValue));
+			return static_cast<wchar_t>(towupper(mValue));
+		}
+
+		Char& Char::operator=(char ch)
+		{
+			if (ch == '\0') {
+				mValue = 0;
+				return (*this);
+			}
+
+			mbstate_t state = mbstate_t();
+
+			if (mbrtowc(&mValue, &ch, sizeof(ch), &state) != sizeof(ch)) {
+				throw FormatException("couldn't convert character to wide character");
+			}
+
+			return (*this);
+		}
+
+		Char& Char::operator=(wchar_t wc)
+		{
+			mValue = wc;
+			return (*this);
+		}
+
+		Char Char::operator+(const Char& ch) const
+		{
+			return static_cast<wchar_t>(mValue + ch.Value());
+		}
+
+		Char Char::operator-(const Char& ch) const
+		{
+			return static_cast<wchar_t>(mValue - ch.Value());
 		}
 	}
 }
