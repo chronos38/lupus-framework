@@ -35,52 +35,244 @@ namespace FrameworkTest
 		{
 			// variables
 			Char ch[] = { L'a', L'b', L'c', L'd', L'e', L'f', L'\0' };
-			String string;
 
 			// default constructor
-			Assert::AreEqual(0, string.Length(), L"default constructor", LINE_INFO());
+			Assert::AreEqual(0, String().Length(), L"default constructor", LINE_INFO());
 
 			// (const char*) constructor
-			string = String("abc");
-			Assert::AreEqual(3, string.Length(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'a', string[0].Value(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'b', string[1].Value(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'c', string[2].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(3, String("abc").Length(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(3, String("abc").Capacity(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'a', String("abc")[0].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'b', String("abc")[1].Value(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', String("abc")[2].Value(), L"(const char*) constructor", LINE_INFO());
 
 			// (const wchar_t*) constructor
-			string = String(L"abc");
-			Assert::AreEqual(3, string.Length(), L"(const wchar_t*) constructor", LINE_INFO());
-			Assert::AreEqual(L'a', string[0].Value(), L"(const wchar_t*) constructor", LINE_INFO());
-			Assert::AreEqual(L'b', string[1].Value(), L"(const wchar_t*) constructor", LINE_INFO());
-			Assert::AreEqual(L'c', string[2].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(3, String(L"abc").Length(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(3, String(L"abc").Capacity(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'a', String(L"abc")[0].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(L'b', String(L"abc")[1].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', String(L"abc")[2].Value(), L"(const wchar_t*) constructor", LINE_INFO());
 
 			// (const Char*) constructor
-			string = String(ch);
-			Assert::AreEqual(6, string.Length(), L"(const wchar_t*) constructor", LINE_INFO());
-			Assert::AreEqual(L'a', string[0].Value(), L"(const Char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'b', string[1].Value(), L"(const Char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'c', string[2].Value(), L"(const Char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'd', string[3].Value(), L"(const Char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'e', string[4].Value(), L"(const Char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'f', string[5].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(6, String(ch).Length(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(6, String(ch).Capacity(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'a', String(ch)[0].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'b', String(ch)[1].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', String(ch)[2].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', String(ch)[3].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'e', String(ch)[4].Value(), L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(L'f', String(ch)[5].Value(), L"(const Char*) constructor", LINE_INFO());
 
-			// (char*,int,int) constructor
-			string = String("abcdef", 2, 2);
-			Assert::AreEqual(2, string.Length(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'c', string[0].Value(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'd', string[1].Value(), L"(const char*) constructor", LINE_INFO());
+			// (const char*,int,int) constructor
+			Assert::AreEqual(2, String("abcdef", 2, 2).Length(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, String("abcdef", 2, 2).Capacity(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', String("abcdef", 2, 2)[0].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', String("abcdef", 2, 2)[1].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 
-			// (wchar_t*,int,int) constructor
-			string = String(L"abcdef", 2, 2);
-			Assert::AreEqual(2, string.Length(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'c', string[0].Value(), L"(const wchar_t*) constructor", LINE_INFO());
-			Assert::AreEqual(L'd', string[1].Value(), L"(const wchar_t*) constructor", LINE_INFO());
+			// (const wchar_t*,int,int) constructor
+			Assert::AreEqual(2, String(L"abcdef", 2, 2).Length(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, String(L"abcdef", 2, 2).Capacity(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', String(L"abcdef", 2, 2)[0].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', String(L"abcdef", 2, 2)[1].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 
-			// (Char*,int,int) constructor
-			string = String(ch, 2, 2);
-			Assert::AreEqual(2, string.Length(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'c', string[0].Value(), L"(const Char*) constructor", LINE_INFO());
-			Assert::AreEqual(L'd', string[1].Value(), L"(const Char*) constructor", LINE_INFO());
+			// (const Char*,int,int) constructor
+			Assert::AreEqual(2, String(ch, 2, 2).Length(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, String(ch, 2, 2).Capacity(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(L'c', String(ch, 2, 2)[0].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(L'd', String(ch, 2, 2)[1].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+		}
+
+		TEST_METHOD(StringAppendTest)
+		{
+			// variables
+			String string;
+
+			// operator+=
+			string += "abc";
+			Assert::AreEqual(3, string.Length(), L"operator+=", LINE_INFO());
+			Assert::AreEqual(3, string.Capacity(), L"operator+=", LINE_INFO());
+			Assert::AreEqual(L'a', string[0].Value(), L"operator+=", LINE_INFO());
+			Assert::AreEqual(L'b', string[1].Value(), L"operator+=", LINE_INFO());
+			Assert::AreEqual(L'c', string[2].Value(), L"operator+=", LINE_INFO());
+
+			// Append
+			string.Append("def");
+			Assert::AreEqual(6, string.Length(), L"Append", LINE_INFO());
+			Assert::AreEqual(6, string.Capacity(), L"Append", LINE_INFO());
+			Assert::AreEqual(L'a', string[0].Value(), L"Append", LINE_INFO());
+			Assert::AreEqual(L'b', string[1].Value(), L"Append", LINE_INFO());
+			Assert::AreEqual(L'c', string[2].Value(), L"Append", LINE_INFO());
+			Assert::AreEqual(L'd', string[3].Value(), L"Append", LINE_INFO());
+			Assert::AreEqual(L'e', string[4].Value(), L"Append", LINE_INFO());
+			Assert::AreEqual(L'f', string[5].Value(), L"Append", LINE_INFO());
+		}
+
+		TEST_METHOD(StringCompareTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// case sensitive
+			Assert::IsTrue(string.Compare("ABCdef") == 0, L"case sensitive", LINE_INFO());
+			Assert::IsTrue(string.Compare("abcdef") != 0, L"case sensitive", LINE_INFO());
+			Assert::IsTrue(string.Compare("ABC") != 0, L"case sensitive", LINE_INFO());
+
+			// case insensitive
+			Assert::IsTrue(string.Compare("ABCdef", CaseSensitivity::CaseInsensitive) == 0, L"case insensitive", LINE_INFO());
+			Assert::IsTrue(string.Compare("abcdef", CaseSensitivity::CaseInsensitive) == 0, L"case insensitive", LINE_INFO());
+			Assert::IsTrue(string.Compare("abcDEF", CaseSensitivity::CaseInsensitive) == 0, L"case insensitive", LINE_INFO());
+			Assert::IsTrue(string.Compare("ABC", CaseSensitivity::CaseInsensitive) != 0, L"case insensitive", LINE_INFO());
+		}
+
+		TEST_METHOD(StringContainsTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// case sensitive
+			Assert::IsTrue(string.Contains(""), L"case sensitive", LINE_INFO());
+			Assert::IsTrue(string.Contains("ABC"), L"case sensitive", LINE_INFO());
+			Assert::IsTrue(string.Contains("def"), L"case sensitive", LINE_INFO());
+			Assert::IsFalse(string.Contains("ABCdefg"), L"case sensitive", LINE_INFO());
+			Assert::IsFalse(string.Contains("abc"), L"case sensitive", LINE_INFO());
+
+			// case insensitive
+			Assert::IsTrue(string.Contains("abc", CaseSensitivity::CaseInsensitive), L"case insensitive", LINE_INFO());
+			Assert::IsTrue(string.Contains("DEF", CaseSensitivity::CaseInsensitive), L"case insensitive", LINE_INFO());
+			Assert::IsTrue(string.Contains("abcDEF", CaseSensitivity::CaseInsensitive), L"case insensitive", LINE_INFO());
+			Assert::IsFalse(string.Contains("fedcba", CaseSensitivity::CaseInsensitive), L"case insensitive", LINE_INFO());
+		}
+
+		TEST_METHOD(StringIndexOfTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// (Char) case sensitive
+			Assert::AreEqual(0, string.IndexOf('A'), L"(Char) case sensitive", LINE_INFO());
+			Assert::AreEqual(2, string.IndexOf('C', 2), L"(Char, int) case sensitive", LINE_INFO());
+			Assert::AreEqual(-1, string.IndexOf('d', 4), L"(Char, int) case sensitive", LINE_INFO());
+
+			// (Char) case insensitive
+			Assert::AreEqual(4, string.IndexOf('E', 2, CaseSensitivity::CaseInsensitive), L"(Char) case insensitive", LINE_INFO());
+
+			// (String) case sensitive
+			Assert::AreEqual(2, string.IndexOf("Cd"), L"(String) case sensitive", LINE_INFO());
+			Assert::AreEqual(-1, string.IndexOf("Cd", 3), L"(String, int) case sensitive", LINE_INFO());
+
+			// (String) case insensitive
+			Assert::AreEqual(2, string.IndexOf("cD", 0, CaseSensitivity::CaseInsensitive), L"(String) case sensitive", LINE_INFO());
+			Assert::AreEqual(-1, string.IndexOf("cD", 3, CaseSensitivity::CaseInsensitive), L"(String, int) case sensitive", LINE_INFO());
+		}
+
+		TEST_METHOD(StringIndexOfAnyTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// TODO: add implementation when first sequence containers are finished
+		}
+
+		TEST_METHOD(StringLastIndexOfTest)
+		{
+			// variables
+			String string("AaBbAaBb");
+
+			// (Char) case sensitive
+			Assert::AreEqual(6, string.LastIndexOf('B'), L"(Char) case sensitive", LINE_INFO());
+			Assert::AreEqual(5, string.LastIndexOf('a', 2), L"(Char, int) case sensitive", LINE_INFO());
+			Assert::AreEqual(4, string.LastIndexOf('A', 4), L"(Char, int) case sensitive", LINE_INFO());
+
+			// (Char) case insensitive
+			Assert::AreEqual(5, string.LastIndexOf('A', 2, CaseSensitivity::CaseInsensitive), L"(Char) case insensitive", LINE_INFO());
+
+			// (String) case sensitive
+			try {
+				Assert::AreEqual(4, string.LastIndexOf("Aa"), L"(String) case sensitive", LINE_INFO());
+				Assert::AreEqual(0, string.LastIndexOf("Aa", 3), L"(String, int) case sensitive", LINE_INFO());
+			} catch (NotImplementedException&) {
+			}
+
+			// (String) case insensitive
+			try {
+				Assert::AreEqual(4, string.LastIndexOf("aA", 0, CaseSensitivity::CaseInsensitive), L"(String) case sensitive", LINE_INFO());
+				Assert::AreEqual(0, string.LastIndexOf("aA", 3, CaseSensitivity::CaseInsensitive), L"(String, int) case sensitive", LINE_INFO());
+			} catch (NotImplementedException&) {
+			}
+		}
+
+		TEST_METHOD(StringRemoveTest)
+		{
+			// variables
+			String string("ABCdefGHIjkl");
+
+			// (int) remove
+			Assert::IsTrue(string.Remove(6).Compare("ABCdef") == 0, L"(int) remove", LINE_INFO());
+
+			// (int,int) remove
+			Assert::IsTrue(string.Remove(0,3).Compare("def") == 0, L"(int, int) remove", LINE_INFO());
+		}
+
+		TEST_METHOD(StringReplaceTest)
+		{
+			// variables
+			String string("AaBbAaBb");
+
+			// (Char, Char) case sensitive
+			Assert::IsTrue(string.Replace('A', 'a').Compare("aaBbaaBb") == 0, L"(Char, Char) case sensitive", LINE_INFO());
+
+			// (Char, Char) case insensitive
+			Assert::IsTrue(string.Replace('B', 'C', CaseSensitivity::CaseInsensitive).Compare("aaCCaaCC") == 0, L"(Char, Char) case insensitive", LINE_INFO());
+
+			// (String, String) case sensitive
+			try {
+				Assert::IsTrue(string.Replace("aa", "AA").Compare("AACCAACC") == 0, L"(String, String) case sensitive", LINE_INFO());
+			} catch (NotImplementedException&) {
+			}
+
+			// (String, String) case insensitive
+			try {
+				Assert::IsTrue(string.Replace("aacc", "bbee", CaseSensitivity::CaseInsensitive).Compare("") == 0, L"(String, String) case insensitive", LINE_INFO());
+			} catch (NotImplementedException&) {
+			}
+		}
+
+		TEST_METHOD(StringSubstringTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// (int) substring
+			Assert::IsTrue(string.Substring(2).Compare("Cdef") == 0, L"(int) substring", LINE_INFO());
+
+			// (int, int) substring
+			Assert::IsTrue(string.Substring(2, 2).Compare("Cd") == 0, L"(int) substring", LINE_INFO());
+		}
+
+		TEST_METHOD(StringToLowerTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// test
+			Assert::IsTrue(string.ToLower().Compare("abcdef") == 0, L"to lower", LINE_INFO());
+		}
+
+		TEST_METHOD(StringToUpperTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// test
+			Assert::IsTrue(string.ToUpper().Compare("ABCDEF") == 0, L"to upper", LINE_INFO());
+		}
+
+		TEST_METHOD(StringOperatorTest)
+		{
+			// variables
+			String string("ABCdef");
+
+			// TODO: implement tests
 		}
 	};
 }

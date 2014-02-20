@@ -38,14 +38,14 @@
     <ClInclude Include="Char.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Iterator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ISequence.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="IDictionary.hpp">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

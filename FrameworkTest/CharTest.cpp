@@ -29,23 +29,17 @@ namespace FrameworkTest
 	public:
 		TEST_METHOD(CharConstructorTest)
 		{
-			// variables
-			Char ch;
-
 			// default constructor
-			Assert::AreEqual(L'\0', ch.Value(), L"default constructor", LINE_INFO());
+			Assert::AreEqual(L'\0', Char().Value(), L"default constructor", LINE_INFO());
 
 			// (char) constructor
-			ch = Char('a');
-			Assert::AreEqual(L'a', ch.Value(), L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
+			Assert::AreEqual(L'a', Char('a').Value(), L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
 
 			// (wchar_t) constructor
-			ch = Char(L'a');
-			Assert::AreEqual(L'a', ch.Value(), L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
+			Assert::AreEqual(L'a', Char(L'a').Value(), L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
 
 			// (Char) constructor
-			ch = Char(Char('a'));
-			Assert::AreEqual(L'a', ch.Value(), L"(int) constructor with wchar_t", LINE_INFO());
+			Assert::AreEqual(L'a', Char(Char('a')).Value(), L"(int) constructor with wchar_t", LINE_INFO());
 		}
 
 		TEST_METHOD(CharEqualityTest)

@@ -144,7 +144,7 @@ namespace Lupus {
 		{
 			// check length
 			if (mLength != string.Length()) {
-				return (static_cast<int>(mLength) - static_cast<int>(string.Length()));
+				return (mLength - string.Length());
 			}
 
 			// variables
@@ -238,14 +238,14 @@ namespace Lupus {
 			// comput result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				for (int i = 0; i < mLength; i++) {
+				for (int i = startIndex; i < mLength; i++) {
 					if (mData[i] == ch) {
 						return i;
 					}
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
-				for (int i = 0; i < mLength; i++) {
+				for (int i = startIndex; i < mLength; i++) {
 					if (mData[i].ToLower() == lower) {
 						return i;
 					}
@@ -453,19 +453,19 @@ namespace Lupus {
 		}
 		
 		/*
-		Array<String> String::Split(const Array<Char>&, StringSplitOptions)
+		Vector<String> String::Split(const Vector<Char>&, StringSplitOptions)
 		{
 		}
 
-		Array<String> String::Split(const Array<Char>&, int, StringSplitOptions)
+		Vector<String> String::Split(const Vector<Char>&, int, StringSplitOptions)
 		{
 		}
 
-		Array<String> String::Split(const String&, StringSplitOptions)
+		Vector<String> String::Split(const String&, StringSplitOptions)
 		{
 		}
 
-		Array<String> String::Split(const String&, int, StringSplitOptions)
+		Vector<String> String::Split(const String&, int, StringSplitOptions)
 		{
 		}
 		*/
@@ -663,12 +663,12 @@ namespace Lupus {
 			int length = string.Length();
 
 			// check if capacity is big enough
-			if (mCapacity >= length) {
+			if ((mCapacity - mLength) >= length) {
 				memcpy(mData + mLength, string.Data(), sizeof(Char) * length);
 				mLength += length;
 			} else {
 				// new buffer
-				Char* buffer = new Char[mLength * string.Length() + 1];
+				Char* buffer = new Char[mLength + length + 1];
 				
 				// copy new buffer
 				memcpy(buffer, mData, sizeof(Char) * mLength);
@@ -707,11 +707,13 @@ namespace Lupus {
 		int String::KnuthMorrisPrattSensitive(const Char* text, int textLength, const Char* search, int searchLength)
 		{
 			// variables
-			int* n = new int[searchLength];
+			int* n = new int[searchLength + 1];
 			int i = 0;
 			int j = -1;
 
 			// create prefix
+			n[0] = -1;
+
 			while (i < searchLength) {
 				while (j >= 0 && search[i] != search[j]) {
 					j = n[j];
@@ -745,11 +747,13 @@ namespace Lupus {
 		int String::KnuthMorrisPrattInsensitive(const Char* text, int textLength, const Char* search, int searchLength)
 		{
 			// variables
-			int* n = new int[searchLength];
+			int* n = new int[searchLength + 1];
 			int i = 0;
 			int j = -1;
 
 			// create prefix
+			n[0] = -1;
+
 			while (i < searchLength) {
 				while (j >= 0 && search[i].ToLower() != search[j].ToLower()) {
 					j = n[j];

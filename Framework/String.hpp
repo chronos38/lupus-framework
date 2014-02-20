@@ -78,6 +78,7 @@ namespace Lupus {
 			bool operator==(const String&) const;
 			bool operator!=(const String&) const;
 #if defined(LUPUS_WINDOWS_PLATFORM)
+		public:
 			String(const wchar_t*);
 			String(const wchar_t*, int startIndex, int length);
 #endif
