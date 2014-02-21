@@ -16,6 +16,7 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO: split to windows and unix version
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #endif

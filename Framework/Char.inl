@@ -21,25 +21,25 @@ namespace Lupus {
 		template <typename T>
 		bool operator==(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Value() == static_cast<int>(rhs));
+			return (static_cast<int>(lhs.Value()) == static_cast<int>(rhs));
 		}
 
 		template <typename T>
 		bool operator==(const T& lhs, const Char& rhs)
 		{
-			return (static_cast<int>(lhs) == rhs.Value());
+			return (static_cast<int>(lhs) == static_cast<int>(rhs.Value()));
 		}
 
 		template <typename T>
 		bool operator!=(const Char& lhs, const T& rhs)
 		{
-			return (lhs.Value() != static_cast<int>(rhs));
+			return (static_cast<int>(lhs.Value()) != static_cast<int>(rhs));
 		}
 
 		template <typename T>
 		bool operator!=(const T& lhs, const Char& rhs)
 		{
-			return (static_cast<int>(lhs) != rhs.Value());
+			return (static_cast<int>(lhs) != static_cast<int>(rhs.Value()));
 		}
 
 		template <typename T>

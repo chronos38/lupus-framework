@@ -17,7 +17,6 @@
  */
 
 #include "String.hpp"
-#include "Char.hpp"
 #include "ISequence.hpp"
 #include "Exception.hpp"
 #include <cstring>
@@ -25,7 +24,7 @@
 namespace Lupus {
 	namespace System {
 		String::String() :
-			mData(new Char[1]),
+			mData(new _lchar[1]),
 			mLength(0),
 			mCapacity(0)
 		{
@@ -49,8 +48,13 @@ namespace Lupus {
 			}
 
 			// set values
-			mData = new Char[length + 1];
-			memcpy(mData, source, sizeof(Char) * length);
+			mData = new _lchar[length + 1];
+
+			// set internal buffer
+			for (int i = 0; i < length; i++) {
+				mData[i] = source[i].Value();
+			}
+
 			mData[length] = '\0';
 			mLength = mCapacity = length;
 		}
@@ -81,27 +85,24 @@ namespace Lupus {
 			}
 
 			// create buffer
-			mData = new Char[length + 1];
+			mData = new _lchar[length + 1];
 
 			// set internal buffer
-			memcpy(mData, source + startIndex, sizeof(Char) * length);
+			for (int i = 0; i < length; i++) {
+				mData[i] = source[i + startIndex].Value();
+			}
 
 			// terminate with zero and free not needed memory
 			mData[length] = '\0';
-			mLength = mCapacity = static_cast<int>(length);
+			mLength = mCapacity = length;
 		}
 
 		String::String(const String& string) :
-			mData(new Char[string.Capacity() + 1]),
+			mData(new wchar_t[string.Length() + 1]),
 			mLength(string.Length()),
-			mCapacity(string.Capacity())
+			mCapacity(string.Length())
 		{
-			// set variables
-			if (mCapacity > mLength) {
-				memset(mData + mLength, 0, sizeof(Char)* (mCapacity - mLength));
-			}
-
-			memcpy(mData, string.Data(), sizeof(Char) * mLength);
+			_lmemcpy(mData, string.Data(), mLength);
 			mData[mLength] = '\0';
 		}
 
@@ -109,7 +110,7 @@ namespace Lupus {
 			String()
 		{
 			// variables
-			Char* swapData = mData;
+			_lchar* swapData = mData;
 			int swapLength = mLength;
 			int swapCapacity = mCapacity;
 
@@ -148,21 +149,21 @@ namespace Lupus {
 			}
 
 			// variables
-			const Char* data = string.Data();
+			const _lchar* data = string.Data();
 
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
 				for (int i = 0; i < mLength; i++) {
 					if (mData[i] != data[i]) {
-						return (mData[i] - data[i]).Value();
+						return (mData[i] - data[i]);
 					}
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = 0; i < mLength; i++) {
-					if (mData[i].ToLower() != data[i].ToLower()) {
-						return (mData[i] - data[i]).Value();
+					if (_ltolower(mData[i]) != _ltolower(data[i])) {
+						return (mData[i] - data[i]);
 					}
 				}
 				break;
@@ -185,7 +186,7 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return (KnuthMorrisPrattSensitive(mData, mLength, string.Data(), string.Length()) != -1);
+				return (KnuthMorrisPratt(mData, mLength, string.Data(), string.Length()) != -1);
 			case CaseSensitivity::CaseInsensitive:
 				return (KnuthMorrisPrattInsensitive(mData, mLength, string.Data(), string.Length()) != -1);
 			}
@@ -213,16 +214,6 @@ namespace Lupus {
 			}
 		}
 
-		Char* String::Data()
-		{
-			return mData;
-		}
-
-		const Char* String::Data() const
-		{
-			return mData;
-		}
-
 		int String::IndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
@@ -246,7 +237,7 @@ namespace Lupus {
 				break;
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = startIndex; i < mLength; i++) {
-					if (mData[i].ToLower() == lower) {
+					if (_ltolower(mData[i]) == lower) {
 						return i;
 					}
 				}
@@ -268,7 +259,7 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPrattSensitive(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
+				return KnuthMorrisPratt(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
 			case CaseSensitivity::CaseInsensitive:
 				return KnuthMorrisPrattInsensitive(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
 			}
@@ -294,7 +285,7 @@ namespace Lupus {
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
 				for (int i = startIndex; i < mLength; i++) {
-					Char& ch = mData[i];
+					_lchar& ch = mData[i];
 
 					do {
 						if (ch == (*iterator.Value())) {
@@ -307,7 +298,7 @@ namespace Lupus {
 				break;
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = startIndex; i < mLength; i++) {
-					Char ch = mData[i].ToLower();
+					_lchar ch = _ltolower(mData[i]);
 
 					do {
 						if (ch == (*iterator.Value()).ToLower()) {
@@ -351,7 +342,7 @@ namespace Lupus {
 				break;
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = (mLength - startIndex); i >= 0; i--) {
-					if (mData[i].ToLower() == lower) {
+					if (_ltolower(mData[i]) == lower) {
 						return i;
 					}
 				}
@@ -373,7 +364,7 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPrattSensitiveLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
+				return KnuthMorrisPrattLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
 			case CaseSensitivity::CaseInsensitive:
 				return KnuthMorrisPrattInsensitiveLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
 			}
@@ -396,7 +387,7 @@ namespace Lupus {
 			}
 
 			// set range to zero
-			memset(mData + startIndex, 0, sizeof(Char) * (mLength - startIndex));
+			_lmemset(mData + startIndex, 0, (mLength - startIndex));
 
 			// update length
 			mLength = startIndex;
@@ -419,7 +410,7 @@ namespace Lupus {
 			int length = mLength - (startIndex + count);
 
 			// set range to zero
-			memmove(mData + startIndex, mData + (startIndex + count), sizeof(Char) * length);
+			_lmemmove(mData + startIndex, mData + (startIndex + count), length);
 
 			// update length
 			mLength -= count;
@@ -433,13 +424,13 @@ namespace Lupus {
 			case CaseSensitivity::CaseSensitive:
 				for (int i = 0; i < mLength; i++) {
 					if (mData[i] == before) {
-						mData[i] = after;
+						mData[i] = after.Value();
 					}
 				}
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = 0; i < mLength; i++) {
-					if (mData[i].ToLower() == before.ToLower()) {
-						mData[i] = after;
+					if (_ltolower(mData[i]) == before.ToLower()) {
+						mData[i] = after.Value();
 					}
 				}
 			}
@@ -497,11 +488,11 @@ namespace Lupus {
 		String& String::ToLower()
 		{
 			// variables
-			const Char* limit = mData + mLength;
+			const _lchar* limit = mData + mLength;
 
 			// compute result
-			for (Char* ch = mData; ch != limit; ch++) {
-				(*ch) = (*ch).ToLower();
+			for (_lchar* ch = mData; ch != limit; ch++) {
+				(*ch) = _ltolower(*ch);
 			}
 
 			return (*this);
@@ -510,11 +501,11 @@ namespace Lupus {
 		String& String::ToUpper()
 		{
 			// variables
-			const Char* limit = mData + mLength;
+			const _lchar* limit = mData + mLength;
 
 			// compute result
-			for (Char* ch = mData; ch != limit; ch++) {
-				(*ch) = (*ch).ToUpper();
+			for (_lchar* ch = mData; ch != limit; ch++) {
+				(*ch) = _ltoupper(*ch);
 			}
 
 			return (*this);
@@ -526,10 +517,10 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("index exceeds string length");
 			}
 
-			return mData[index];
+			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
 		}
 
-		const Char& String::operator[](uint index) const
+		Char String::operator[](uint index) const
 		{
 			if (index >= static_cast<uint>(mLength)) {
 				throw ArgumentOutOfRangeException("index exceeds string length");
@@ -546,10 +537,10 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("index must be greater than zero");
 			}
 
-			return mData[index];
+			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
 		}
 
-		const Char& String::operator[](int index) const
+		Char String::operator[](int index) const
 		{
 			if (index >= mLength) {
 				throw ArgumentOutOfRangeException("index exceeds string length");
@@ -560,7 +551,7 @@ namespace Lupus {
 			return mData[index];
 		}
 
-		String& String::operator=(const Char* string)
+		String& String::operator=(const _lchar* string)
 		{
 			// check argument
 			if (!string) {
@@ -568,24 +559,24 @@ namespace Lupus {
 			}
 
 			// variables 
-			int length = GetLength(string);
+			int length = _strlen(string);
 
 			// check if capacity is big enough
-			if (mCapacity >= length) {
+			if ((mCapacity - mLength) >= length) {
 				// reset buffer
-				memset(mData, 0, sizeof(Char) * mCapacity);
+				_lmemset(mData, 0, mCapacity);
 
 				// set new values
-				memcpy(mData, string, sizeof(Char)* length);
+				_lmemcpy(mData, string, length);
 				mData[length] = '\0';
 				mLength = length;
 			} else {
 				// reallocate buffer
 				delete[] mData;
-				mData = new Char[length + 1];
+				mData = new _lchar[length + 1];
 
 				// set new values
-				memcpy(mData, string, sizeof(Char) * length);
+				_lmemcpy(mData, string, length);
 				mData[length] = '\0';
 				mLength = mCapacity = length;
 			}
@@ -599,7 +590,7 @@ namespace Lupus {
 			int length = string.Length();
 
 			// check if capacity is big enough
-			if (mCapacity >= length) {
+			if ((mCapacity - mLength) >= length) {
 				// reset buffer
 				memset(mData, 0, sizeof(Char) * mCapacity);
 
@@ -610,7 +601,7 @@ namespace Lupus {
 			} else {
 				// reallocate buffer
 				delete[] mData;
-				mData = new Char[length + 1];
+				mData = new _lchar[length + 1];
 
 				// set new values
 				memcpy(mData, string.Data(), sizeof(Char) * length);
@@ -632,7 +623,7 @@ namespace Lupus {
 			mCapacity = string.mCapacity;
 
 			// reset string
-			string.mData = new Char[1];
+			string.mData = new _lchar[1];
 			string.mLength = 0;
 			string.mCapacity = 0;
 
@@ -664,20 +655,22 @@ namespace Lupus {
 
 			// check if capacity is big enough
 			if ((mCapacity - mLength) >= length) {
-				memcpy(mData + mLength, string.Data(), sizeof(Char) * length);
+				_lmemcpy(mData + mLength, string.Data(), length);
 				mLength += length;
 			} else {
 				// new buffer
-				Char* buffer = new Char[mLength + length + 1];
+				_lchar* buffer = new _lchar[mLength + length + 1];
 				
 				// copy new buffer
-				memcpy(buffer, mData, sizeof(Char) * mLength);
-				memcpy(buffer + mLength, string.Data(), sizeof(Char) * length);
-				buffer[mLength + length] = '\0';
+				_lmemcpy(buffer, mData, mLength);
+				_lmemcpy(buffer + mLength, string.Data(), length);
+				buffer[mLength + length] = 0;
 
 				// set result and delete[] buffer
-				*this = buffer;
-				delete[] buffer;
+				delete[] mData;
+				mData = buffer;
+				mLength += length;
+				mCapacity += length;
 			}
 
 			return (*this);
@@ -704,7 +697,7 @@ namespace Lupus {
 			return result;
 		}
 
-		int String::KnuthMorrisPrattSensitive(const Char* text, int textLength, const Char* search, int searchLength)
+		int String::KnuthMorrisPratt(const _lchar* text, int textLength, const _lchar* search, int searchLength)
 		{
 			// variables
 			int* n = new int[searchLength + 1];
@@ -744,7 +737,13 @@ namespace Lupus {
 			return -1;
 		}
 
-		int String::KnuthMorrisPrattInsensitive(const Char* text, int textLength, const Char* search, int searchLength)
+		int String::KnuthMorrisPrattLast(const _lchar* text, int textLength, const _lchar* search, int searchLength)
+		{
+			// TODO: implement reverse search logic
+			throw NotImplementedException();
+		}
+
+		int String::KnuthMorrisPrattInsensitive(const _lchar* text, int textLength, const _lchar* search, int searchLength)
 		{
 			// variables
 			int* n = new int[searchLength + 1];
@@ -755,7 +754,7 @@ namespace Lupus {
 			n[0] = -1;
 
 			while (i < searchLength) {
-				while (j >= 0 && search[i].ToLower() != search[j].ToLower()) {
+				while (j >= 0 && _ltolower(search[i]) != _ltolower(search[j])) {
 					j = n[j];
 				}
 				i++;
@@ -768,7 +767,7 @@ namespace Lupus {
 
 			// search
 			while (i < textLength) {
-				while (j >= 0 && text[i].ToLower() != search[j].ToLower()) {
+				while (j >= 0 && _ltolower(text[i]) != _ltolower(search[j])) {
 					j = n[j];
 				}
 				i++;
@@ -784,16 +783,157 @@ namespace Lupus {
 			return -1;
 		}
 
-		int String::KnuthMorrisPrattSensitiveLast(const Char* text, int textLength, const Char* search, int searchLength)
+		int String::KnuthMorrisPrattInsensitiveLast(const _lchar* text, int textLength, const _lchar* search, int searchLength)
 		{
 			// TODO: implement reverse search logic
 			throw NotImplementedException();
 		}
 
-		int String::KnuthMorrisPrattInsensitiveLast(const Char* text, int textLength, const Char* search, int searchLength)
+		String::RefChar::RefChar() :
+			Char(),
+			mRef(nullptr)
 		{
-			// TODO: implement reverse search logic
-			throw NotImplementedException();
+		}
+
+		String::RefChar::RefChar(_lchar& ch) :
+			Char(),
+			mRef(&ch)
+		{
+		}
+
+		String::RefChar::~RefChar()
+		{
+		}
+
+		String::RefChar& String::RefChar::operator=(_lchar* ch)
+		{
+			mRef = ch;
+			return (*this);
+		}
+
+		bool String::RefChar::IsBlank() const
+		{
+			return (_lisblank(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsDigit() const
+		{
+			return (_lisdigit(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsGraph() const
+		{
+			return (_lisgraph(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsLetter() const
+		{
+			return (_lisalpha(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsLetterOrDigit() const
+		{
+			return (_lisalnum(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsLower() const
+		{
+			return (_lislower(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsPunct() const
+		{
+			return (_lispunct(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsUpper() const
+		{
+			return (_lisupper(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsSpace() const
+		{
+			return (_lisspace(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsPrint() const
+		{
+			return (_lisprint(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsControl() const
+		{
+			return (_liscntrl(*mRef) != 0);
+		}
+
+		bool String::RefChar::IsHexadecimal() const
+		{
+			return (_lisxdigit(*mRef) != 0);
+		}
+
+		Char String::RefChar::ToLower() const
+		{
+			return static_cast<_lchar>(_ltolower(*mRef));
+		}
+
+		Char String::RefChar::ToUpper() const
+		{
+			return static_cast<_lchar>(_ltoupper(*mRef));
+		}
+
+		_lchar String::RefChar::Value() const
+		{
+			return *mRef;
+		}
+
+		Char& String::RefChar::operator=(const Char& ch)
+		{
+			(*mRef) = ch.Value();
+			return (*this);
+		}
+
+		Char String::RefChar::operator+(const Char& ch) const
+		{
+			return static_cast<_lchar>((*mRef) + ch.Value());
+		}
+
+		Char String::RefChar::operator-(const Char& ch) const
+		{
+			return static_cast<_lchar>((*mRef) - ch.Value());
+		}
+
+		Char& String::RefChar::operator+=(int value)
+		{
+			(*mRef) += static_cast<_lchar>(value);
+			return (*this);
+		}
+
+		Char& String::RefChar::operator-=(int value)
+		{
+			(*mRef) -= static_cast<_lchar>(value);
+			return (*this);
+		}
+
+		Char& String::RefChar::operator++()
+		{
+			(*mRef)++;
+			return (*this);
+		}
+
+		Char& String::RefChar::operator--()
+		{
+			(*mRef)--;
+			return (*this);
+		}
+
+		bool String::RefChar::operator==(const Char& ch) const
+		{
+			return ((*mRef) == ch.Value());
+		}
+
+		bool String::RefChar::operator!=(const Char& ch) const
+		{
+			return ((*mRef) != ch.Value());
 		}
 	}
 }

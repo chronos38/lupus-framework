@@ -49,80 +49,10 @@ namespace Lupus {
 		{
 		}
 
-		bool Char::IsBlank() const
-		{
-			return (iswblank(mValue) != 0);
-		}
-
-		bool Char::IsDigit() const
-		{
-			return (iswdigit(mValue) != 0);
-		}
-
-		bool Char::IsGraph() const
-		{
-			return (iswgraph(mValue) != 0);
-		}
-
-		bool Char::IsLetter() const
-		{
-			return (iswalpha(mValue) != 0);
-		}
-
-		bool Char::IsLetterOrDigit() const
-		{
-			return (iswalnum(mValue) != 0);
-		}
-
-		bool Char::IsLower() const
-		{
-			return (iswlower(mValue) != 0);
-		}
-
-		bool Char::IsPunct() const
-		{
-			return (iswpunct(mValue) != 0);
-		}
-
-		bool Char::IsUpper() const
-		{
-			return (iswupper(mValue) != 0);
-		}
-
-		bool Char::IsSpace() const
-		{
-			return (iswspace(mValue) != 0);
-		}
-
-		bool Char::IsPrint() const
-		{
-			return (iswprint(mValue) != 0);
-		}
-
-		bool Char::IsControl() const
-		{
-			return (iswcntrl(mValue) != 0);
-		}
-
-		bool Char::IsHexadecimal() const
-		{
-			return (iswxdigit(mValue) != 0);
-		}
-
-		Char Char::ToLower() const
-		{
-			return static_cast<wchar_t>(towlower(mValue));
-		}
-
-		Char Char::ToUpper() const
-		{
-			return static_cast<wchar_t>(towupper(mValue));
-		}
-
 		Char& Char::operator=(char ch)
 		{
 			if (ch == '\0') {
-				mValue = 0;
+				mValue = L'\0';
 				return (*this);
 			}
 
@@ -139,16 +69,6 @@ namespace Lupus {
 		{
 			mValue = wc;
 			return (*this);
-		}
-
-		Char Char::operator+(const Char& ch) const
-		{
-			return static_cast<wchar_t>(mValue + ch.Value());
-		}
-
-		Char Char::operator-(const Char& ch) const
-		{
-			return static_cast<wchar_t>(mValue - ch.Value());
 		}
 	}
 }

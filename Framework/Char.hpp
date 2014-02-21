@@ -20,6 +20,40 @@
 #define LUPUS_CHAR_HPP
 
 #include "Object.hpp"
+#if defined(LUPUS_WINDOWS_PLATFORM)
+#include <cwchar>
+// type
+#define _lchar wchar_t
+// conversion
+#define _ltolower(c) towlower(c)
+#define _ltoupper(c) towupper(c)
+// types
+#define _lisalnum(c) iswalnum(c)
+#define _lisalpha(c) iswalpha(c)
+#define _lisblank(c) iswblank(c)
+#define _liscntrl(c) iswcntrl(c)
+#define _lisdigit(c) iswdigit(c)
+#define _lisgraph(c) iswgraph(c)
+#define _lislower(c) iswlower(c)
+#define _lisprint(c) iswprint(c)
+#define _lispunct(c) iswpunct(c)
+#define _lisspace(c) iswspace(c)
+#define _lisupper(c) iswupper(c)
+#define _lisxdigit(c) iswxdigit(c)
+// memory manipulation
+#define _lmemcpy(dst, src, len) wmemcpy_s(dst, len, src, len)
+#define _lmemmove(dst, src, len) wmemmove_s(dst, len, src, len)
+#define _lmemcmp(rhs, lhs, len) wmemcmp(rhs, lhs, len)
+#define _lmemchr(src, val, len) wmemchr(src, val, len)
+#define _lmemset(src, val, len) wmemset(src, val, len)
+// length
+#define _strlen(str) wcslen(str)
+#elif defined(LUPUS_UNIX_PLATFORM)
+#include <cstring>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+#endif
 
 namespace Lupus {
 	namespace System {
@@ -32,46 +66,41 @@ namespace Lupus {
 			Char(const Char&);
 			Char(Char&&);
 			virtual ~Char();
-			virtual bool IsBlank() const final;
-			virtual bool IsDigit() const final;
-			virtual bool IsGraph() const final;
-			virtual bool IsLetter() const final;
-			virtual bool IsLetterOrDigit() const final;
-			virtual bool IsLower() const final;
-			virtual bool IsPunct() const final;
-			virtual bool IsUpper() const final;
-			virtual bool IsSpace() const final;
-			virtual bool IsPrint() const final;
-			virtual bool IsControl() const final;
-			virtual bool IsHexadecimal() const final;
-			virtual Char ToLower() const final;
-			virtual Char ToUpper() const final;
-			Char& operator=(char);
-			Char& operator=(const Char&);
-			Char operator+(const Char&) const;
-			Char operator-(const Char&) const;
-			Char& operator+=(int);
-			Char& operator-=(int);
-			Char& operator++();
-			Char& operator--();
-			bool operator==(const Char&) const;
-			bool operator!=(const Char&) const;
+			virtual bool IsBlank() const;
+			virtual bool IsDigit() const;
+			virtual bool IsGraph() const;
+			virtual bool IsLetter() const;
+			virtual bool IsLetterOrDigit() const;
+			virtual bool IsLower() const;
+			virtual bool IsPunct() const;
+			virtual bool IsUpper() const;
+			virtual bool IsSpace() const;
+			virtual bool IsPrint() const;
+			virtual bool IsControl() const;
+			virtual bool IsHexadecimal() const;
+			virtual Char ToLower() const;
+			virtual Char ToUpper() const;
+			virtual _lchar Value() const;
+			virtual Char& operator=(char);
+			virtual Char& operator=(const Char&);
+			virtual Char operator+(const Char&) const;
+			virtual Char operator-(const Char&) const;
+			virtual Char& operator+=(int);
+			virtual Char& operator-=(int);
+			virtual Char& operator++();
+			virtual Char& operator--();
+			virtual bool operator==(const Char&) const;
+			virtual bool operator!=(const Char&) const;
 		public:
 			static const int MaxValue;
 			static const int MinValue;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
 			Char(wchar_t);
-			virtual wchar_t Value() const final;
 			Char& operator=(wchar_t);
-		private:
-			wchar_t mValue;
-#elif defined(LUPUS_UNIX_PLATFORM)
-		public:
-			virtual char Value() const final;
-		private:
-			char mValue;
 #endif
+		private:
+			_lchar mValue;
 		};
 
 		template <typename T>

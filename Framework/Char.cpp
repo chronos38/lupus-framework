@@ -40,7 +40,77 @@ namespace Lupus {
 		{
 		}
 
-		wchar_t Char::Value() const
+		bool Char::IsBlank() const
+		{
+			return (_lisblank(mValue) != 0);
+		}
+
+		bool Char::IsDigit() const
+		{
+			return (_lisdigit(mValue) != 0);
+		}
+
+		bool Char::IsGraph() const
+		{
+			return (_lisgraph(mValue) != 0);
+		}
+
+		bool Char::IsLetter() const
+		{
+			return (_lisalpha(mValue) != 0);
+		}
+
+		bool Char::IsLetterOrDigit() const
+		{
+			return (_lisalnum(mValue) != 0);
+		}
+
+		bool Char::IsLower() const
+		{
+			return (_lislower(mValue) != 0);
+		}
+
+		bool Char::IsPunct() const
+		{
+			return (_lispunct(mValue) != 0);
+		}
+
+		bool Char::IsUpper() const
+		{
+			return (_lisupper(mValue) != 0);
+		}
+
+		bool Char::IsSpace() const
+		{
+			return (_lisspace(mValue) != 0);
+		}
+
+		bool Char::IsPrint() const
+		{
+			return (_lisprint(mValue) != 0);
+		}
+
+		bool Char::IsControl() const
+		{
+			return (_liscntrl(mValue) != 0);
+		}
+
+		bool Char::IsHexadecimal() const
+		{
+			return (_lisxdigit(mValue) != 0);
+		}
+
+		Char Char::ToLower() const
+		{
+			return static_cast<decltype(mValue)>(_ltolower(mValue));
+		}
+
+		Char Char::ToUpper() const
+		{
+			return static_cast<decltype(mValue)>(_ltoupper(mValue));
+		}
+
+		_lchar Char::Value() const
 		{
 			return mValue;
 		}
@@ -51,15 +121,25 @@ namespace Lupus {
 			return (*this);
 		}
 
+		Char Char::operator+(const Char& ch) const
+		{
+			return static_cast<decltype(mValue)>(mValue + ch.Value());
+		}
+
+		Char Char::operator-(const Char& ch) const
+		{
+			return static_cast<decltype(mValue)>(mValue - ch.Value());
+		}
+
 		Char& Char::operator+=(int value)
 		{
-			mValue += value;
+			mValue += static_cast<decltype(mValue)>(value);
 			return (*this);
 		}
 
 		Char& Char::operator-=(int value)
 		{
-			mValue -= value;
+			mValue -= static_cast<decltype(mValue)>(value);
 			return (*this);
 		}
 

@@ -20,11 +20,11 @@
 #define LUPUS_STRING_HPP
 
 #include "Object.hpp"
+#include "Char.hpp"
 
 namespace Lupus {
 	namespace System {
 		// forwared declaration for char class
-		class Char;
 		template <typename T>
 		class ISequence;
 
@@ -45,8 +45,8 @@ namespace Lupus {
 			int Compare(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			bool Contains(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			void CopyTo(int, ISequence<Char>&, int, int) const;
-			Char* Data();
-			const Char* Data() const;
+			_lchar* Data();
+			const _lchar* Data() const;
 			int IndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int IndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int IndexOfAny(const ISequence<Char>&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
@@ -67,10 +67,10 @@ namespace Lupus {
 			String& ToLower();
 			String& ToUpper();
 			Char& operator[](uint);
-			const Char& operator[](uint) const;
+			Char operator[](uint) const;
 			Char& operator[](int);
-			const Char& operator[](int) const;
-			String& operator=(const Char*);
+			Char operator[](int) const;
+			String& operator=(const _lchar*);
 			String& operator=(const String&);
 			String& operator=(String&&);
 			String operator+(const String&) const;
@@ -84,14 +84,54 @@ namespace Lupus {
 #endif
 		protected:
 			static int GetLength(const Char*);
-			static int KnuthMorrisPrattSensitive(const Char*, int, const Char*, int);
-			static int KnuthMorrisPrattInsensitive(const Char*, int, const Char*, int);
-			static int KnuthMorrisPrattSensitiveLast(const Char*, int, const Char*, int);
-			static int KnuthMorrisPrattInsensitiveLast(const Char*, int, const Char*, int);
+			static int KnuthMorrisPratt(const _lchar*, int, const _lchar*, int);
+			static int KnuthMorrisPrattLast(const _lchar*, int, const _lchar*, int);
+			static int KnuthMorrisPrattInsensitive(const _lchar*, int, const _lchar*, int);
+			static int KnuthMorrisPrattInsensitiveLast(const _lchar*, int, const _lchar*, int);
 		private:
-			Char* mData;
+			_lchar* mData;
 			int mLength;
 			int mCapacity;
+
+			// reference character
+			class LUPUS_API RefChar : public Char
+			{
+			public:
+				RefChar();
+				RefChar(_lchar&);
+				virtual ~RefChar();
+				virtual RefChar& operator=(_lchar*);
+				virtual bool IsBlank() const;
+				virtual bool IsDigit() const;
+				virtual bool IsGraph() const;
+				virtual bool IsLetter() const;
+				virtual bool IsLetterOrDigit() const;
+				virtual bool IsLower() const;
+				virtual bool IsPunct() const;
+				virtual bool IsUpper() const;
+				virtual bool IsSpace() const;
+				virtual bool IsPrint() const;
+				virtual bool IsControl() const;
+				virtual bool IsHexadecimal() const;
+				virtual Char ToLower() const;
+				virtual Char ToUpper() const;
+				virtual _lchar Value() const;
+				virtual Char& operator=(char);
+				virtual Char& operator=(const Char&);
+				virtual Char operator+(const Char&) const;
+				virtual Char operator-(const Char&) const;
+				virtual Char& operator+=(int);
+				virtual Char& operator-=(int);
+				virtual Char& operator++();
+				virtual Char& operator--();
+				virtual bool operator==(const Char&) const;
+				virtual bool operator!=(const Char&) const;
+#if defined(LUPUS_WINDOWS_PLATFORM)
+				virtual Char& operator=(wchar_t);
+#endif
+			private:
+				_lchar* mRef;
+			} mCurrent;
 		};
 
 		template <typename T>

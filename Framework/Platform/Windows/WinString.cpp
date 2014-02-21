@@ -36,23 +36,16 @@ namespace Lupus {
 
 			// variables
 			int length = MultiByteToWideChar(CP_UTF8, 0, source, -1, nullptr, 0);
-			wchar_t* converted = new wchar_t[length];
-			mData = new Char[length];
-			memset(converted, 0, sizeof(wchar_t) * length);
+			mData = new wchar_t[length];
+			wmemset(mData, 0, length);
 
 			// convert source string
-			if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, converted, length)) {
+			if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, mData, length)) {
 				throw FormatException("couldn't convert source string to (wchar_t*) format");
-			}
-
-			// set internal buffer
-			for (int i = 0; i < length; i++) {
-				mData[i] = converted[i];
 			}
 
 			mData[length - 1] = L'\0';
 			mLength = mCapacity = (length - 1);
-			delete[] converted;
 		}
 
 		String::String(const char* source, int startIndex, int length) :
@@ -78,24 +71,17 @@ namespace Lupus {
 			}
 
 			// variables
-			int allocSize = MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, nullptr, 0);
-			wchar_t* converted = new wchar_t[allocSize];
-			memset(converted, 0, sizeof(wchar_t)* allocSize);
-			mData = new Char[length + 1];
+			MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, nullptr, 0);
+			mData = new wchar_t[length + 1];
+			memset(mData, 0, length + 1);
 
 			// convert source string
-			if (!MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, converted, length)) {
+			if (!MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, mData, length)) {
 				throw FormatException("couldn't convert source string to (wchar_t*) format");
-			}
-
-			// set internal buffer
-			for (int i = 0; i < length; i++) {
-				mData[i] = converted[i];
 			}
 
 			mData[length] = L'\0';
 			mLength = mCapacity = length;
-			delete[] converted;
 		}
 
 		String::String(const wchar_t* source) :
@@ -110,12 +96,8 @@ namespace Lupus {
 			size_t length = wcslen(source);
 
 			// set internal buffer
-			mData = new Char[length + 1];
-
-			for (size_t i = 0; i < length; i++) {
-				mData[i] = source[i];
-			}
-
+			mData = new wchar_t[length + 1];
+			wmemcpy(mData, source, length);
 			mData[length] = L'\0';
 			mLength = mCapacity = length;
 		}
@@ -130,28 +112,47 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
 			} else if (length <= 0) {
 				throw ArgumentOutOfRangeException("length must be greater than zero");
-			}
-
-			// variables
-			int limit = startIndex + length;
-			{
-				// check other arguments
-				size_t sourceLength = wcslen(source);
-
-				if (limit > static_cast<int>(sourceLength)) {
-					throw ArgumentOutOfRangeException("startIndex plus length exceeds source length");
-				}
+			} else if ((startIndex + length) > static_cast<int>(wcslen(source))) {
+				throw ArgumentOutOfRangeException("startIndex plus length exceeds source length");
 			}
 
 			// set internal buffer
-			mData = new Char[length + 1];
-
-			for (int i = 0; i < length; i++) {
-				mData[i] = source[i + startIndex];
-			}
-
+			mData = new wchar_t[length + 1];
+			wmemcpy(mData, source + startIndex, length);
 			mData[length] = L'\0';
 			mLength = mCapacity = length;
+		}
+
+		wchar_t* String::Data()
+		{
+			return mData;
+		}
+
+		const wchar_t* String::Data() const
+		{
+			return mData;
+		}
+
+		Char& String::RefChar::operator=(char ch)
+		{
+			if (ch == '\0') {
+				(*mRef) = L'\0';
+				return (*this);
+			}
+
+			mbstate_t state = mbstate_t();
+
+			if (mbrtowc(mRef, &ch, sizeof(ch), &state) != sizeof(ch)) {
+				throw FormatException("couldn't convert character to wide character");
+			}
+
+			return (*this);
+		}
+
+		Char& String::RefChar::operator=(wchar_t wc)
+		{
+			(*mRef) = wc;
+			return (*this);
 		}
 	}
 }
