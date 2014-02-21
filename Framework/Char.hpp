@@ -24,6 +24,7 @@
 #include <cwchar>
 // type
 #define _lchar wchar_t
+#define _lstring(x) L##x
 // conversion
 #define _ltolower(c) towlower(c)
 #define _ltoupper(c) towupper(c)
@@ -47,7 +48,9 @@
 #define _lmemchr(src, val, len) wmemchr(src, val, len)
 #define _lmemset(src, val, len) wmemset(src, val, len)
 // length
-#define _strlen(str) wcslen(str)
+#define _lstrlen(str) wcslen(str)
+// i/o
+#define _lsprintf swprintf_s
 #elif defined(LUPUS_UNIX_PLATFORM)
 #include <cstring>
 #include <cctype>

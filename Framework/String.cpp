@@ -559,7 +559,7 @@ namespace Lupus {
 			}
 
 			// variables 
-			int length = _strlen(string);
+			int length = _lstrlen(string);
 
 			// check if capacity is big enough
 			if ((mCapacity - mLength) >= length) {
