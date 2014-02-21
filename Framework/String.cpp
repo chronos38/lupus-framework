@@ -795,9 +795,9 @@ namespace Lupus {
 		{
 		}
 
-		String::RefChar::RefChar(_lchar& ch) :
+		String::RefChar::RefChar(_lchar* ch) :
 			Char(),
-			mRef(&ch)
+			mRef(ch)
 		{
 		}
 

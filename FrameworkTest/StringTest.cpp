@@ -20,7 +20,6 @@
 #include "..\Framework\Char.hpp"
 #include "..\Framework\String.hpp"
 #include "..\Framework\Exception.hpp"
-#include <memory>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Lupus;

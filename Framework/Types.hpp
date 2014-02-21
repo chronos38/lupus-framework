@@ -57,6 +57,74 @@
 #  error platform not supported
 #endif
 
+#if defined(LUPUS_WINDOWS_PLATFORM)
+#include <cwchar>
+// type
+#define _lchar wchar_t
+#define _lstring(x) L##x
+// conversion
+#define _ltolower(c) towlower(c)
+#define _ltoupper(c) towupper(c)
+// types
+#define _lisalnum(c) iswalnum(c)
+#define _lisalpha(c) iswalpha(c)
+#define _lisblank(c) iswblank(c)
+#define _liscntrl(c) iswcntrl(c)
+#define _lisdigit(c) iswdigit(c)
+#define _lisgraph(c) iswgraph(c)
+#define _lislower(c) iswlower(c)
+#define _lisprint(c) iswprint(c)
+#define _lispunct(c) iswpunct(c)
+#define _lisspace(c) iswspace(c)
+#define _lisupper(c) iswupper(c)
+#define _lisxdigit(c) iswxdigit(c)
+// memory manipulation
+#define _lmemcpy(dst, src, len) wmemcpy_s(dst, len, src, len)
+#define _lmemmove(dst, src, len) wmemmove_s(dst, len, src, len)
+#define _lmemcmp(rhs, lhs, len) wmemcmp(rhs, lhs, len)
+#define _lmemchr(src, val, len) wmemchr(src, val, len)
+#define _lmemset(src, val, len) wmemset(src, val, len)
+// length
+#define _lstrlen(str) wcslen(str)
+// i/o
+#define _lsprintf swprintf_s
+#define _lsscanf swscanf_s
+#elif defined(LUPUS_UNIX_PLATFORM)
+#include <cstring>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
+// type
+#define _lchar char
+#define _lstring(x) x
+// conversion
+#define _ltolower(c) tolower(c)
+#define _ltoupper(c) toupper(c)
+// types
+#define _lisalnum(c) isalnum(c)
+#define _lisalpha(c) isalpha(c)
+#define _lisblank(c) isblank(c)
+#define _liscntrl(c) iscntrl(c)
+#define _lisdigit(c) isdigit(c)
+#define _lisgraph(c) isgraph(c)
+#define _lislower(c) islower(c)
+#define _lisprint(c) isprint(c)
+#define _lispunct(c) ispunct(c)
+#define _lisspace(c) isspace(c)
+#define _lisupper(c) isupper(c)
+#define _lisxdigit(c) isxdigit(c)
+// memory manipulation
+#define _lmemcpy(dst, src, len) memcpy(dst, len, src, len)
+#define _lmemmove(dst, src, len) memmove(dst, len, src, len)
+#define _lmemcmp(rhs, lhs, len) memcmp(rhs, lhs, len)
+#define _lmemchr(src, val, len) memchr(src, val, len)
+#define _lmemset(src, val, len) memset(src, val, len)
+// length
+#define _lstrlen(str) strlen(str)
+// i/o
+#define _lsprintf snprintf
+#endif
+
 namespace Lupus {
 	// standard types
 	typedef char byte;

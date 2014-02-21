@@ -38,6 +38,16 @@ namespace Lupus {
 			static String ToString(uint, IntegerBase = IntegerBase::Decimal);
 			static String ToString(ulong, IntegerBase = IntegerBase::Decimal);
 			static String ToString(ullong, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, byte&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, short&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, int&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, long&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, llong&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, ubyte&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, ushort&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, uint&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, ulong&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, ullong&, IntegerBase = IntegerBase::Decimal);
 		};
 	}
 }
