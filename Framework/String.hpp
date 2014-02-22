@@ -171,7 +171,7 @@ namespace Lupus {
 			private:
 				_lchar* mPosition;
 				_lchar* mInitialPosition;
-				const int* mLength;
+				int mLength;
 				mutable RefChar mValue;
 			};
 		};

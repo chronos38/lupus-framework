@@ -891,6 +891,9 @@ namespace Lupus {
 			// variables
 			String string;
 
+			// delete buffer
+			delete[] string.mData;
+
 			// set values
 			string.mData = str;
 			string.mLength = _lstrlen(str);
@@ -1153,7 +1156,7 @@ namespace Lupus {
 		String::StringIterator::StringIterator(_lchar* data, const int& length) :
 			mPosition(data),
 			mInitialPosition(data),
-			mLength(&length)
+			mLength(length)
 		{
 		}
 
@@ -1170,7 +1173,7 @@ namespace Lupus {
 
 		bool String::StringIterator::Next()
 		{
-			if (mPosition > mInitialPosition + (*mLength)) {
+			if (mPosition > mInitialPosition + mLength) {
 				return false;
 			} else {
 				mPosition++;
