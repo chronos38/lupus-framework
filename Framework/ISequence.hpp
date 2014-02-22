@@ -34,14 +34,14 @@ namespace Lupus {
 			virtual const T& Back() const = 0;
 			virtual void Clear() = 0;
 			virtual bool Contains(const T&) const = 0;
-			virtual void CopyTo(ISequence<T>&, int);
+			virtual void CopyTo(ISequence<T>&, int) const = 0;
 			virtual int Count() const = 0;
 			virtual T& Front() = 0;
 			virtual const T& Front() const = 0;
 			virtual void Insert(int, const T&) = 0;
 			virtual void Insert(const Iterator<T>&, const T&) = 0;
 			virtual bool IsEmpty() const = 0;
-			virtual bool Remove(int) = 0;
+			virtual bool RemoveAt(int) = 0;
 			virtual bool Remove(const Iterator<T>&) = 0;
 			virtual void Resize(int) = 0;
 		};

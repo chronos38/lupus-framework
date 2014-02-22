@@ -21,15 +21,13 @@
 
 #include "Object.hpp"
 #include "Char.hpp"
+#include "ISequence.hpp"
+#include "Iterator.hpp"
 
 namespace Lupus {
 	namespace System {
-		// forwared declaration for char class
-		template <typename T>
-		class ISequence;
-
 		/// String class used for internal string operations
-		class LUPUS_API String : public Object
+		class LUPUS_API String : public Object, public ISequence<Char>
 		{
 		public:
 			String();
@@ -41,6 +39,7 @@ namespace Lupus {
 			String(String&&);
 			virtual ~String();
 			String& Append(const String&);
+			String& Append(const Char&);
 			int Capacity() const;
 			int Compare(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			bool Contains(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
@@ -50,7 +49,6 @@ namespace Lupus {
 			int IndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int IndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int IndexOfAny(const ISequence<Char>&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			bool IsEmpty() const;
 			int LastIndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int LastIndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
 			int Length() const;
@@ -67,33 +65,55 @@ namespace Lupus {
 			String& ToLower();
 			String& ToUpper();
 			Char& operator[](uint);
-			Char operator[](uint) const;
+			const Char& operator[](uint) const;
 			Char& operator[](int);
-			Char operator[](int) const;
+			const Char& operator[](int) const;
 			String& operator=(const _lchar*);
 			String& operator=(const String&);
 			String& operator=(String&&);
+			String& operator=(const Char&);
 			String operator+(const String&) const;
+			String& operator+=(const _lchar*);
 			String& operator+=(const String&);
+			String& operator+=(const Char&);
 			bool operator==(const String&) const;
 			bool operator!=(const String&) const;
+			// sequence overrides
+			virtual void Add(const Char&) override;
+			virtual Iterator<Char> Begin() const override;
+			virtual Char& Back() override;
+			virtual const Char& Back() const override;
+			virtual void Clear() override;
+			virtual bool Contains(const Char&) const override;
+			virtual void CopyTo(ISequence<Char>&, int) const override;
+			virtual int Count() const override;
+			virtual Char& Front() override;
+			virtual const Char& Front() const override;
+			virtual void Insert(int, const Char&) override;
+			virtual void Insert(const Iterator<Char>&, const Char&) override;
+			virtual bool IsEmpty() const override;
+			virtual bool RemoveAt(int) override;
+			virtual bool Remove(const Iterator<Char>&) override;
+			virtual void Resize(int) override;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
 			String(const wchar_t*);
 			String(const wchar_t*, int startIndex, int length);
 #endif
-		protected:
+		private:
+			static String CreateWithExistingBuffer(_lchar*);
 			static int GetLength(const Char*);
 			static int KnuthMorrisPratt(const _lchar*, int, const _lchar*, int);
 			static int KnuthMorrisPrattLast(const _lchar*, int, const _lchar*, int);
 			static int KnuthMorrisPrattInsensitive(const _lchar*, int, const _lchar*, int);
 			static int KnuthMorrisPrattInsensitiveLast(const _lchar*, int, const _lchar*, int);
+			static _lchar* Mirror();
 		private:
 			_lchar* mData;
 			int mLength;
 			int mCapacity;
 
-			// reference character
+			/// reference character
 			class LUPUS_API RefChar : public Char
 			{
 			public:
@@ -131,7 +151,29 @@ namespace Lupus {
 #endif
 			private:
 				_lchar* mRef;
-			} mCurrent;
+			};
+
+			mutable RefChar mCurrent;
+
+			/// iterator
+			class LUPUS_API StringIterator : public Object, public Iterator<Char>
+			{
+			public:
+				StringIterator(_lchar*, const int&);
+				StringIterator(const StringIterator&);
+				StringIterator(StringIterator&&) = delete;
+				virtual ~StringIterator();
+				virtual bool Next();
+				virtual void Reset();
+				virtual Char* Value();
+				virtual const Char* Value() const;
+				virtual StringIterator& operator=(const StringIterator&);
+			private:
+				_lchar* mPosition;
+				_lchar* mInitialPosition;
+				const int* mLength;
+				mutable RefChar mValue;
+			};
 		};
 
 		template <typename T>

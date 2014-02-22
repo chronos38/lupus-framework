@@ -28,7 +28,7 @@ namespace Lupus {
 			mLength(0),
 			mCapacity(0)
 		{
-			mData[0] = '\0';
+			mData[0] = 0;
 		}
 
 		String::String(const Char* source)
@@ -55,7 +55,7 @@ namespace Lupus {
 				mData[i] = source[i].Value();
 			}
 
-			mData[length] = '\0';
+			mData[length] = 0;
 			mLength = mCapacity = length;
 		}
 
@@ -93,7 +93,7 @@ namespace Lupus {
 			}
 
 			// terminate with zero and free not needed memory
-			mData[length] = '\0';
+			mData[length] = 0;
 			mLength = mCapacity = length;
 		}
 
@@ -103,7 +103,7 @@ namespace Lupus {
 			mCapacity(string.Length())
 		{
 			_lmemcpy(mData, string.Data(), mLength);
-			mData[mLength] = '\0';
+			mData[mLength] = 0;
 		}
 
 		String::String(String&& string) :
@@ -134,6 +134,11 @@ namespace Lupus {
 		String& String::Append(const String& string)
 		{
 			return ((*this) += string);
+		}
+
+		String& String::Append(const Char& ch)
+		{
+			return ((*this) += ch);
 		}
 
 		int String::Capacity() const
@@ -206,11 +211,15 @@ namespace Lupus {
 			}
 
 			// variables
-			int limit = destinationIndex + count;
+			int limit = startIndex + count;
+			Iterator<Char> it = sequence.Begin();
 
-			// copy
-			for (int i = destinationIndex, j = startIndex; i < limit; i++, j++) {
-				sequence.Insert(i, mData[j]);
+			// set correct position
+			it.Move(destinationIndex);
+
+			// copy values
+			for (int i = startIndex; i < limit; i++, it.Next()) {
+				(*(it.Value())) = mData[i];
 			}
 		}
 
@@ -312,11 +321,6 @@ namespace Lupus {
 			}
 
 			return -1;
-		}
-
-		bool String::IsEmpty() const
-		{
-			return (mData[0] == 0);
 		}
 
 		int String::LastIndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
@@ -520,13 +524,13 @@ namespace Lupus {
 			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
 		}
 
-		Char String::operator[](uint index) const
+		const Char& String::operator[](uint index) const
 		{
 			if (index >= static_cast<uint>(mLength)) {
 				throw ArgumentOutOfRangeException("index exceeds string length");
 			}
 
-			return mData[index];
+			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
 		}
 
 		Char& String::operator[](int index)
@@ -540,7 +544,7 @@ namespace Lupus {
 			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
 		}
 
-		Char String::operator[](int index) const
+		const Char& String::operator[](int index) const
 		{
 			if (index >= mLength) {
 				throw ArgumentOutOfRangeException("index exceeds string length");
@@ -548,7 +552,7 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("index must be greater than zero");
 			}
 
-			return mData[index];
+			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
 		}
 
 		String& String::operator=(const _lchar* string)
@@ -562,13 +566,13 @@ namespace Lupus {
 			int length = _lstrlen(string);
 
 			// check if capacity is big enough
-			if ((mCapacity - mLength) >= length) {
+			if (mCapacity >= length) {
 				// reset buffer
-				_lmemset(mData, 0, mCapacity);
+				_lmemset(mData, 0, mLength);
 
 				// set new values
 				_lmemcpy(mData, string, length);
-				mData[length] = '\0';
+				mData[length] = 0;
 				mLength = length;
 			} else {
 				// reallocate buffer
@@ -577,7 +581,7 @@ namespace Lupus {
 
 				// set new values
 				_lmemcpy(mData, string, length);
-				mData[length] = '\0';
+				mData[length] = 0;
 				mLength = mCapacity = length;
 			}
 
@@ -590,13 +594,13 @@ namespace Lupus {
 			int length = string.Length();
 
 			// check if capacity is big enough
-			if ((mCapacity - mLength) >= length) {
+			if (mCapacity >= length) {
 				// reset buffer
-				memset(mData, 0, sizeof(Char) * mCapacity);
+				_lmemset(mData, 0, mLength);
 
 				// set new values
-				memcpy(mData, string.Data(), sizeof(Char) * length);
-				mData[length] = '\0';
+				_lmemcpy(mData, string.Data(), length);
+				mData[length] = 0;
 				mLength = length;
 			} else {
 				// reallocate buffer
@@ -604,8 +608,8 @@ namespace Lupus {
 				mData = new _lchar[length + 1];
 
 				// set new values
-				memcpy(mData, string.Data(), sizeof(Char) * length);
-				mData[length] = '\0';
+				_lmemcpy(mData, string.Data(), length);
+				mData[length] = 0;
 				mLength = mCapacity = length;
 			}
 
@@ -630,22 +634,66 @@ namespace Lupus {
 			return (*this);
 		}
 
+		String& String::operator=(const Char& ch)
+		{
+			if (mCapacity > 1) {
+				_lmemset(mData, 0, mLength);
+				mData[0] = ch.Value();
+				mLength = 1;
+			} else {
+				// reallocate buffer
+				delete[] mData;
+				mData = new _lchar[2];
+
+				// set new values
+				mData[0] = ch.Value();
+				mData[1] = 0;
+				mLength = mCapacity = 1;
+			}
+
+			return (*this);
+		}
+
 		String String::operator+(const String& string) const
 		{
 			// variables
-			String result;
-			Char* buffer = new Char[mLength + string.Length() + 1];
+			_lchar* buffer = new _lchar[mLength + string.Length() + 1];
 
 			// copy new buffer
-			memcpy(buffer, mData, sizeof(Char) * mLength);
-			memcpy(buffer + mLength, string.Data(), sizeof(Char) * string.Length());
-			buffer[mLength + string.Length()] = '\0';
+			_lmemcpy(buffer, mData, mLength);
+			_lmemcpy(buffer + mLength, string.Data(), string.Length());
+			buffer[mLength + string.Length()] = 0;
 
 			// set result and delete[] buffer
-			result = buffer;
-			delete[] buffer;
+			return CreateWithExistingBuffer(buffer);
+		}
 
-			return result;
+		String& String::operator+=(const _lchar* str)
+		{
+			// variables
+			int length = _lstrlen(str);
+
+			// check if capacity is big enough
+			if ((mCapacity - mLength) >= length) {
+				_lmemcpy(mData + mLength, str, length);
+				mLength += length;
+			} else {
+				// new buffer
+				_lchar* buffer = new _lchar[mLength + length + 1];
+
+				// copy new buffer
+				_lmemcpy(buffer, mData, mLength);
+				_lmemcpy(buffer + mLength, str, length);
+				buffer[mLength + length] = 0;
+
+				// set result and delete[] buffer
+				delete[] mData;
+				mData = buffer;
+				mLength += length;
+				mCapacity += length;
+			}
+
+			return (*this);
 		}
 
 		String& String::operator+=(const String& string)
@@ -676,6 +724,31 @@ namespace Lupus {
 			return (*this);
 		}
 
+		String& String::operator+=(const Char& ch)
+		{
+			if ((mCapacity - mLength) >= 1) {
+				_lmemset(mData, 0, mLength);
+				mData[0] = ch.Value();
+				mLength = 1;
+			} else {
+				// reallocate buffer
+				_lchar* buffer = new _lchar[mLength + 2];
+
+				// copy new buffer
+				_lmemcpy(buffer, mData, mLength);
+				buffer[mLength] = ch.Value();
+				buffer[mLength + 1] = 0;
+
+				// set result and delete[] buffer
+				delete[] mData;
+				mData = buffer;
+				mLength += 1;
+				mCapacity += 1;
+			}
+
+			return (*this);
+		}
+
 		bool String::operator==(const String& string) const
 		{
 			return (this->Compare(string) == 0);
@@ -684,6 +757,147 @@ namespace Lupus {
 		bool String::operator!=(const String& string) const
 		{
 			return (this->Compare(string) != 0);
+		}
+
+		void String::Add(const Char& ch)
+		{
+			(*this) += ch;
+		}
+
+		Iterator<Char> String::Begin() const
+		{
+			return StringIterator(mData, mLength);
+		}
+
+		Char& String::Back()
+		{
+			return operator[](mLength - 1);
+		}
+
+		const Char& String::Back() const
+		{
+			return operator[](mLength - 1);
+		}
+
+		void String::Clear()
+		{
+			_lmemset(mData, 0, mLength);
+			mLength = 0;
+		}
+
+		bool String::Contains(const Char& ch) const
+		{
+			return (_lmemchr(mData, ch.Value(), mLength) != 0);
+		}
+
+		void String::CopyTo(ISequence<Char>& sequence, int startIndex) const
+		{
+			// check arguments
+			if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
+			} else if ((startIndex + mLength) > sequence.Count()) {
+				throw ArgumentOutOfRangeException("copying exceeds sequence length");
+			}
+
+			// variables
+			Iterator<Char> it = sequence.Begin();
+
+			// set correct position
+			it.Move(startIndex);
+
+			// copy values
+			for (int i = 0; i < mLength; i++, it.Next()) {
+				(*(it.Value())) = mData[i];
+			}
+		}
+
+		int String::Count() const
+		{
+			return mLength;
+		}
+
+		Char& String::Front()
+		{
+			return operator[](0);
+		}
+
+		const Char& String::Front() const
+		{
+			return operator[](0);
+		}
+
+		void String::Insert(int, const Char&)
+		{
+			throw NotImplementedException();
+		}
+		
+		void String::Insert(const Iterator<Char>&, const Char&)
+		{
+			throw NotImplementedException();
+		}
+
+		bool String::IsEmpty() const
+		{
+			return (mData[0] == 0);
+		}
+
+		bool String::RemoveAt(int index)
+		{
+			try {
+				Remove(index);
+			} catch (ArgumentOutOfRangeException&) {
+				return false;
+			}
+
+			return true;
+		}
+
+		bool String::Remove(const Iterator<Char>& iterator)
+		{
+			throw NotImplementedException();
+		}
+
+		void String::Resize(int count)
+		{
+			// check argument
+			if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			}
+
+			if (count <= mCapacity) {
+				_lmemset(mData, 0, count);
+
+				// check for new length
+				if (count < mLength) {
+					mLength = count;
+				}
+			} else {
+				// new buffer
+				_lchar* buffer = new _lchar[count];
+				_lmemset(buffer, 0, count);
+
+				// copy old buffer delete it afterwards
+				_lmemcpy(buffer, mData, mLength);
+				delete[] mData;
+
+				// set internal buffer and length
+				mData = buffer;
+				mLength = mCapacity = count;
+			}
+		}
+
+		String String::CreateWithExistingBuffer(_lchar* str)
+		{
+			// variables
+			String string;
+
+			// set values
+			string.mData = str;
+			string.mLength = _lstrlen(str);
+			string.mCapacity = string.mLength;
+
+			// return result
+			return string;
 		}
 
 		int String::GetLength(const Char* string)
@@ -883,7 +1097,7 @@ namespace Lupus {
 
 		_lchar String::RefChar::Value() const
 		{
-			return *mRef;
+			return (*mRef);
 		}
 
 		Char& String::RefChar::operator=(const Char& ch)
@@ -934,6 +1148,59 @@ namespace Lupus {
 		bool String::RefChar::operator!=(const Char& ch) const
 		{
 			return ((*mRef) != ch.Value());
+		}
+
+		String::StringIterator::StringIterator(_lchar* data, const int& length) :
+			mPosition(data),
+			mInitialPosition(data),
+			mLength(&length)
+		{
+		}
+
+		String::StringIterator::StringIterator(const StringIterator& stringIterator) :
+			mPosition(stringIterator.mPosition),
+			mInitialPosition(stringIterator.mInitialPosition),
+			mLength(stringIterator.mLength)
+		{
+		}
+
+		String::StringIterator::~StringIterator()
+		{
+		}
+
+		bool String::StringIterator::Next()
+		{
+			if (mPosition > mInitialPosition + (*mLength)) {
+				return false;
+			} else {
+				mPosition++;
+			}
+
+			return true;
+		}
+
+		void String::StringIterator::Reset()
+		{
+			mPosition = mInitialPosition;
+		}
+
+		Char* String::StringIterator::Value()
+		{
+			return (&(mValue = RefChar(mPosition)));
+		}
+
+		const Char* String::StringIterator::Value() const
+		{
+			return (&(mValue = RefChar(mPosition)));
+		}
+
+		String::StringIterator& String::StringIterator::operator=(const StringIterator& stringIterator)
+		{
+			mPosition = stringIterator.mPosition;
+			mInitialPosition = stringIterator.mInitialPosition;
+			mLength = stringIterator.mLength;
+			mValue = RefChar(nullptr);
+			return (*this);
 		}
 	}
 }

@@ -25,7 +25,8 @@ namespace Lupus {
 		class Iterator
 		{
 		public:
-			virtual ~Iterator() { }
+			virtual ~Iterator();
+			virtual bool Move(int);
 			virtual bool Next();
 			virtual void Reset();
 			virtual T* Value();

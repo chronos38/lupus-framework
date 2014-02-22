@@ -19,6 +19,17 @@
 namespace Lupus {
 	namespace System {
 		template <typename T>
+		Iterator<T>::~Iterator()
+		{
+		}
+
+		template <typename T>
+		bool Iterator<T>::Move(int)
+		{
+			return false;
+		}
+
+		template <typename T>
 		bool Iterator<T>::Next()
 		{
 			return false;
@@ -27,7 +38,6 @@ namespace Lupus {
 		template <typename T>
 		void Iterator<T>::Reset()
 		{
-			// do nothing
 		}
 
 		template <typename T>
