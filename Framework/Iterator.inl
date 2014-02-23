@@ -16,40 +16,44 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Exception.hpp"
+
 namespace Lupus {
 	namespace System {
 		template <typename T>
 		Iterator<T>::~Iterator()
 		{
+			throw NotSupportedException();
 		}
 
 		template <typename T>
 		bool Iterator<T>::Move(int)
 		{
-			return false;
+			throw NotSupportedException();
 		}
 
 		template <typename T>
 		bool Iterator<T>::Next()
 		{
-			return false;
+			throw NotSupportedException();
 		}
 
 		template <typename T>
 		void Iterator<T>::Reset()
 		{
+			throw NotSupportedException();
 		}
 
 		template <typename T>
 		T* Iterator<T>::Value()
 		{
-			return nullptr;
+			throw NotSupportedException();
 		}
 
 		template <typename T>
 		const T* Iterator<T>::Value() const
 		{
-			return nullptr;
+			throw NotSupportedException();
 		}
 	}
 }

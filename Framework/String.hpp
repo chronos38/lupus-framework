@@ -156,17 +156,18 @@ namespace Lupus {
 			mutable RefChar mCurrent;
 
 			/// iterator
-			class LUPUS_API StringIterator : public Object, public Iterator<Char>
+			class LUPUS_API StringIterator : public Iterator<Char>
 			{
 			public:
 				StringIterator(_lchar*, const int&);
 				StringIterator(const StringIterator&);
 				StringIterator(StringIterator&&) = delete;
 				virtual ~StringIterator();
-				virtual bool Next();
-				virtual void Reset();
-				virtual Char* Value();
-				virtual const Char* Value() const;
+				virtual bool Move(int) override;
+				virtual bool Next() override;
+				virtual void Reset() override;
+				virtual Char* Value() override;
+				virtual const Char* Value() const override;
 				virtual StringIterator& operator=(const StringIterator&);
 			private:
 				_lchar* mPosition;

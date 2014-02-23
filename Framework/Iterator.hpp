@@ -19,10 +19,12 @@
 #ifndef LUPUS_ITERATOR_HPP
 #define LUPUS_ITERATOR_HPP
 
+#include "Object.hpp"
+
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class Iterator
+		class Iterator : public Object
 		{
 		public:
 			virtual ~Iterator();

@@ -1171,9 +1171,20 @@ namespace Lupus {
 		{
 		}
 
+		bool String::StringIterator::Move(int count)
+		{
+			if ((mPosition + count) > (mInitialPosition + mLength)) {
+				return false;
+			} else {
+				mPosition += count;
+			}
+
+			return true;
+		}
+
 		bool String::StringIterator::Next()
 		{
-			if (mPosition > mInitialPosition + mLength) {
+			if (mPosition > (mInitialPosition + mLength)) {
 				return false;
 			} else {
 				mPosition++;
