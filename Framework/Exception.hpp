@@ -29,7 +29,7 @@ namespace Lupus {
 	class LUPUS_API Exception : public Object
 	{
 	public:
-		Exception() = default;
+		Exception();
 		Exception(const Exception&);
 		Exception(const System::String& message);
 		Exception(const System::String& message, const Exception& innerException);
@@ -44,16 +44,17 @@ namespace Lupus {
 	class LUPUS_API NullPointerException : public Exception
 	{
 	public:
-		NullPointerException() = default;
+		using Exception::Exception;
 		virtual ~NullPointerException() = default;
 		NullPointerException(const System::String& message);
 		NullPointerException(const System::String& message, const Exception& innerException);
+
 	};
 
 	class LUPUS_API OutOfMemoryException : public Exception
 	{
 	public:
-		OutOfMemoryException() = default;
+		using Exception::Exception;
 		virtual ~OutOfMemoryException() = default;
 		OutOfMemoryException(const System::String& message);
 		OutOfMemoryException(const System::String& message, const Exception& innerException);
@@ -62,7 +63,7 @@ namespace Lupus {
 	class LUPUS_API FormatException : public Exception
 	{
 	public:
-		FormatException() = default;
+		using Exception::Exception;
 		virtual ~FormatException() = default;
 		FormatException(const System::String& message);
 		FormatException(const System::String& message, const Exception& innerException);
@@ -71,7 +72,7 @@ namespace Lupus {
 	class LUPUS_API ArgumentException : public Exception
 	{
 	public:
-		ArgumentException() = default;
+		using Exception::Exception;
 		virtual ~ArgumentException() = default;
 		ArgumentException(const ArgumentException&);
 		ArgumentException(const System::String& message);
@@ -81,7 +82,7 @@ namespace Lupus {
 	class LUPUS_API ArgumentNullException : public ArgumentException
 	{
 	public:
-		ArgumentNullException() = default;
+		using ArgumentException::ArgumentException;
 		virtual ~ArgumentNullException() = default;
 		ArgumentNullException(const System::String& message);
 		ArgumentNullException(const System::String& message, const Exception& innerException);
@@ -90,7 +91,7 @@ namespace Lupus {
 	class LUPUS_API ArgumentOutOfRangeException : public ArgumentException
 	{
 	public:
-		ArgumentOutOfRangeException() = default;
+		using ArgumentException::ArgumentException;
 		virtual ~ArgumentOutOfRangeException() = default;
 		ArgumentOutOfRangeException(const System::String& message);
 		ArgumentOutOfRangeException(const System::String& message, const Exception& innerException);
@@ -99,7 +100,7 @@ namespace Lupus {
 	class LUPUS_API NotSupportedException : public Exception
 	{
 	public:
-		NotSupportedException() = default;
+		using Exception::Exception;
 		virtual ~NotSupportedException() = default;
 		NotSupportedException(const System::String& message);
 		NotSupportedException(const System::String& message, const Exception& innerException);
@@ -108,10 +109,19 @@ namespace Lupus {
 	class LUPUS_API NotImplementedException : public Exception
 	{
 	public:
-		NotImplementedException() = default;
+		using Exception::Exception;
 		virtual ~NotImplementedException() = default;
 		NotImplementedException(const System::String& message);
 		NotImplementedException(const System::String& message, const Exception& innerException);
+	};
+
+	class LUPUS_API SystemException : public Exception
+	{
+	public:
+		using Exception::Exception;
+		virtual ~SystemException() = default;
+		SystemException(const System::String& message);
+		SystemException(const System::String& message, const Exception& innerException);
 	};
 }
 

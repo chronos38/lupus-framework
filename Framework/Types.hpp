@@ -126,6 +126,9 @@
 #define _lsscanf sscanf
 #endif
 
+// lock logic
+#define lock(object, code) object.Lock(); code; object.Unlock()
+
 namespace Lupus {
 	/// single signed byte
 	typedef char byte;

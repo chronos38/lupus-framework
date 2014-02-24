@@ -18,23 +18,30 @@
 
 #include "Exception.hpp"
 #include "String.hpp"
-#include <memory>
 
 using namespace Lupus::System;
 
 namespace Lupus {
+	Exception::Exception() :
+		Object()
+	{
+	}
+
 	Exception::Exception(const String& message) :
+		Object(),
 		mMessage(new String(message))
 	{
 	}
 
 	Exception::Exception(const String& message, const Exception& innerException) :
+		Object(),
 		mMessage(new String(message)),
 		mInnerException(new Exception(innerException))
 	{
 	}
 
 	Exception::Exception(const Exception& exception) :
+		Object(),
 		mMessage(new String(exception.Message()))
 	{
 	}
@@ -149,6 +156,16 @@ namespace Lupus {
 	}
 
 	NotImplementedException::NotImplementedException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
+
+	SystemException::SystemException(const String& message) :
+		Exception(message)
+	{
+	}
+
+	SystemException::SystemException(const String& message, const Exception& innerException) :
 		Exception(message, innerException)
 	{
 	}

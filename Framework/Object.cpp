@@ -23,10 +23,6 @@
 using namespace Lupus::System;
 
 namespace Lupus {
-	Object::~Object()
-	{
-	}
-
 	String Object::GetName() const
 	{
 		const std::type_info& info = typeid(*this);

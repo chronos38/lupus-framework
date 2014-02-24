@@ -20,6 +20,10 @@
 #define LUPUS_OBJECT_HPP
 
 #include "Types.hpp"
+#if defined(LUPUS_WINDOWS_PLATFORM)
+#include <WinBase.h>
+#elif defined(LUPUS_UNIX_PLATFORM)
+#endif
 
 namespace Lupus {
 	namespace System {
@@ -29,9 +33,19 @@ namespace Lupus {
 	class LUPUS_API Object
 	{
 	public:
+		Object();
 		virtual ~Object();
 		virtual ulong GetHashCode() const;
 		virtual System::String GetName() const final;
+		virtual void Lock();
+		virtual bool TryLock();
+		virtual void Unlock();
+#if defined(LUPUS_WINDOWS_PLATFORM)
+	private:
+		HANDLE mMutex;
+#elif defined(LUPUS_UNIX_PLATFORM)
+	private:
+#endif
 	};
 }
 
