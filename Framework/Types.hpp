@@ -127,27 +127,36 @@
 #endif
 
 namespace Lupus {
-	// standard types
+	/// single signed byte
 	typedef char byte;
+	/// single unsigned byte
 	typedef unsigned char ubyte;
+	/// 16-bit unsigned integer
 	typedef unsigned short ushort;
+	/// 32-bit unsigned integer
 	typedef unsigned int uint;
+	/// >=32-bit unsigned integer
 	typedef unsigned long ulong;
+	/// >=64-bit signed integer
 	typedef long long llong;
+	/// >=64-bit unsigned integer
 	typedef unsigned long long ullong;
+	/// 128-bit float point number
 	typedef long double real;
 
 	namespace System {
-		// enumerations
+		/// conversion base for integer
 		enum class IntegerBase {
 			Octal,
 			Decimal,
 			Hexadecimal
 		};
+		/// sensitivity flag
 		enum class CaseSensitivity {
 			CaseSensitive,
 			CaseInsensitive
 		};
+		/// string split flag
 		enum class StringSplitOptions {
 			None,
 			RemoveEmptyEntries

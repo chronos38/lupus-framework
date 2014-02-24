@@ -100,14 +100,26 @@ namespace Lupus {
 			return (_lisxdigit(mValue) != 0);
 		}
 
+		Char& Char::ToLower()
+		{
+			mValue = _ltolower(mValue);
+			return (*this);
+		}
+
 		Char Char::ToLower() const
 		{
-			return static_cast<decltype(mValue)>(_ltolower(mValue));
+			return static_cast<_lchar>(_ltolower(mValue));
+		}
+
+		Char& Char::ToUpper()
+		{
+			mValue = _ltoupper(mValue);
+			return (*this);
 		}
 
 		Char Char::ToUpper() const
 		{
-			return static_cast<decltype(mValue)>(_ltoupper(mValue));
+			return static_cast<_lchar>(_ltoupper(mValue));
 		}
 
 		_lchar Char::Value() const
@@ -121,9 +133,19 @@ namespace Lupus {
 			return (*this);
 		}
 
+		Char Char::operator+(int value) const
+		{
+			return static_cast<decltype(mValue)>(mValue + value);
+		}
+
 		Char Char::operator+(const Char& ch) const
 		{
 			return static_cast<decltype(mValue)>(mValue + ch.Value());
+		}
+
+		Char Char::operator-(int value) const
+		{
+			return static_cast<decltype(mValue)>(mValue - value);
 		}
 
 		Char Char::operator-(const Char& ch) const
@@ -137,9 +159,21 @@ namespace Lupus {
 			return (*this);
 		}
 
+		Char& Char::operator+=(const Char& ch)
+		{
+			mValue += static_cast<decltype(mValue)>(ch.Value());
+			return (*this);
+		}
+
 		Char& Char::operator-=(int value)
 		{
 			mValue -= static_cast<decltype(mValue)>(value);
+			return (*this);
+		}
+
+		Char& Char::operator-=(const Char& ch)
+		{
+			mValue -= static_cast<decltype(mValue)>(ch.Value());
 			return (*this);
 		}
 

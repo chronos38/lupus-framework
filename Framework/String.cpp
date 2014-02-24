@@ -59,12 +59,12 @@ namespace Lupus {
 			mLength = mCapacity = length;
 		}
 
-		String::String(const Char* source, int startIndex, int length)
+		String::String(const Char* source, int startIndex, int count)
 		{
 			// check arguments
 			if (!source) {
 				throw ArgumentNullException("source string must have a valid value");
-			} else if (length <= 0) {
+			} else if (count <= 0) {
 				throw ArgumentOutOfRangeException("length must be greater than zero");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex is less than zero");
@@ -80,21 +80,21 @@ namespace Lupus {
 			}
 
 			// check for errors
-			if ((startIndex + length) > sourceLength) {
+			if ((startIndex + count) > sourceLength) {
 				throw ArgumentOutOfRangeException("length exceeds actual string length");
 			}
 
 			// create buffer
-			mData = new _lchar[length + 1];
+			mData = new _lchar[count + 1];
 
 			// set internal buffer
-			for (int i = 0; i < length; i++) {
+			for (int i = 0; i < count; i++) {
 				mData[i] = source[i + startIndex].Value();
 			}
 
 			// terminate with zero and free not needed memory
-			mData[length] = 0;
-			mLength = mCapacity = length;
+			mData[count] = 0;
+			mLength = mCapacity = count;
 		}
 
 		String::String(const String& string) :
@@ -133,12 +133,12 @@ namespace Lupus {
 
 		String& String::Append(const String& string)
 		{
-			return ((*this) += string);
+			return operator+=(string);
 		}
 
 		String& String::Append(const Char& ch)
 		{
-			return ((*this) += ch);
+			return operator+=(ch);
 		}
 
 		int String::Capacity() const
@@ -199,26 +199,26 @@ namespace Lupus {
 			return false;
 		}
 
-		void String::CopyTo(int startIndex, ISequence<Char>& sequence, int destinationIndex, int count) const
+		void String::CopyTo(int sourceIndex, ISequence<Char>& sequence, int destinationIndex, int count) const
 		{
 			// check argument
-			if ((startIndex + count) > mLength) {
-				throw ArgumentOutOfRangeException("startIndex plus count exceedes string length");
-			} else if (startIndex < 0) {
-				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
+			if ((sourceIndex + count) > mLength) {
+				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes string length");
+			} else if (sourceIndex < 0) {
+				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
 			} else if (count < 0) {
 				throw ArgumentOutOfRangeException("count must be greater than zero");
 			}
 
 			// variables
-			int limit = startIndex + count;
+			int limit = sourceIndex + count;
 			Iterator<Char> it = sequence.Begin();
 
 			// set correct position
 			it.Move(destinationIndex);
 
 			// copy values
-			for (int i = startIndex; i < limit; i++, it.Next()) {
+			for (int i = sourceIndex; i < limit; i++, it.Next()) {
 				(*(it.Value())) = mData[i];
 			}
 		}
@@ -260,7 +260,7 @@ namespace Lupus {
 		{
 			// check arguments
 			if (startIndex >= mLength) {
-				throw ArgumentNullException("startIndex exceeds string length");
+				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
 			}
@@ -280,7 +280,7 @@ namespace Lupus {
 		{
 			// check arguments
 			if (startIndex >= mLength) {
-				throw ArgumentNullException("startIndex exceeds string length");
+				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
 			} else if (sequence.IsEmpty()) {
@@ -327,7 +327,7 @@ namespace Lupus {
 		{
 			// check arguments
 			if ((mLength - startIndex) < 0) {
-				throw ArgumentNullException("startIndex exceeds string length");
+				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
 			}
@@ -374,6 +374,20 @@ namespace Lupus {
 			}
 
 			return -1;
+		}
+
+		int String::LastIndexOfAny(const ISequence<Char>& sequence, int startIndex, CaseSensitivity sensitivity) const
+		{
+			// check arguments
+			if (startIndex >= mLength) {
+				throw ArgumentNullException("startIndex exceeds string length");
+			} else if (startIndex < 0) {
+				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
+			} else if (sequence.IsEmpty()) {
+				return -1;
+			}
+
+			throw NotImplementedException();
 		}
 
 		int String::Length() const
@@ -476,17 +490,17 @@ namespace Lupus {
 			return String(mData + startIndex);
 		}
 
-		String String::Substring(int startIndex, int length) const
+		String String::Substring(int startIndex, int count) const
 		{
-			if ((startIndex + length) >= mLength) {
+			if ((startIndex + count) >= mLength) {
 				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
-			} else if (length <= 0) {
+			} else if (count <= 0) {
 				throw ArgumentOutOfRangeException("length must be greater than zero");
 			}
 
-			return String(mData, startIndex, length);
+			return String(mData, startIndex, count);
 		}
 
 		String& String::ToLower()
@@ -761,12 +775,7 @@ namespace Lupus {
 
 		void String::Add(const Char& ch)
 		{
-			(*this) += ch;
-		}
-
-		Iterator<Char> String::Begin() const
-		{
-			return StringIterator(mData, mLength);
+			operator+=(ch);
 		}
 
 		Char& String::Back()
@@ -777,6 +786,11 @@ namespace Lupus {
 		const Char& String::Back() const
 		{
 			return operator[](mLength - 1);
+		}
+
+		Iterator<Char> String::Begin() const
+		{
+			return StringIterator(mData, mLength);
 		}
 
 		void String::Clear()
@@ -792,23 +806,7 @@ namespace Lupus {
 
 		void String::CopyTo(ISequence<Char>& sequence, int startIndex) const
 		{
-			// check arguments
-			if (startIndex < 0) {
-				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
-			} else if ((startIndex + mLength) > sequence.Count()) {
-				throw ArgumentOutOfRangeException("copying exceeds sequence length");
-			}
-
-			// variables
-			Iterator<Char> it = sequence.Begin();
-
-			// set correct position
-			it.Move(startIndex);
-
-			// copy values
-			for (int i = 0; i < mLength; i++, it.Next()) {
-				(*(it.Value())) = mData[i];
-			}
+			CopyTo(0, sequence, startIndex, mLength);
 		}
 
 		int String::Count() const

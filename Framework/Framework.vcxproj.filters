@@ -47,6 +47,9 @@
     <ClInclude Include="Iterator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Float.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -69,6 +72,9 @@
     </ClCompile>
     <ClCompile Include="Platform\Windows\WinString.cpp">
       <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="Float.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

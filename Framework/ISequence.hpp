@@ -29,9 +29,9 @@ namespace Lupus {
 		public:
 			virtual ~ISequence() { }
 			virtual void Add(const T&) = 0;
-			virtual Iterator<T> Begin() const = 0;
 			virtual T& Back() = 0;
 			virtual const T& Back() const = 0;
+			virtual Iterator<T> Begin() const = 0;
 			virtual void Clear() = 0;
 			virtual bool Contains(const T&) const = 0;
 			virtual void CopyTo(ISequence<T>&, int) const = 0;

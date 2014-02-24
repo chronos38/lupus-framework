@@ -27,42 +27,150 @@ namespace Lupus {
 		class LUPUS_API Char : public Object
 		{
 		public:
+			/// Default constructor
 			Char();
+			/// Apply single char value
 			Char(char);
+			/// Copy constructor
 			Char(const Char&);
+			/// Move constructor
 			Char(Char&&);
+			/// Destructor
 			virtual ~Char();
+			/**
+			 * Check if value is a blank character
+			 *
+			 * @return true if character is blank, else false
+			 */
 			virtual bool IsBlank() const;
+			/**
+			 * Check if value is a digit
+			 *
+			 * @return true if character is a digit, else false
+			 */
 			virtual bool IsDigit() const;
+			/**
+			 * Check if value is a graph
+			 *
+			 * @return true if character is graph, else false
+			 */
 			virtual bool IsGraph() const;
+			/**
+			 * Check if value is a letter
+			 *
+			 * @return true if character is letter, else false
+			 */
 			virtual bool IsLetter() const;
+			/**
+			 * Check if value is a letter or digit
+			 *
+			 * @return true if character is letter or digit, else false
+			 */
 			virtual bool IsLetterOrDigit() const;
+			/**
+			 * Check if value is a lower letter character
+			 *
+			 * @return true if character is lower letter, else false
+			 */
 			virtual bool IsLower() const;
+			/**
+			 * Check if value is a punct character
+			 *
+			 * @return true if character is punct, else false
+			 */
 			virtual bool IsPunct() const;
+			/**
+			 * Check if value is a upper letter character
+			 *
+			 * @return true if character is upper letter, else false
+			 */
 			virtual bool IsUpper() const;
+			/**
+			 * Check if value is a space
+			 *
+			 * @return true if character is space, else false
+			 */
 			virtual bool IsSpace() const;
+			/**
+			 * Check if value is a printable character
+			 *
+			 * @return true if character is printable, else false
+			 */
 			virtual bool IsPrint() const;
+			/**
+			 * Check if value is a control sequence
+			 *
+			 * @return true if character is control sequence, else false
+			 */
 			virtual bool IsControl() const;
+			/**
+			 * Check if value is a hexadecimal character
+			 *
+			 * @return true if character is hexadecimal, else false
+			 */
 			virtual bool IsHexadecimal() const;
+			/**
+			 * Convert this instance to a lower character
+			 *
+			 * @return This instance
+			 */
+			virtual Char& ToLower();
+			/**
+			 * Create lower character from this instance
+			 *
+			 * @return New instance with lower value from this instance
+			 */
 			virtual Char ToLower() const;
+			/**
+			 * Convert this instance to a upper character
+			 *
+			 * @return This instance
+			 */
+			virtual Char& ToUpper();
+			/**
+			 * Create upper character from this instance
+			 *
+			 * @return New instance with upper value from this instance
+			 */
 			virtual Char ToUpper() const;
+			/// Return value from this instance
 			virtual _lchar Value() const;
+			/// Apply character value to this instance
 			virtual Char& operator=(char);
+			/// Copy value from an other instance
 			virtual Char& operator=(const Char&);
+			/// Add a value from an other instance
+			virtual Char operator+(int) const;
+			/// Add a value from an other instance
 			virtual Char operator+(const Char&) const;
+			/// Subtract a value from an other instance
+			virtual Char operator-(int) const;
+			/// Subtract a value from an other instance
 			virtual Char operator-(const Char&) const;
+			/// Add a value to this instance
 			virtual Char& operator+=(int);
+			/// Add a value to this instance
+			virtual Char& operator+=(const Char&);
+			/// Subtract a value from this instance
 			virtual Char& operator-=(int);
+			/// Subtract a value from this instance
+			virtual Char& operator-=(const Char&);
+			/// Increment this instance
 			virtual Char& operator++();
+			/// Decrement this instance
 			virtual Char& operator--();
+			/// Compare two instances
 			virtual bool operator==(const Char&) const;
+			/// Compare two instances
 			virtual bool operator!=(const Char&) const;
 		public:
 			static const int MaxValue;
 			static const int MinValue;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
+			/// @sa Char::Char(char)
 			Char(wchar_t);
+			/// @sa Char::operator=(char)
 			Char& operator=(wchar_t);
 #endif
 		private:

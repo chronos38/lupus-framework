@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClInclude Include="Char.hpp" />
     <ClInclude Include="Exception.hpp" />
+    <ClInclude Include="Float.hpp" />
     <ClInclude Include="IDictionary.hpp" />
     <ClInclude Include="ISequence.hpp" />
     <ClInclude Include="Iterator.hpp" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="Char.cpp" />
     <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="Float.cpp" />
     <ClCompile Include="Integer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Platform\Windows\WinChar.cpp" />

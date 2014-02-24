@@ -30,59 +30,346 @@ namespace Lupus {
 		class LUPUS_API String : public Object, public ISequence<Char>
 		{
 		public:
+			/// Create an empty string
 			String();
-			String(const char*);
-			String(const Char*);
-			String(const char*, int startIndex, int length);
-			String(const Char*, int startIndex, int length);
-			String(const String&);
-			String(String&&);
+			/**
+			 * Create an instance from given native string
+			 *
+			 * \b Exceptions
+			 * - ArgumentNullException
+			 */
+			String(const char* source);
+			/**
+			 * Create an instance from given framework string
+			 *
+			 * \b Exceptions
+			 * - ArgumentNullException
+			 */
+			String(const Char* source);
+			/**
+			 * Create an instance form given native string, start index for native string and length
+			 *
+			 * \b Exceptions
+			 * - ArgumentNullException
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param source native string
+			 * @param startIndex start index for native string
+			 * @param count length beginning from start index
+			 */
+			String(const char* source, int startIndex, int count);
+			/**
+			 * Create an instance from given framework string, start index for framework string and length
+			 *
+			 * \b Exceptions
+			 * - ArgumentNullException
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param source framework string
+			 * @param startIndex start index for native string
+			 * @param length length beginning from start index
+			 */
+			String(const Char* source, int startIndex, int length);
+			/// Copy string from given instance to this instance
+			String(const String& string);
+			/// Move string from given instance to this instance
+			String(String&& string);
+			/// Destructor
 			virtual ~String();
-			String& Append(const String&);
-			String& Append(const Char&);
+			/**
+			 * Append a copy from given instance to this instance
+			 *
+			 * @param string instance to append
+			 */
+			String& Append(const String& string);
+			/**
+			 * Append a single char to this instance
+			 *
+			 * @param ch char to append
+			 */
+			String& Append(const Char& ch);
+			/// Return string capacity
 			int Capacity() const;
-			int Compare(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			bool Contains(const String&, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			void CopyTo(int, ISequence<Char>&, int, int) const;
+			/**
+			 * Compare two intances and return there difference
+			 *
+			 * @param string instance to be compared to this instance
+			 * @param sensitivity flag for case sensitivity
+			 * @return zero if the two strings are equal, else the difference at the first deviation
+			 */
+			int Compare(const String& string, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Check if this instance contains a specific value
+			 *
+			 * @param string instance to be checked
+			 * @param sensitivity flag for case sensitivity
+			 * @return true if this instance contains given string
+			 */
+			bool Contains(const String& string, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Copy content from this instance to a sequence container
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param sourceIndex starting index for this instance
+			 * @param sequence container to copy into
+			 * @param destinationIndex starting index in container
+			 * @param count how many chars get copied
+			 */
+			void CopyTo(int sourceIndex, ISequence<Char>& sequence, int destinationIndex, int count) const;
+			/// Return native string
 			_lchar* Data();
+			/// Return constant native string
 			const _lchar* Data() const;
-			int IndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			int IndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			int IndexOfAny(const ISequence<Char>&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			int LastIndexOf(const Char&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
-			int LastIndexOf(const String&, int = 0, CaseSensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Search for given char within this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param ch char to search for
+			 * @param startIndex at what index begins the search for this instance
+			 * @param sensitivity defines the case sensitivity for search process
+			 * @return index of first match or -1 if no such char was found
+			 */
+			int IndexOf(const Char& ch, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Search for given string within this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param string string to search for
+			 * @param startIndex at what index begins the search for this instance
+			 * @param sensitivity defines the case sensitivity for search process
+			 * @return index of first match or -1 if no such string was found
+			 */
+			int IndexOf(const String& string, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Search for given chars within this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param sequence chars to search for
+			 * @param startIndex at what index begins the search for this instance
+			 * @param sensitivity defines the case sensitivity for search process
+			 * @return index of first match or -1 if non of the given chars was found
+			 */
+			int IndexOfAny(const ISequence<Char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Search for the last occurence of given char within this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param ch char to search for
+			 * @param startIndex at what index begins the search for this instance, counting from the last position
+			 * @param sensitivity defines the case sensitivity for search process
+			 * @return index of last match or -1 if no such char was found
+			 */
+			int LastIndexOf(const Char& ch, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Search for the last occurence of given string within this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param string string to search for
+			 * @param startIndex at what index begins the search for this instance, counting from the last position
+			 * @param sensitivity defines the case sensitivity for search process
+			 * @return index of last match or -1 if no such string was found
+			 */
+			int LastIndexOf(const String& string, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/**
+			 * Search for the last occurence of given chars within this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param sequence chars to search for
+			 * @param startIndex at what index begins the search for this instance, counting from the last position
+			 * @param sensitivity defines the case sensitivity for search process
+			 * @return index of first match or -1 if non of the given chars was found
+			 */
+			int LastIndexOfAny(const ISequence<Char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			/// Return string length
 			int Length() const;
-			String& Remove(int);
-			String& Remove(int, int);
-			String& Replace(const Char&, const Char&, CaseSensitivity = CaseSensitivity::CaseSensitive);
-			String& Replace(const String&, const String&, CaseSensitivity = CaseSensitivity::CaseSensitive);
+			/**
+			 * Removes all char from given index to the end of string
+			 *
+			 * @param startIndex starting index for remove process
+			 * @return reference to this instance
+			 */
+			String& Remove(int startIndex);
+			/**
+			 * Removes count chars beginning at startIndex from this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param startIndex starting index for remove process
+			 * @param count how many char to be removed
+			 * @return reference to this instance
+			 */
+			String& Remove(int startIndex, int count);
+			/**
+			 * Replace all matching chars with given replacement char
+			 *
+			 * @param before old char
+			 * @param after new char
+			 * @param sensitivity defines the case sensitivity for replace process
+			 * @return reference to this instance
+			 */
+			String& Replace(const Char& before, const Char& after, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive);
+			/**
+			 * Replace all matching strings with given replacement string
+			 *
+			 * @param before old string
+			 * @param after new string
+			 * @param sensitivity defines the case sensitivity for replace process
+			 * @return reference to this instance
+			 */
+			String& Replace(const String& before, const String& after, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive);
 			//Vector<String> Split(const Vector<Char>&, StringSplitOptions = StringSplitOptions::None) const;
 			//Vector<String> Split(const Vector<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
 			//Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
 			//Vector<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
-			String Substring(int) const;
-			String Substring(int, int) const;
+			/**
+			 * Create substring at starting index from this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param startIndex starting index within this instance
+			 * @return new substring from this instance
+			 */
+			String Substring(int startIndex) const;
+			/**
+			 * Create substring at starting index with count chars from this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param startIndex starting index within this instance
+			 * @param count how many chars are copied
+			 * @return new substring from this instance
+			 */
+			String Substring(int startIndex, int count) const;
+			/**
+			 * Convert all chars from this instance to its lower equivalent
+			 *
+			 * @return reference to this instance
+			 */
 			String& ToLower();
+			/**
+			 * Convert all chars from this instance to its upper equivalent
+			 *
+			 * @return reference to this instance
+			 */
 			String& ToUpper();
+			/**
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @return Char at given index
+			 */
 			Char& operator[](uint);
+			/**
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @return Char at given index
+			 */
 			const Char& operator[](uint) const;
+			/**
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @return Char at given index
+			 */
 			Char& operator[](int);
+			/**
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @return Char at given index
+			 */
 			const Char& operator[](int) const;
+			/**
+			 * copy native string to this instance
+			 *
+			 * \b Exceptions
+			 * - ArgumentNullException
+			 *
+			 * @return reference to this instance
+			 */
 			String& operator=(const _lchar*);
+			/**
+			 * copy string content to this instance
+			 *
+			 * @return reference to this instance
+			 */
 			String& operator=(const String&);
+			/**
+			 * move string content to this instance
+			 *
+			 * @return reference to this instance
+			 */
 			String& operator=(String&&);
+			/**
+			 * set string to single character
+			 *
+			 * @return reference to this instance
+			 */
 			String& operator=(const Char&);
-			String operator+(const String&) const;
+			/**
+			 * Append given string to a copy of this instance
+			 *
+			 * @param string string for appending
+			 * @return resulting string
+			 */
+			String operator+(const String& string) const;
+			/**
+			 * Append given native string to this instance
+			 *
+			 * @param string native string for appending
+			 * @return reference to this instance
+			 */
 			String& operator+=(const _lchar*);
+			/**
+			 * Append given string to this instance
+			 *
+			 * @param string string for appending
+			 * @return reference to this instance
+			 */
 			String& operator+=(const String&);
-			String& operator+=(const Char&);
-			bool operator==(const String&) const;
+			/**
+			 * Append given char to this instance
+			 *
+			 * @param ch char for appending
+			 * @return reference to this instance
+			 */
+			String& operator+=(const Char& ch);
+			/**
+			 * compare this instance to given string
+			 *
+			 * @param string other string for comparison
+			 * @return true if this instance is equal to given string, otherwise false
+			 */
+			bool operator==(const String& string) const;
+			/**
+			 * compare this instance to given string
+			 *
+			 * @param string other string for comparison
+			 * @return true if this instance is not equal to given string, otherwise false
+			 */
 			bool operator!=(const String&) const;
-			// sequence overrides
 			virtual void Add(const Char&) override;
-			virtual Iterator<Char> Begin() const override;
 			virtual Char& Back() override;
 			virtual const Char& Back() const override;
+			virtual Iterator<Char> Begin() const override;
 			virtual void Clear() override;
 			virtual bool Contains(const Char&) const override;
 			virtual void CopyTo(ISequence<Char>&, int) const override;
@@ -97,7 +384,9 @@ namespace Lupus {
 			virtual void Resize(int) override;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
+			/// @sa String::String(const char*)
 			String(const wchar_t*);
+			/// @sa String::String(const char*, int, int)
 			String(const wchar_t*, int startIndex, int length);
 #endif
 		private:
@@ -113,7 +402,7 @@ namespace Lupus {
 			int mLength;
 			int mCapacity;
 
-			/// reference character
+			/// reference char
 			class LUPUS_API RefChar : public Char
 			{
 			public:
