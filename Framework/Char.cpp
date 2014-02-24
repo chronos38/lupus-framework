@@ -21,16 +21,19 @@
 namespace Lupus {
 	namespace System {
 		Char::Char() :
+			Object(),
 			mValue(0)
 		{
 		}
 
-		Char::Char(const Char& ch)
+		Char::Char(const Char& ch) :
+			Object()
 		{
 			mValue = ch.mValue;
 		}
 
-		Char::Char(Char&& ch)
+		Char::Char(Char&& ch) :
+			Object()
 		{
 			mValue = ch.mValue;
 			ch.mValue = 0;

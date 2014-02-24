@@ -58,6 +58,7 @@
 #endif
 
 #if defined(LUPUS_WINDOWS_PLATFORM)
+#include <Windows.h>
 #include <cwchar>
 // type
 #define _lchar wchar_t

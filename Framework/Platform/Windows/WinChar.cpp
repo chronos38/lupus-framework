@@ -31,6 +31,7 @@ namespace Lupus {
 		const int Char::MinValue = WCHAR_MIN;
 
 		Char::Char(char ch) :
+			Object(),
 			mValue(0)
 		{
 			if (ch == '\0') {
@@ -45,6 +46,7 @@ namespace Lupus {
 		}
 
 		Char::Char(wchar_t ch) :
+			Object(),
 			mValue(ch)
 		{
 		}

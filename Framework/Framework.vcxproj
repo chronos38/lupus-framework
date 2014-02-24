@@ -95,6 +95,7 @@
     <ClCompile Include="Integer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Platform\Windows\WinChar.cpp" />
+    <ClCompile Include="Platform\Windows\WinObject.cpp" />
     <ClCompile Include="Platform\Windows\WinString.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>

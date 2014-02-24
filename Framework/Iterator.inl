@@ -21,6 +21,12 @@
 namespace Lupus {
 	namespace System {
 		template <typename T>
+		Iterator<T>::Iterator() :
+			Object()
+		{
+		}
+
+		template <typename T>
 		Iterator<T>::~Iterator()
 		{
 			throw NotSupportedException();

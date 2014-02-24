@@ -75,6 +75,11 @@ namespace Lupus {
 		return Exception();
 	}
 
+	NullPointerException::NullPointerException() :
+		Exception()
+	{
+	}
+
 	NullPointerException::NullPointerException(const String& message) :
 		Exception(message)
 	{
@@ -82,6 +87,11 @@ namespace Lupus {
 
 	NullPointerException::NullPointerException(const String& message, const Exception& innerException) :
 		Exception(message, innerException)
+	{
+	}
+
+	OutOfMemoryException::OutOfMemoryException() :
+		Exception()
 	{
 	}
 
@@ -95,6 +105,11 @@ namespace Lupus {
 	{
 	}
 
+	FormatException::FormatException() :
+		Exception()
+	{
+	}
+
 	FormatException::FormatException(const String& message) :
 		Exception(message)
 	{
@@ -102,6 +117,11 @@ namespace Lupus {
 
 	FormatException::FormatException(const String& message, const Exception& innerException) :
 		Exception(message, innerException)
+	{
+	}
+
+	ArgumentException::ArgumentException() :
+		Exception()
 	{
 	}
 
@@ -120,6 +140,11 @@ namespace Lupus {
 	{
 	}
 
+	ArgumentNullException::ArgumentNullException() :
+		ArgumentException()
+	{
+	}
+
 	ArgumentNullException::ArgumentNullException(const String& message) :
 		ArgumentException(message)
 	{
@@ -127,6 +152,11 @@ namespace Lupus {
 
 	ArgumentNullException::ArgumentNullException(const String& message, const Exception& innerException) :
 		ArgumentException(message, innerException)
+	{
+	}
+
+	ArgumentOutOfRangeException::ArgumentOutOfRangeException() :
+		ArgumentException()
 	{
 	}
 
@@ -140,6 +170,11 @@ namespace Lupus {
 	{
 	}
 
+	NotSupportedException::NotSupportedException() :
+		Exception()
+	{
+	}
+
 	NotSupportedException::NotSupportedException(const String& message) :
 		Exception(message)
 	{
@@ -150,6 +185,11 @@ namespace Lupus {
 	{
 	}
 
+	NotImplementedException::NotImplementedException() :
+		Exception()
+	{
+	}
+
 	NotImplementedException::NotImplementedException(const String& message) :
 		Exception(message)
 	{
@@ -157,6 +197,11 @@ namespace Lupus {
 
 	NotImplementedException::NotImplementedException(const String& message, const Exception& innerException) :
 		Exception(message, innerException)
+	{
+	}
+
+	SystemException::SystemException() :
+		Exception()
 	{
 	}
 

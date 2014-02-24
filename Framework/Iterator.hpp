@@ -27,6 +27,7 @@ namespace Lupus {
 		class Iterator : public Object
 		{
 		public:
+			Iterator();
 			virtual ~Iterator();
 			virtual bool Move(int);
 			virtual bool Next();

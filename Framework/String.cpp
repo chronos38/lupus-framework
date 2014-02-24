@@ -24,6 +24,7 @@
 namespace Lupus {
 	namespace System {
 		String::String() :
+			Object(),
 			mData(new _lchar[1]),
 			mLength(0),
 			mCapacity(0)
@@ -31,7 +32,8 @@ namespace Lupus {
 			mData[0] = 0;
 		}
 
-		String::String(const Char* source)
+		String::String(const Char* source) :
+			Object()
 		{
 			// check argument
 			if (!source) {
@@ -59,7 +61,8 @@ namespace Lupus {
 			mLength = mCapacity = length;
 		}
 
-		String::String(const Char* source, int startIndex, int count)
+		String::String(const Char* source, int startIndex, int count) :
+			Object()
 		{
 			// check arguments
 			if (!source) {
@@ -98,6 +101,7 @@ namespace Lupus {
 		}
 
 		String::String(const String& string) :
+			Object(),
 			mData(new wchar_t[string.Length() + 1]),
 			mLength(string.Length()),
 			mCapacity(string.Length())
@@ -221,6 +225,16 @@ namespace Lupus {
 			for (int i = sourceIndex; i < limit; i++, it.Next()) {
 				(*(it.Value())) = mData[i];
 			}
+		}
+
+		_lchar* String::Data()
+		{
+			return mData;
+		}
+
+		const _lchar* String::Data() const
+		{
+			return mData;
 		}
 
 		int String::IndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
@@ -1152,6 +1166,7 @@ namespace Lupus {
 		}
 
 		String::StringIterator::StringIterator(_lchar* data, const int& length) :
+			Iterator(),
 			mPosition(data),
 			mInitialPosition(data),
 			mLength(length)
@@ -1159,6 +1174,7 @@ namespace Lupus {
 		}
 
 		String::StringIterator::StringIterator(const StringIterator& stringIterator) :
+			Iterator(),
 			mPosition(stringIterator.mPosition),
 			mInitialPosition(stringIterator.mInitialPosition),
 			mLength(stringIterator.mLength)

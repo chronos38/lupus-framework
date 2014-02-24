@@ -20,10 +20,6 @@
 #define LUPUS_OBJECT_HPP
 
 #include "Types.hpp"
-#if defined(LUPUS_WINDOWS_PLATFORM)
-#include <WinBase.h>
-#elif defined(LUPUS_UNIX_PLATFORM)
-#endif
 
 namespace Lupus {
 	namespace System {

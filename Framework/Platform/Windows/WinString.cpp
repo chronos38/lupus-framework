@@ -27,6 +27,7 @@
 namespace Lupus {
 	namespace System {
 		String::String(const char* source) :
+			Object(),
 			mData(nullptr)
 		{
 			// check argument
@@ -49,6 +50,7 @@ namespace Lupus {
 		}
 
 		String::String(const char* source, int startIndex, int length) :
+			Object(),
 			mData(nullptr)
 		{
 			// check source string
@@ -85,6 +87,7 @@ namespace Lupus {
 		}
 
 		String::String(const wchar_t* source) :
+			Object(),
 			mData(nullptr)
 		{
 			// check argument
@@ -103,6 +106,7 @@ namespace Lupus {
 		}
 
 		String::String(const wchar_t* source, int startIndex, int length) :
+			Object(),
 			mData(nullptr)
 		{
 			// check source string
@@ -121,16 +125,6 @@ namespace Lupus {
 			wmemcpy(mData, source + startIndex, length);
 			mData[length] = L'\0';
 			mLength = mCapacity = length;
-		}
-
-		wchar_t* String::Data()
-		{
-			return mData;
-		}
-
-		const wchar_t* String::Data() const
-		{
-			return mData;
 		}
 
 		Char& String::RefChar::operator=(char ch)
