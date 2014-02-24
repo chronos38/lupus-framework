@@ -63,29 +63,29 @@
 #define _lchar wchar_t
 #define _lstring(x) L##x
 // conversion
-#define _ltolower(c) towlower(c)
-#define _ltoupper(c) towupper(c)
+#define _ltolower towlower
+#define _ltoupper towupper
 // types
-#define _lisalnum(c) iswalnum(c)
-#define _lisalpha(c) iswalpha(c)
-#define _lisblank(c) iswblank(c)
-#define _liscntrl(c) iswcntrl(c)
-#define _lisdigit(c) iswdigit(c)
-#define _lisgraph(c) iswgraph(c)
-#define _lislower(c) iswlower(c)
-#define _lisprint(c) iswprint(c)
-#define _lispunct(c) iswpunct(c)
-#define _lisspace(c) iswspace(c)
-#define _lisupper(c) iswupper(c)
-#define _lisxdigit(c) iswxdigit(c)
+#define _lisalnum iswalnum
+#define _lisalpha iswalpha
+#define _lisblank iswblank
+#define _liscntrl iswcntrl
+#define _lisdigit iswdigit
+#define _lisgraph iswgraph
+#define _lislower iswlower
+#define _lisprint iswprint
+#define _lispunct iswpunct
+#define _lisspace iswspace
+#define _lisupper iswupper
+#define _lisxdigit iswxdigit
 // memory manipulation
 #define _lmemcpy(dst, src, len) wmemcpy_s(dst, len, src, len)
 #define _lmemmove(dst, src, len) wmemmove_s(dst, len, src, len)
-#define _lmemcmp(rhs, lhs, len) wmemcmp(rhs, lhs, len)
-#define _lmemchr(src, val, len) wmemchr(src, val, len)
-#define _lmemset(src, val, len) wmemset(src, val, len)
+#define _lmemcmp wmemcmp
+#define _lmemchr wmemchr
+#define _lmemset wmemset
 // length
-#define _lstrlen(str) wcslen(str)
+#define _lstrlen wcslen
 // i/o
 #define _lsprintf swprintf_s
 #define _lsscanf swscanf_s
@@ -98,31 +98,32 @@
 #define _lchar char
 #define _lstring(x) x
 // conversion
-#define _ltolower(c) tolower(c)
-#define _ltoupper(c) toupper(c)
+#define _ltolower tolower
+#define _ltoupper toupper
 // types
-#define _lisalnum(c) isalnum(c)
-#define _lisalpha(c) isalpha(c)
-#define _lisblank(c) isblank(c)
-#define _liscntrl(c) iscntrl(c)
-#define _lisdigit(c) isdigit(c)
-#define _lisgraph(c) isgraph(c)
-#define _lislower(c) islower(c)
-#define _lisprint(c) isprint(c)
-#define _lispunct(c) ispunct(c)
-#define _lisspace(c) isspace(c)
-#define _lisupper(c) isupper(c)
-#define _lisxdigit(c) isxdigit(c)
+#define _lisalnum isalnum
+#define _lisalpha isalpha
+#define _lisblank isblank
+#define _liscntrl iscntrl
+#define _lisdigit isdigit
+#define _lisgraph isgraph
+#define _lislower islower
+#define _lisprint isprint
+#define _lispunct ispunct
+#define _lisspace isspace
+#define _lisupper isupper
+#define _lisxdigit isxdigit
 // memory manipulation
-#define _lmemcpy(dst, src, len) memcpy(dst, len, src, len)
-#define _lmemmove(dst, src, len) memmove(dst, len, src, len)
-#define _lmemcmp(rhs, lhs, len) memcmp(rhs, lhs, len)
-#define _lmemchr(src, val, len) memchr(src, val, len)
-#define _lmemset(src, val, len) memset(src, val, len)
+#define _lmemcpy memcpy
+#define _lmemmove memmove
+#define _lmemcmp memcmp
+#define _lmemchr memchr
+#define _lmemset memset
 // length
-#define _lstrlen(str) strlen(str)
+#define _lstrlen strlen
 // i/o
 #define _lsprintf snprintf
+#define _lsscanf sscanf
 #endif
 
 namespace Lupus {

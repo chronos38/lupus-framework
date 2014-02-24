@@ -19,28 +19,25 @@
 #include "Integer.hpp"
 #include "Char.hpp"
 #include "String.hpp"
-#include <cstdio>
-#include <cstring>
-#include <utility>
 
-static const size_t sCount = 32;
+static const size_t sIntegerCount = 32;
 
 namespace Lupus {
 	namespace System {
 		String Integer::ToString(byte value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%hhd"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%hhd"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#hhx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#hhx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#hho"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#hho"), value);
 				break;
 			}
 			return result;
@@ -48,18 +45,18 @@ namespace Lupus {
 
 		String Integer::ToString(short value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%hd"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%hd"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#hx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#hx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#ho"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#ho"), value);
 				break;
 			}
 			return result;
@@ -67,18 +64,18 @@ namespace Lupus {
 
 		String Integer::ToString(int value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%d"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%d"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#x"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#x"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#o"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#o"), value);
 				break;
 			}
 			return result;
@@ -86,18 +83,18 @@ namespace Lupus {
 
 		String Integer::ToString(long value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%ld"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%ld"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#lx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#lx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#lo"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#lo"), value);
 				break;
 			}
 			return result;
@@ -105,36 +102,36 @@ namespace Lupus {
 
 		String Integer::ToString(llong value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%lld"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%lld"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#llx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#llx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#llo"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#llo"), value);
 				break;
 			}
 			return result;
 		}
 		String Integer::ToString(ubyte value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%hhu"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%hhu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#hhx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#hhx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#hho"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#hho"), value);
 				break;
 			}
 			return result;
@@ -142,18 +139,18 @@ namespace Lupus {
 
 		String Integer::ToString(ushort value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%hu"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%hu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#hx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#hx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#ho"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#ho"), value);
 				break;
 			}
 			return result;
@@ -161,18 +158,18 @@ namespace Lupus {
 
 		String Integer::ToString(uint value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%u"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%u"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#x"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#x"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#o"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#o"), value);
 				break;
 			}
 			return result;
@@ -180,18 +177,18 @@ namespace Lupus {
 
 		String Integer::ToString(ulong value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%lu"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%lu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#lx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#lx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#lo"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#lo"), value);
 				break;
 			}
 			return result;
@@ -199,18 +196,18 @@ namespace Lupus {
 
 		String Integer::ToString(ullong value, IntegerBase base)
 		{
-			_lchar result[sCount];
-			_lmemset(result, 0, sCount);
+			_lchar result[sIntegerCount];
+			_lmemset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sCount, _lstring("%llu"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%llu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sCount, _lstring("%#llx"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#llx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sCount, _lstring("%#llo"), value);
+				_lsprintf(result, sIntegerCount, _lstring("%#llo"), value);
 				break;
 			}
 			return result;
