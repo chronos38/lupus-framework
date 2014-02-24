@@ -19,6 +19,7 @@
 #include "..\..\Object.hpp"
 
 #ifdef LUPUS_WINDOWS_PLATFORM
+#include <Windows.h>
 #include "..\..\String.hpp"
 #include "..\..\Exception.hpp"
 

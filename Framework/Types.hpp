@@ -58,7 +58,6 @@
 #endif
 
 #if defined(LUPUS_WINDOWS_PLATFORM)
-#include <Windows.h>
 #include <cwchar>
 // type
 #define _lchar wchar_t
@@ -127,8 +126,8 @@
 #define _lsscanf sscanf
 #endif
 
-// lock logic
-#define lock(object, code) object.Lock(); code; object.Unlock()
+// lock object
+//#define lock(object, code) object.Lock(); code; object.Unlock()
 
 namespace Lupus {
 	/// single signed byte

@@ -38,7 +38,7 @@ namespace Lupus {
 		virtual void Unlock();
 #if defined(LUPUS_WINDOWS_PLATFORM)
 	private:
-		HANDLE mMutex;
+		void* mMutex;
 #elif defined(LUPUS_UNIX_PLATFORM)
 	private:
 #endif
