@@ -26,9 +26,18 @@
 
 namespace Lupus {
 	namespace System {
+		/// string split flag
+		enum class StringSplitOptions {
+			None,
+			RemoveEmptyEntries
+		};
+
 		/// String class used for internal string operations
 		class LUPUS_API String : public Object, public ISequence<Char>
 		{
+			_lchar* mData;
+			int mLength;
+			int mCapacity;
 		public:
 			/// Create an empty string
 			String();
@@ -195,7 +204,8 @@ namespace Lupus {
 			 */
 			int LastIndexOfAny(const ISequence<Char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
 			/// Return string length
-			int Length() const;
+			PropertyReader<int> Length = PropertyReader<int>(mLength);
+			//int Length() const;
 			/**
 			 * Removes all char from given index to the end of string
 			 *
@@ -398,10 +408,6 @@ namespace Lupus {
 			static int KnuthMorrisPrattInsensitiveLast(const _lchar*, int, const _lchar*, int);
 			static _lchar* Mirror();
 		private:
-			_lchar* mData;
-			int mLength;
-			int mCapacity;
-
 			/// reference char
 			class LUPUS_API RefChar : public Char
 			{

@@ -131,7 +131,7 @@
 
 namespace Lupus {
 	/// single signed byte
-	typedef char byte;
+	typedef signed char byte;
 	/// single unsigned byte
 	typedef unsigned char ubyte;
 	/// 16-bit unsigned integer
@@ -148,23 +148,14 @@ namespace Lupus {
 	typedef long double real;
 
 	namespace System {
-		/// conversion base for integer
-		enum class IntegerBase {
-			Octal,
-			Decimal,
-			Hexadecimal
-		};
 		/// sensitivity flag
 		enum class CaseSensitivity {
 			CaseSensitive,
 			CaseInsensitive
 		};
-		/// string split flag
-		enum class StringSplitOptions {
-			None,
-			RemoveEmptyEntries
-		};
 	}
 }
+
+#include "Property.hpp"
 
 #endif

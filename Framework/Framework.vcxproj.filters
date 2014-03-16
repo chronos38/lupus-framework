@@ -50,6 +50,9 @@
     <ClInclude Include="Float.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Property.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -88,6 +91,9 @@
       <Filter>Inline Files</Filter>
     </None>
     <None Include="Iterator.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="Property.inl">
       <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>

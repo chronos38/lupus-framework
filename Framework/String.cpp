@@ -102,9 +102,9 @@ namespace Lupus {
 
 		String::String(const String& string) :
 			Object(),
-			mData(new wchar_t[string.Length() + 1]),
-			mLength(string.Length()),
-			mCapacity(string.Length())
+			mData(new wchar_t[string.Length + 1]),
+			mLength(string.Length),
+			mCapacity(string.Length)
 		{
 			_lmemcpy(mData, string.Data(), mLength);
 			mData[mLength] = 0;
@@ -153,8 +153,8 @@ namespace Lupus {
 		int String::Compare(const String& string, CaseSensitivity sensitivity) const
 		{
 			// check length
-			if (mLength != string.Length()) {
-				return (mLength - string.Length());
+			if (mLength != string.Length) {
+				return (mLength - string.Length);
 			}
 
 			// variables
@@ -186,18 +186,18 @@ namespace Lupus {
 			// check arguments
 			if (string == "") {
 				return true;
-			} else if (mLength < string.Length()) {
+			} else if (mLength < string.Length) {
 				return false;
-			} else if (mLength == string.Length()) {
+			} else if (mLength == string.Length) {
 				return (Compare(string, sensitivity) == 0);
 			}
 
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return (KnuthMorrisPratt(mData, mLength, string.Data(), string.Length()) != -1);
+				return (KnuthMorrisPratt(mData, mLength, string.Data(), string.Length) != -1);
 			case CaseSensitivity::CaseInsensitive:
-				return (KnuthMorrisPrattInsensitive(mData, mLength, string.Data(), string.Length()) != -1);
+				return (KnuthMorrisPrattInsensitive(mData, mLength, string.Data(), string.Length) != -1);
 			}
 
 			return false;
@@ -282,9 +282,9 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPratt(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
+				return KnuthMorrisPratt(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
 			case CaseSensitivity::CaseInsensitive:
-				return KnuthMorrisPrattInsensitive(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
+				return KnuthMorrisPrattInsensitive(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
 			}
 
 			return -1;
@@ -382,9 +382,9 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPrattLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
+				return KnuthMorrisPrattLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
 			case CaseSensitivity::CaseInsensitive:
-				return KnuthMorrisPrattInsensitiveLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length());
+				return KnuthMorrisPrattInsensitiveLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
 			}
 
 			return -1;
@@ -619,7 +619,7 @@ namespace Lupus {
 		String& String::operator=(const String& string)
 		{
 			// variables 
-			int length = string.Length();
+			int length = string.Length;
 
 			// check if capacity is big enough
 			if (mCapacity >= length) {
@@ -685,12 +685,12 @@ namespace Lupus {
 		String String::operator+(const String& string) const
 		{
 			// variables
-			_lchar* buffer = new _lchar[mLength + string.Length() + 1];
+			_lchar* buffer = new _lchar[mLength + string.Length + 1];
 
 			// copy new buffer
 			_lmemcpy(buffer, mData, mLength);
-			_lmemcpy(buffer + mLength, string.Data(), string.Length());
-			buffer[mLength + string.Length()] = 0;
+			_lmemcpy(buffer + mLength, string.Data(), string.Length);
+			buffer[mLength + string.Length] = 0;
 
 			// set result and delete[] buffer
 			return CreateWithExistingBuffer(buffer);
@@ -727,7 +727,7 @@ namespace Lupus {
 		String& String::operator+=(const String& string)
 		{
 			// variables
-			int length = string.Length();
+			int length = string.Length;
 
 			// check if capacity is big enough
 			if ((mCapacity - mLength) >= length) {

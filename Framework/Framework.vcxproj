@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>LUPUS_DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -60,7 +60,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -85,6 +85,7 @@
     <ClInclude Include="Iterator.hpp" />
     <ClInclude Include="Integer.hpp" />
     <ClInclude Include="Object.hpp" />
+    <ClInclude Include="Property.hpp" />
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
   </ItemGroup>
@@ -102,6 +103,7 @@
   <ItemGroup>
     <None Include="Char.inl" />
     <None Include="Iterator.inl" />
+    <None Include="Property.inl" />
     <None Include="String.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

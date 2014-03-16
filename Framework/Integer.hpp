@@ -23,8 +23,17 @@
 
 namespace Lupus {
 	namespace System {
+		// declarations
 		class String;
 
+		/// conversion base for integer
+		enum class IntegerBase {
+			Octal,
+			Decimal,
+			Hexadecimal
+		};
+
+		/// conversion class for integer types
 		class LUPUS_API Integer : public Object
 		{
 		public:
