@@ -16,6 +16,9 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Exception.hpp"
+#include "ISequence.hpp"
+
 namespace Lupus {
 	namespace System {
 		template <typename T>
@@ -23,6 +26,7 @@ namespace Lupus {
 			_sequence(&sequence)
 		{
 		}
+
 		template <typename T>
 		SequenceIterator<T>::SequenceIterator(const ISequence<T>* sequence) :
 			_sequence(sequence)
@@ -49,27 +53,17 @@ namespace Lupus {
 		template <typename T>
 		bool SequenceIterator<T>::IsDone() const
 		{
-			return (_current >= _sequence->Length);
+			return (_current >= _sequence->Count());
 		}
 
 		template <typename T>
-		Char& SequenceIterator::CurrentItem()
+		const T& SequenceIterator<T>::CurrentItem() const
 		{
 			if (IsDone()) {
 				throw IteratorOutOfBoundException();
 			}
 
-			return _sequence->operator[](_current);
-		}
-
-		template <typename T>
-		const Char& SequenceIterator::CurrentItem() const
-		{
-			if (IsDone()) {
-				throw IteratorOutOfBoundException();
-			}
-
-			return _sequence->operator[](_current);
+			return (_sequence->operator[](_current));
 		}
 	}
 }

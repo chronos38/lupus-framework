@@ -215,6 +215,11 @@ namespace Lupus {
 	{
 	}
 
+	ApplicationException::ApplicationException() :
+		Exception()
+	{
+	}
+
 	ApplicationException::ApplicationException(const String& message) :
 		Exception(message)
 	{
@@ -222,6 +227,11 @@ namespace Lupus {
 
 	ApplicationException::ApplicationException(const String& message, const Exception& innerException) :
 		Exception(message, innerException)
+	{
+	}
+
+	IteratorOutOfBoundException::IteratorOutOfBoundException() :
+		Exception()
 	{
 	}
 

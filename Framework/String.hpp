@@ -26,21 +26,21 @@
 
 namespace Lupus {
 	namespace System {
-		/// string split flag
+		//! string split flag
 		enum class StringSplitOptions {
 			None,
 			RemoveEmptyEntries
 		};
 
-		/// String class used for internal string operations
+		//! String class used for internal string operations
 		class LUPUS_API String : public Object, public ISequence<Char>
 		{
 			// instance variables
-			_lchar* mData;
-			int mLength;
-			int mCapacity;
+			_lchar* _data;
+			int _length;
+			int _capacity;
 
-			/// reference char
+			//! reference char
 			class LUPUS_API RefChar : public Char
 			{
 			public:
@@ -80,9 +80,15 @@ namespace Lupus {
 				_lchar* mRef;
 			};
 
-			mutable RefChar mCurrent;
+			mutable RefChar _refChar;
 		public:
-			/// Create an empty string
+			//! Return string length
+			PropertyReader<int> Length = PropertyReader<int>(_length);
+			//! Return string capacity
+			PropertyReader<int> Capacity = PropertyReader<int>(_capacity);
+			//! Return native string
+			PropertyReader<_lchar*> Data = PropertyReader<_lchar*>(_data);
+			//! Create an empty string
 			String();
 			/**
 			 * Create an instance from given native string
@@ -122,11 +128,11 @@ namespace Lupus {
 			 * @param length length beginning from start index
 			 */
 			String(const Char* source, int startIndex, int length);
-			/// Copy string from given instance to this instance
+			//! Copy string from given instance to this instance
 			String(const String& string);
-			/// Move string from given instance to this instance
+			//! Move string from given instance to this instance
 			String(String&& string);
-			/// Destructor
+			//! Destructor
 			virtual ~String();
 			/**
 			 * Append a copy from given instance to this instance
@@ -140,8 +146,6 @@ namespace Lupus {
 			 * @param ch char to append
 			 */
 			String& Append(const Char& ch);
-			/// Return string capacity
-			int Capacity() const;
 			/**
 			 * Compare two intances and return there difference
 			 *
@@ -170,10 +174,6 @@ namespace Lupus {
 			 * @param count how many chars get copied
 			 */
 			void CopyTo(int sourceIndex, ISequence<Char>& sequence, int destinationIndex, int count) const;
-			/// Return native string
-			_lchar* Data();
-			/// Return constant native string
-			const _lchar* Data() const;
 			/**
 			 * Search for given char within this instance
 			 *
@@ -246,9 +246,6 @@ namespace Lupus {
 			 * @return index of first match or -1 if non of the given chars was found
 			 */
 			int LastIndexOfAny(const ISequence<Char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
-			/// Return string length
-			PropertyReader<int> Length = PropertyReader<int>(mLength);
-			//int Length() const;
 			/**
 			 * Removes all char from given index to the end of string
 			 *
@@ -423,9 +420,9 @@ namespace Lupus {
 			virtual void Resize(int) override;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
-			/// @sa String::String(const char*)
+			//! @sa String::String(const char*)
 			String(const wchar_t*);
-			/// @sa String::String(const char*, int, int)
+			//! @sa String::String(const char*, int, int)
 			String(const wchar_t*, int startIndex, int length);
 #endif
 		private:

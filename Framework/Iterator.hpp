@@ -19,8 +19,6 @@
 #ifndef LUPUS_ITERATOR_HPP
 #define LUPUS_ITERATOR_HPP
 
-#include "Exception.hpp"
-
 namespace Lupus {
 	namespace System {
 		template <typename T>
@@ -34,24 +32,22 @@ namespace Lupus {
 			virtual void First() = 0;
 			virtual void Next() = 0;
 			virtual bool IsDone() const = 0;
-			virtual T& CurrentItem() = 0;
 			virtual const T& CurrentItem() const = 0;
 		};
 
 		template <typename T>
-		class SequenceIterator
+		class SequenceIterator : public Iterator<T>
 		{
 			const ISequence<T>* _sequence = nullptr;
 			int _current = 0;
 		public:
 			SequenceIterator(const ISequence<T>&);
 			SequenceIterator(const ISequence<T>*);
-			virtual ~SequenceIterator(){}
-			virtual void First() final;
-			virtual void Next() final;
-			virtual bool IsDone() const final;
-			virtual T& CurrentItem() final;
-			virtual const T& CurrentItem() const final;
+			virtual ~SequenceIterator();
+			virtual void First() override;
+			virtual void Next() override;
+			virtual bool IsDone() const override;
+			virtual const T& CurrentItem() const override;
 			SequenceIterator<T>& operator=(const SequenceIterator<T>&) = default;
 		};
 	}

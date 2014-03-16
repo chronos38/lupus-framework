@@ -21,34 +21,40 @@
 
 namespace Lupus {
 	template <typename T>
-	class LUPUS_API PropertyReader
+	class PropertyReader
 	{
-		T& mReference;
+		T& _reference;
 	public:
-		PropertyReader<T>& operator=(const PropertyReader<T>&) = default;
+		PropertyReader() = delete;
+		PropertyReader(const PropertyReader<T>&) = default;
+		PropertyReader<T>& operator=(const PropertyReader<T>&);
 		PropertyReader(T& reference);
-		operator T();
+		operator T() const;
 	};
 
 	template <typename T>
-	class LUPUS_API PropertyWriter
+	class PropertyWriter
 	{
-		T& mReference;
+		T& _reference;
 	public:
-		PropertyWriter<T>& operator=(const PropertyWriter<T>&) = default;
+		PropertyWriter() = delete;
+		PropertyWriter(const PropertyWriter<T>&) = default;
+		PropertyWriter<T>& operator=(const PropertyWriter<T>&);
 		PropertyWriter(T& reference);
 		T operator=(const T& value);
 	};
 
 	template <typename T>
-	class LUPUS_API PropertyAccess
+	class PropertyAccess
 	{
-		T& mReference;
+		T& _reference;
 	public:
-		PropertyAccess<T>& operator=(const PropertyAccess<T>&) = default;
+		PropertyAccess() = delete;
+		PropertyAccess(const PropertyAccess<T>&) = default;
+		PropertyAccess<T>& operator=(const PropertyAccess<T>&);
 		PropertyAccess(T& reference);
 		T operator=(const T& value);
-		operator T();
+		operator T() const;
 	};
 }
 

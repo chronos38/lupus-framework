@@ -26,14 +26,14 @@ namespace Lupus {
 		// declarations
 		class String;
 
-		/// conversion base for integer
+		//! conversion base for integer
 		enum class IntegerBase {
 			Octal,
 			Decimal,
 			Hexadecimal
 		};
 
-		/// conversion class for integer types
+		//! conversion class for integer types
 		class LUPUS_API Integer : public Object
 		{
 		public:

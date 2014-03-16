@@ -19,43 +19,61 @@
 namespace Lupus {
 	template <typename T>
 	PropertyReader<T>::PropertyReader(T& reference) :
-		mReference(reference)
+		_reference(reference)
 	{
 	}
 
 	template <typename T>
-	PropertyReader<T>::operator T()
+	PropertyReader<T>& PropertyReader<T>::operator=(const PropertyReader<T>& propertyReader)
 	{
-		return mReference;
+		_reference = propertyReader._reference;
+	}
+
+	template <typename T>
+	PropertyReader<T>::operator T() const
+	{
+		return _reference;
 	}
 
 	template <typename T>
 	PropertyWriter<T>::PropertyWriter(T& reference) :
-		mReference(reference)
+		_reference(reference)
 	{
+	}
+
+	template <typename T>
+	PropertyWriter<T>& PropertyWriter<T>::operator=(const PropertyWriter<T>& propertyWriter)
+	{
+		_reference = propertyWriter._reference;
 	}
 
 	template <typename T>
 	T PropertyWriter<T>::operator=(const T& value)
 	{
-		return (mReference = value);
+		return (_reference = value);
 	}
 
 	template <typename T>
 	PropertyAccess<T>::PropertyAccess(T& reference) :
-		mReference(reference)
+		_reference(reference)
 	{
 	}
 
 	template <typename T>
-	PropertyAccess<T>::operator T()
+	PropertyAccess<T>& PropertyAccess<T>::operator=(const PropertyAccess<T>& propertyAccess)
 	{
-		return mReference;
+		_reference = propertyAccess._reference;
+	}
+
+	template <typename T>
+	PropertyAccess<T>::operator T() const
+	{
+		return _reference;
 	}
 
 	template <typename T>
 	T PropertyAccess<T>::operator=(const T& value)
 	{
-		return (mReference = value);
+		return (_reference = value);
 	}
 }

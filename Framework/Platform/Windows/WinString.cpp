@@ -28,7 +28,7 @@ namespace Lupus {
 	namespace System {
 		String::String(const char* source) :
 			Object(),
-			mData(nullptr)
+			_data(nullptr)
 		{
 			// check argument
 			if (!source) {
@@ -37,21 +37,21 @@ namespace Lupus {
 
 			// variables
 			int length = MultiByteToWideChar(CP_UTF8, 0, source, -1, nullptr, 0);
-			mData = new wchar_t[length];
-			wmemset(mData, 0, length);
+			_data = new wchar_t[length];
+			wmemset(_data, 0, length);
 
 			// convert source string
-			if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, mData, length)) {
+			if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, _data, length)) {
 				throw FormatException("couldn't convert source string to (wchar_t*) format");
 			}
 
-			mData[length - 1] = L'\0';
-			mLength = mCapacity = (length - 1);
+			_data[length - 1] = L'\0';
+			_length = _capacity = (length - 1);
 		}
 
 		String::String(const char* source, int startIndex, int length) :
 			Object(),
-			mData(nullptr)
+			_data(nullptr)
 		{
 			// check source string
 			if (!source) {
@@ -74,21 +74,21 @@ namespace Lupus {
 
 			// variables
 			MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, nullptr, 0);
-			mData = new wchar_t[length + 1];
-			memset(mData, 0, length + 1);
+			_data = new wchar_t[length + 1];
+			wmemset(_data, 0, length + 1);
 
 			// convert source string
-			if (!MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, mData, length)) {
+			if (!MultiByteToWideChar(CP_UTF8, 0, source + startIndex, length, _data, length)) {
 				throw FormatException("couldn't convert source string to (wchar_t*) format");
 			}
 
-			mData[length] = L'\0';
-			mLength = mCapacity = length;
+			_data[length] = L'\0';
+			_length = _capacity = length;
 		}
 
 		String::String(const wchar_t* source) :
 			Object(),
-			mData(nullptr)
+			_data(nullptr)
 		{
 			// check argument
 			if (!source) {
@@ -99,15 +99,15 @@ namespace Lupus {
 			size_t length = wcslen(source);
 
 			// set internal buffer
-			mData = new wchar_t[length + 1];
-			wmemcpy(mData, source, length);
-			mData[length] = L'\0';
-			mLength = mCapacity = length;
+			_data = new wchar_t[length + 1];
+			wmemcpy(_data, source, length);
+			_data[length] = L'\0';
+			_length = _capacity = length;
 		}
 
 		String::String(const wchar_t* source, int startIndex, int length) :
 			Object(),
-			mData(nullptr)
+			_data(nullptr)
 		{
 			// check source string
 			if (!source) {
@@ -121,10 +121,10 @@ namespace Lupus {
 			}
 
 			// set internal buffer
-			mData = new wchar_t[length + 1];
-			wmemcpy(mData, source + startIndex, length);
-			mData[length] = L'\0';
-			mLength = mCapacity = length;
+			_data = new wchar_t[length + 1];
+			wmemcpy(_data, source + startIndex, length);
+			_data[length] = L'\0';
+			_length = _capacity = length;
 		}
 
 		Char& String::RefChar::operator=(char ch)

@@ -23,19 +23,19 @@
 
 namespace Lupus {
 	namespace System {
-		/// Represents a unicode character
+		//! Represents a unicode character
 		class LUPUS_API Char : public Object
 		{
 		public:
-			/// Default constructor
+			//! Default constructor
 			Char();
-			/// Apply single char value
+			//! Apply single char value
 			Char(char);
-			/// Copy constructor
+			//! Copy constructor
 			Char(const Char&);
-			/// Move constructor
+			//! Move constructor
 			Char(Char&&);
-			/// Destructor
+			//! Destructor
 			virtual ~Char();
 			/**
 			 * Check if value is a blank character
@@ -133,44 +133,44 @@ namespace Lupus {
 			 * @return New instance with upper value from this instance
 			 */
 			virtual Char ToUpper() const;
-			/// Return value from this instance
+			//! Return value from this instance
 			virtual _lchar Value() const;
-			/// Apply character value to this instance
+			//! Apply character value to this instance
 			virtual Char& operator=(char);
-			/// Copy value from an other instance
+			//! Copy value from an other instance
 			virtual Char& operator=(const Char&);
-			/// Add a value from an other instance
+			//! Add a value from an other instance
 			virtual Char operator+(int) const;
-			/// Add a value from an other instance
+			//! Add a value from an other instance
 			virtual Char operator+(const Char&) const;
-			/// Subtract a value from an other instance
+			//! Subtract a value from an other instance
 			virtual Char operator-(int) const;
-			/// Subtract a value from an other instance
+			//! Subtract a value from an other instance
 			virtual Char operator-(const Char&) const;
-			/// Add a value to this instance
+			//! Add a value to this instance
 			virtual Char& operator+=(int);
-			/// Add a value to this instance
+			//! Add a value to this instance
 			virtual Char& operator+=(const Char&);
-			/// Subtract a value from this instance
+			//! Subtract a value from this instance
 			virtual Char& operator-=(int);
-			/// Subtract a value from this instance
+			//! Subtract a value from this instance
 			virtual Char& operator-=(const Char&);
-			/// Increment this instance
+			//! Increment this instance
 			virtual Char& operator++();
-			/// Decrement this instance
+			//! Decrement this instance
 			virtual Char& operator--();
-			/// Compare two instances
+			//! Compare two instances
 			virtual bool operator==(const Char&) const;
-			/// Compare two instances
+			//! Compare two instances
 			virtual bool operator!=(const Char&) const;
 		public:
 			static const int MaxValue;
 			static const int MinValue;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
-			/// @sa Char::Char(char)
+			//! @sa Char::Char(char)
 			Char(wchar_t);
-			/// @sa Char::operator=(char)
+			//! @sa Char::operator=(char)
 			Char& operator=(wchar_t);
 #endif
 		private:

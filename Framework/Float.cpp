@@ -50,17 +50,17 @@ namespace Lupus {
 
 		bool Float::TryParse(const String& string, float& result)
 		{
-			return (_lsscanf(string.Data(), _lstring("%f"), &result) == 1);
+			return (_lsscanf(string.Data, _lstring("%f"), &result) == 1);
 		}
 
 		bool Float::TryParse(const String& string, double& result)
 		{
-			return (_lsscanf(string.Data(), _lstring("%lf"), &result) == 1);
+			return (_lsscanf(string.Data, _lstring("%lf"), &result) == 1);
 		}
 
 		bool Float::TryParse(const String& string, real& result)
 		{
-			return (_lsscanf(string.Data(), _lstring("%Lf"), &result) == 1);
+			return (_lsscanf(string.Data, _lstring("%Lf"), &result) == 1);
 		}
 	}
 }

@@ -217,11 +217,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%hhd"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hhd"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%hhx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hhx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%hho"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hho"), &result) == 1);
 			}
 			return false;
 		}
@@ -230,11 +230,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%hd"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hd"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%hx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%ho"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%ho"), &result) == 1);
 			}
 			return false;
 		}
@@ -243,11 +243,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%d"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%d"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%x"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%x"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%o"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%o"), &result) == 1);
 			}
 			return false;
 		}
@@ -256,11 +256,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%ld"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%ld"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%lx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%lx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%lo"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%lo"), &result) == 1);
 			}
 			return false;
 		}
@@ -269,11 +269,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%lld"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%lld"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%llx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%llx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%llo"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%llo"), &result) == 1);
 			}
 			return false;
 		}
@@ -282,11 +282,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%hhu"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hhu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%hhx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hhx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%hho"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hho"), &result) == 1);
 			}
 			return false;
 		}
@@ -295,11 +295,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%hu"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%hx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%hx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%ho"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%ho"), &result) == 1);
 			}
 			return false;
 		}
@@ -308,11 +308,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%u"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%u"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%x"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%x"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%o"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%o"), &result) == 1);
 			}
 			return false;
 		}
@@ -321,11 +321,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%lu"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%lu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%lx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%lx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%lo"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%lo"), &result) == 1);
 			}
 			return false;
 		}
@@ -334,11 +334,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data(), _lstring("%llu"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%llu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data(), _lstring("%llx"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%llx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data(), _lstring("%llo"), &result) == 1);
+				return (_lsscanf(string.Data, _lstring("%llo"), &result) == 1);
 			}
 			return false;
 		}

@@ -36,25 +36,25 @@ namespace FrameworkTest
 			Char ch[] = { L'a', L'b', L'c', L'd', L'e', L'f', L'\0' };
 
 			// default constructor
-			Assert::AreEqual(0, String().Length(), L"default constructor", LINE_INFO());
+			Assert::AreEqual(0, (int)String().Length, L"default constructor", LINE_INFO());
 
 			// (const char*) constructor
-			Assert::AreEqual(3, String("abc").Length(), L"(const char*) constructor", LINE_INFO());
-			Assert::AreEqual(3, String("abc").Capacity(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(3, (int)String("abc").Length, L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(3, (int)String("abc").Capacity, L"(const char*) constructor", LINE_INFO());
 			Assert::AreEqual(L'a', String("abc")[0].Value(), L"(const char*) constructor", LINE_INFO());
 			Assert::AreEqual(L'b', String("abc")[1].Value(), L"(const char*) constructor", LINE_INFO());
 			Assert::AreEqual(L'c', String("abc")[2].Value(), L"(const char*) constructor", LINE_INFO());
 
 			// (const wchar_t*) constructor
-			Assert::AreEqual(3, String(L"abc").Length(), L"(const wchar_t*) constructor", LINE_INFO());
-			Assert::AreEqual(3, String(L"abc").Capacity(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(3, (int)String(L"abc").Length, L"(const wchar_t*) constructor", LINE_INFO());
+			Assert::AreEqual(3, (int)String(L"abc").Capacity, L"(const char*) constructor", LINE_INFO());
 			Assert::AreEqual(L'a', String(L"abc")[0].Value(), L"(const wchar_t*) constructor", LINE_INFO());
 			Assert::AreEqual(L'b', String(L"abc")[1].Value(), L"(const wchar_t*) constructor", LINE_INFO());
 			Assert::AreEqual(L'c', String(L"abc")[2].Value(), L"(const wchar_t*) constructor", LINE_INFO());
 
 			// (const Char*) constructor
-			Assert::AreEqual(6, String(ch).Length(), L"(const Char*) constructor", LINE_INFO());
-			Assert::AreEqual(6, String(ch).Capacity(), L"(const char*) constructor", LINE_INFO());
+			Assert::AreEqual(6, (int)String(ch).Length, L"(const Char*) constructor", LINE_INFO());
+			Assert::AreEqual(6, (int)String(ch).Capacity, L"(const char*) constructor", LINE_INFO());
 			Assert::AreEqual(L'a', String(ch)[0].Value(), L"(const Char*) constructor", LINE_INFO());
 			Assert::AreEqual(L'b', String(ch)[1].Value(), L"(const Char*) constructor", LINE_INFO());
 			Assert::AreEqual(L'c', String(ch)[2].Value(), L"(const Char*) constructor", LINE_INFO());
@@ -63,20 +63,20 @@ namespace FrameworkTest
 			Assert::AreEqual(L'f', String(ch)[5].Value(), L"(const Char*) constructor", LINE_INFO());
 
 			// (const char*,int,int) constructor
-			Assert::AreEqual(2, String("abcdef", 2, 2).Length(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
-			Assert::AreEqual(2, String("abcdef", 2, 2).Capacity(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, (int)String("abcdef", 2, 2).Length, L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, (int)String("abcdef", 2, 2).Capacity, L"(const wchar_t*, int, int) constructor", LINE_INFO());
 			Assert::AreEqual(L'c', String("abcdef", 2, 2)[0].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 			Assert::AreEqual(L'd', String("abcdef", 2, 2)[1].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 
 			// (const wchar_t*,int,int) constructor
-			Assert::AreEqual(2, String(L"abcdef", 2, 2).Length(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
-			Assert::AreEqual(2, String(L"abcdef", 2, 2).Capacity(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, (int)String(L"abcdef", 2, 2).Length, L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, (int)String(L"abcdef", 2, 2).Capacity, L"(const wchar_t*, int, int) constructor", LINE_INFO());
 			Assert::AreEqual(L'c', String(L"abcdef", 2, 2)[0].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 			Assert::AreEqual(L'd', String(L"abcdef", 2, 2)[1].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 
 			// (const Char*,int,int) constructor
-			Assert::AreEqual(2, String(ch, 2, 2).Length(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
-			Assert::AreEqual(2, String(ch, 2, 2).Capacity(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, (int)String(ch, 2, 2).Length, L"(const wchar_t*, int, int) constructor", LINE_INFO());
+			Assert::AreEqual(2, (int)String(ch, 2, 2).Capacity, L"(const wchar_t*, int, int) constructor", LINE_INFO());
 			Assert::AreEqual(L'c', String(ch, 2, 2)[0].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 			Assert::AreEqual(L'd', String(ch, 2, 2)[1].Value(), L"(const wchar_t*, int, int) constructor", LINE_INFO());
 		}
@@ -88,16 +88,16 @@ namespace FrameworkTest
 
 			// operator+=
 			string += "abc";
-			Assert::AreEqual(3, string.Length(), L"operator+=", LINE_INFO());
-			Assert::AreEqual(3, string.Capacity(), L"operator+=", LINE_INFO());
+			Assert::AreEqual(3, (int)string.Length, L"operator+=", LINE_INFO());
+			Assert::AreEqual(3, (int)string.Capacity, L"operator+=", LINE_INFO());
 			Assert::AreEqual(L'a', string[0].Value(), L"operator+=", LINE_INFO());
 			Assert::AreEqual(L'b', string[1].Value(), L"operator+=", LINE_INFO());
 			Assert::AreEqual(L'c', string[2].Value(), L"operator+=", LINE_INFO());
 
 			// Append
 			string.Append("def");
-			Assert::AreEqual(6, string.Length(), L"Append", LINE_INFO());
-			Assert::AreEqual(6, string.Capacity(), L"Append", LINE_INFO());
+			Assert::AreEqual(6, (int)string.Length, L"Append", LINE_INFO());
+			Assert::AreEqual(6, (int)string.Capacity, L"Append", LINE_INFO());
 			Assert::AreEqual(L'a', string[0].Value(), L"Append", LINE_INFO());
 			Assert::AreEqual(L'b', string[1].Value(), L"Append", LINE_INFO());
 			Assert::AreEqual(L'c', string[2].Value(), L"Append", LINE_INFO());

@@ -58,6 +58,8 @@
 #endif
 
 #if defined(LUPUS_WINDOWS_PLATFORM)
+// ignore specific warnings
+#pragma warning(disable:4251)
 #include <cwchar>
 // type
 #define _lchar wchar_t
@@ -130,25 +132,25 @@
 #define lock(object, code) object.Lock(); code; object.Unlock()
 
 namespace Lupus {
-	/// single signed byte
+	//! single signed byte
 	typedef signed char byte;
-	/// single unsigned byte
+	//! single unsigned byte
 	typedef unsigned char ubyte;
-	/// 16-bit unsigned integer
+	//! 16-bit unsigned integer
 	typedef unsigned short ushort;
-	/// 32-bit unsigned integer
+	//! 32-bit unsigned integer
 	typedef unsigned int uint;
-	/// >=32-bit unsigned integer
+	//! >=32-bit unsigned integer
 	typedef unsigned long ulong;
-	/// >=64-bit signed integer
+	//! >=64-bit signed integer
 	typedef long long llong;
-	/// >=64-bit unsigned integer
+	//! >=64-bit unsigned integer
 	typedef unsigned long long ullong;
-	/// 128-bit float point number
+	//! 128-bit float point number
 	typedef long double real;
 
 	namespace System {
-		/// sensitivity flag
+		//! sensitivity flag
 		enum class CaseSensitivity {
 			CaseSensitive,
 			CaseInsensitive

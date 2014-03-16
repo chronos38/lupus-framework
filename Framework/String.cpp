@@ -26,11 +26,11 @@ namespace Lupus {
 	namespace System {
 		String::String() :
 			Object(),
-			mData(new _lchar[1]),
-			mLength(0),
-			mCapacity(0)
+			_data(new _lchar[1]),
+			_length(0),
+			_capacity(0)
 		{
-			mData[0] = 0;
+			_data[0] = 0;
 		}
 
 		String::String(const Char* source) :
@@ -51,15 +51,15 @@ namespace Lupus {
 			}
 
 			// set values
-			mData = new _lchar[length + 1];
+			_data = new _lchar[length + 1];
 
 			// set internal buffer
 			for (int i = 0; i < length; i++) {
-				mData[i] = source[i].Value();
+				_data[i] = source[i].Value();
 			}
 
-			mData[length] = 0;
-			mLength = mCapacity = length;
+			_data[length] = 0;
+			_length = _capacity = length;
 		}
 
 		String::String(const Char* source, int startIndex, int count) :
@@ -89,50 +89,50 @@ namespace Lupus {
 			}
 
 			// create buffer
-			mData = new _lchar[count + 1];
+			_data = new _lchar[count + 1];
 
 			// set internal buffer
 			for (int i = 0; i < count; i++) {
-				mData[i] = source[i + startIndex].Value();
+				_data[i] = source[i + startIndex].Value();
 			}
 
 			// terminate with zero and free not needed memory
-			mData[count] = 0;
-			mLength = mCapacity = count;
+			_data[count] = 0;
+			_length = _capacity = count;
 		}
 
 		String::String(const String& string) :
 			Object(),
-			mData(new wchar_t[string.Length + 1]),
-			mLength(string.Length),
-			mCapacity(string.Length)
+			_data(new wchar_t[string.Length + 1]),
+			_length(string.Length),
+			_capacity(string.Length)
 		{
-			_lmemcpy(mData, string.Data(), mLength);
-			mData[mLength] = 0;
+			_lmemcpy(_data, string.Data, _length);
+			_data[_length] = 0;
 		}
 
 		String::String(String&& string) :
 			String()
 		{
 			// variables
-			_lchar* swapData = mData;
-			int swapLength = mLength;
-			int swapCapacity = mCapacity;
+			_lchar* swapData = _data;
+			int swapLength = _length;
+			int swapCapacity = _capacity;
 
 			// swap memory
-			mData = string.mData;
-			mLength = string.mLength;
-			mCapacity = string.mCapacity;
+			_data = string._data;
+			_length = string._length;
+			_capacity = string._capacity;
 
-			string.mData = swapData;
-			string.mLength = swapLength;
-			string.mCapacity = swapCapacity;
+			string._data = swapData;
+			string._length = swapLength;
+			string._capacity = swapCapacity;
 		}
 
 		String::~String()
 		{
-			if (mData) {
-				delete[] mData;
+			if (_data) {
+				delete[] _data;
 			}
 		}
 
@@ -146,34 +146,29 @@ namespace Lupus {
 			return operator+=(ch);
 		}
 
-		int String::Capacity() const
-		{
-			return mCapacity;
-		}
-
 		int String::Compare(const String& string, CaseSensitivity sensitivity) const
 		{
 			// check length
-			if (mLength != string.Length) {
-				return (mLength - string.Length);
+			if (_length != string.Length) {
+				return (_length - string.Length);
 			}
 
 			// variables
-			const _lchar* data = string.Data();
+			const _lchar* data = string.Data;
 
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				for (int i = 0; i < mLength; i++) {
-					if (mData[i] != data[i]) {
-						return (mData[i] - data[i]);
+				for (int i = 0; i < _length; i++) {
+					if (_data[i] != data[i]) {
+						return (_data[i] - data[i]);
 					}
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
-				for (int i = 0; i < mLength; i++) {
-					if (_ltolower(mData[i]) != _ltolower(data[i])) {
-						return (mData[i] - data[i]);
+				for (int i = 0; i < _length; i++) {
+					if (_ltolower(_data[i]) != _ltolower(data[i])) {
+						return (_data[i] - data[i]);
 					}
 				}
 				break;
@@ -187,18 +182,18 @@ namespace Lupus {
 			// check arguments
 			if (string == "") {
 				return true;
-			} else if (mLength < string.Length) {
+			} else if (_length < string.Length) {
 				return false;
-			} else if (mLength == string.Length) {
+			} else if (_length == string.Length) {
 				return (Compare(string, sensitivity) == 0);
 			}
 
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return (KnuthMorrisPratt(mData, mLength, string.Data(), string.Length) != -1);
+				return (KnuthMorrisPratt(_data, _length, string.Data, string.Length) != -1);
 			case CaseSensitivity::CaseInsensitive:
-				return (KnuthMorrisPrattInsensitive(mData, mLength, string.Data(), string.Length) != -1);
+				return (KnuthMorrisPrattInsensitive(_data, _length, string.Data, string.Length) != -1);
 			}
 
 			return false;
@@ -207,7 +202,7 @@ namespace Lupus {
 		void String::CopyTo(int sourceIndex, ISequence<Char>& sequence, int destinationIndex, int count) const
 		{
 			// check argument
-			if ((sourceIndex + count) > mLength) {
+			if ((sourceIndex + count) > _length) {
 				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes string length");
 			} else if (sourceIndex < 0) {
 				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
@@ -217,33 +212,17 @@ namespace Lupus {
 
 			// variables
 			int limit = sourceIndex + count;
-			auto it = sequence.Begin();
-
-			// set correct position
-			for (int i = 0; i < destinationIndex; i++) {
-				it.Next();
-			}
 
 			// copy values
-			for (int i = sourceIndex; i < limit; i++, it.Next()) {
-				it.CurrentItem() = mData[i];
+			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
+				sequence[j] = _data[i];
 			}
-		}
-
-		_lchar* String::Data()
-		{
-			return mData;
-		}
-
-		const _lchar* String::Data() const
-		{
-			return mData;
 		}
 
 		int String::IndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
-			if (startIndex >= mLength) {
+			if (startIndex >= _length) {
 				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
@@ -255,15 +234,15 @@ namespace Lupus {
 			// comput result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				for (int i = startIndex; i < mLength; i++) {
-					if (mData[i] == ch) {
+				for (int i = startIndex; i < _length; i++) {
+					if (_data[i] == ch) {
 						return i;
 					}
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
-				for (int i = startIndex; i < mLength; i++) {
-					if (_ltolower(mData[i]) == lower) {
+				for (int i = startIndex; i < _length; i++) {
+					if (_ltolower(_data[i]) == lower) {
 						return i;
 					}
 				}
@@ -276,7 +255,7 @@ namespace Lupus {
 		int String::IndexOf(const String& string, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
-			if (startIndex >= mLength) {
+			if (startIndex >= _length) {
 				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
@@ -285,9 +264,9 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPratt(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
+				return KnuthMorrisPratt(_data + startIndex, _length - startIndex, string.Data, string.Length);
 			case CaseSensitivity::CaseInsensitive:
-				return KnuthMorrisPrattInsensitive(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
+				return KnuthMorrisPrattInsensitive(_data + startIndex, _length - startIndex, string.Data, string.Length);
 			}
 
 			return -1;
@@ -296,7 +275,7 @@ namespace Lupus {
 		int String::IndexOfAny(const ISequence<Char>& sequence, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
-			if (startIndex >= mLength) {
+			if (startIndex >= _length) {
 				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
@@ -310,8 +289,8 @@ namespace Lupus {
 			// comput result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				for (int i = startIndex; i < mLength; i++) {
-					_lchar& ch = mData[i];
+				for (int i = startIndex; i < _length; i++) {
+					_lchar& ch = _data[i];
 
 					while (!iterator.IsDone()) {
 						if (ch == iterator.CurrentItem()) {
@@ -323,16 +302,16 @@ namespace Lupus {
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
-				for (int i = startIndex; i < mLength; i++) {
-					_lchar ch = _ltolower(mData[i]);
+				for (int i = startIndex; i < _length; i++) {
+					_lchar ch = _ltolower(_data[i]);
 
-					do {
-						if (ch == (*iterator.Value()).ToLower()) {
+					while (!iterator.IsDone()) {
+						if (ch == iterator.CurrentItem()) {
 							return i;
 						}
-					} while (iterator.Next());
+					}
 
-					iterator.Reset();
+					iterator.First();
 				}
 				break;
 			}
@@ -343,7 +322,7 @@ namespace Lupus {
 		int String::LastIndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
-			if ((mLength - startIndex) < 0) {
+			if ((_length - startIndex) < 0) {
 				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
@@ -355,15 +334,15 @@ namespace Lupus {
 			// comput result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				for (int i = (mLength - startIndex); i >= 0; i--) {
-					if (mData[i] == ch) {
+				for (int i = (_length - startIndex); i >= 0; i--) {
+					if (_data[i] == ch) {
 						return i;
 					}
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
-				for (int i = (mLength - startIndex); i >= 0; i--) {
-					if (_ltolower(mData[i]) == lower) {
+				for (int i = (_length - startIndex); i >= 0; i--) {
+					if (_ltolower(_data[i]) == lower) {
 						return i;
 					}
 				}
@@ -376,7 +355,7 @@ namespace Lupus {
 		int String::LastIndexOf(const String& string, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
-			if (startIndex >= mLength) {
+			if (startIndex >= _length) {
 				throw ArgumentNullException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
@@ -385,9 +364,9 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPrattLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
+				return KnuthMorrisPrattLast(_data + startIndex, _length - startIndex, string.Data, string.Length);
 			case CaseSensitivity::CaseInsensitive:
-				return KnuthMorrisPrattInsensitiveLast(mData + startIndex, mLength - startIndex, string.Data(), string.Length);
+				return KnuthMorrisPrattInsensitiveLast(_data + startIndex, _length - startIndex, string.Data, string.Length);
 			}
 
 			return -1;
@@ -396,7 +375,7 @@ namespace Lupus {
 		int String::LastIndexOfAny(const ISequence<Char>& sequence, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
-			if (startIndex >= mLength) {
+			if (startIndex >= _length) {
 				throw ArgumentNullException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
@@ -410,17 +389,17 @@ namespace Lupus {
 		String& String::Remove(int startIndex)
 		{
 			// check argument
-			if (startIndex >= mLength) {
+			if (startIndex >= _length) {
 				throw ArgumentOutOfRangeException("startIndex exceedes string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
 			}
 
 			// set range to zero
-			_lmemset(mData + startIndex, 0, (mLength - startIndex));
+			_lmemset(_data + startIndex, 0, (_length - startIndex));
 
 			// update length
-			mLength = startIndex;
+			_length = startIndex;
 
 			return (*this);
 		}
@@ -428,7 +407,7 @@ namespace Lupus {
 		String& String::Remove(int startIndex, int count)
 		{
 			// check argument
-			if ((startIndex + count) > mLength) {
+			if ((startIndex + count) > _length) {
 				throw ArgumentOutOfRangeException("startIndex plus count exceedes string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
@@ -437,13 +416,13 @@ namespace Lupus {
 			}
 
 			// variables
-			int length = mLength - (startIndex + count);
+			int length = _length - (startIndex + count);
 
 			// set range to zero
-			_lmemmove(mData + startIndex, mData + (startIndex + count), length);
+			_lmemmove(_data + startIndex, _data + (startIndex + count), length);
 
 			// update length
-			mLength -= count;
+			_length -= count;
 
 			return (*this);
 		}
@@ -452,15 +431,15 @@ namespace Lupus {
 		{
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				for (int i = 0; i < mLength; i++) {
-					if (mData[i] == before) {
-						mData[i] = after.Value();
+				for (int i = 0; i < _length; i++) {
+					if (_data[i] == before) {
+						_data[i] = after.Value();
 					}
 				}
 			case CaseSensitivity::CaseInsensitive:
-				for (int i = 0; i < mLength; i++) {
-					if (_ltolower(mData[i]) == before.ToLower()) {
-						mData[i] = after.Value();
+				for (int i = 0; i < _length; i++) {
+					if (_ltolower(_data[i]) == before.ToLower()) {
+						_data[i] = after.Value();
 					}
 				}
 			}
@@ -493,18 +472,18 @@ namespace Lupus {
 
 		String String::Substring(int startIndex) const
 		{
-			if (startIndex >= mLength) {
+			if (startIndex >= _length) {
 				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
 			}
 
-			return String(mData + startIndex);
+			return String(_data + startIndex);
 		}
 
 		String String::Substring(int startIndex, int count) const
 		{
-			if ((startIndex + count) >= mLength) {
+			if ((startIndex + count) >= _length) {
 				throw ArgumentOutOfRangeException("startIndex exceeds string length");
 			} else if (startIndex < 0) {
 				throw ArgumentOutOfRangeException("startIndex must be greater than or equal to zero");
@@ -512,16 +491,16 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("length must be greater than zero");
 			}
 
-			return String(mData, startIndex, count);
+			return String(_data, startIndex, count);
 		}
 
 		String& String::ToLower()
 		{
 			// variables
-			const _lchar* limit = mData + mLength;
+			const _lchar* limit = _data + _length;
 
 			// compute result
-			for (_lchar* ch = mData; ch != limit; ch++) {
+			for (_lchar* ch = _data; ch != limit; ch++) {
 				(*ch) = _ltolower(*ch);
 			}
 
@@ -531,54 +510,36 @@ namespace Lupus {
 		String& String::ToUpper()
 		{
 			// variables
-			const _lchar* limit = mData + mLength;
+			const _lchar* limit = _data + _length;
 
 			// compute result
-			for (_lchar* ch = mData; ch != limit; ch++) {
+			for (_lchar* ch = _data; ch != limit; ch++) {
 				(*ch) = _ltoupper(*ch);
 			}
 
 			return (*this);
 		}
 
-		Char& String::operator[](uint index)
-		{
-			if (index >= static_cast<uint>(mLength)) {
-				throw ArgumentOutOfRangeException("index exceeds string length");
-			}
-
-			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
-		}
-
-		const Char& String::operator[](uint index) const
-		{
-			if (index >= static_cast<uint>(mLength)) {
-				throw ArgumentOutOfRangeException("index exceeds string length");
-			}
-
-			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
-		}
-
 		Char& String::operator[](int index)
 		{
-			if (index >= mLength) {
+			if (index >= _length) {
 				throw ArgumentOutOfRangeException("index exceeds string length");
 			} else if (index < 0) {
 				throw ArgumentOutOfRangeException("index must be greater than zero");
 			}
 
-			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
+			return dynamic_cast<Char&>(_refChar = (_data + index));
 		}
 
 		const Char& String::operator[](int index) const
 		{
-			if (index >= mLength) {
+			if (index >= _length) {
 				throw ArgumentOutOfRangeException("index exceeds string length");
 			} else if (index < 0) {
 				throw ArgumentOutOfRangeException("index must be greater than zero");
 			}
 
-			return dynamic_cast<Char&>(mCurrent = (&mData[index]));
+			return dynamic_cast<const Char&>(_refChar = (_data + index));
 		}
 
 		String& String::operator=(const _lchar* string)
@@ -592,23 +553,23 @@ namespace Lupus {
 			int length = _lstrlen(string);
 
 			// check if capacity is big enough
-			if (mCapacity >= length) {
+			if (_capacity >= length) {
 				// reset buffer
-				_lmemset(mData, 0, mLength);
+				_lmemset(_data, 0, _length);
 
 				// set new values
-				_lmemcpy(mData, string, length);
-				mData[length] = 0;
-				mLength = length;
+				_lmemcpy(_data, string, length);
+				_data[length] = 0;
+				_length = length;
 			} else {
 				// reallocate buffer
-				delete[] mData;
-				mData = new _lchar[length + 1];
+				delete[] _data;
+				_data = new _lchar[length + 1];
 
 				// set new values
-				_lmemcpy(mData, string, length);
-				mData[length] = 0;
-				mLength = mCapacity = length;
+				_lmemcpy(_data, string, length);
+				_data[length] = 0;
+				_length = _capacity = length;
 			}
 
 			return (*this);
@@ -620,23 +581,23 @@ namespace Lupus {
 			int length = string.Length;
 
 			// check if capacity is big enough
-			if (mCapacity >= length) {
+			if (_capacity >= length) {
 				// reset buffer
-				_lmemset(mData, 0, mLength);
+				_lmemset(_data, 0, _length);
 
 				// set new values
-				_lmemcpy(mData, string.Data(), length);
-				mData[length] = 0;
-				mLength = length;
+				_lmemcpy(_data, string.Data, length);
+				_data[length] = 0;
+				_length = length;
 			} else {
 				// reallocate buffer
-				delete[] mData;
-				mData = new _lchar[length + 1];
+				delete[] _data;
+				_data = new _lchar[length + 1];
 
 				// set new values
-				_lmemcpy(mData, string.Data(), length);
-				mData[length] = 0;
-				mLength = mCapacity = length;
+				_lmemcpy(_data, string.Data, length);
+				_data[length] = 0;
+				_length = _capacity = length;
 			}
 
 			return (*this);
@@ -645,36 +606,36 @@ namespace Lupus {
 		String& String::operator=(String&& string)
 		{
 			// delete[] current buffer
-			delete[] mData;
+			delete[] _data;
 
 			// move memory
-			mData = string.mData;
-			mLength = string.mLength;
-			mCapacity = string.mCapacity;
+			_data = string._data;
+			_length = string._length;
+			_capacity = string._capacity;
 
 			// reset string
-			string.mData = new _lchar[1];
-			string.mLength = 0;
-			string.mCapacity = 0;
+			string._data = new _lchar[1];
+			string._length = 0;
+			string._capacity = 0;
 
 			return (*this);
 		}
 
 		String& String::operator=(const Char& ch)
 		{
-			if (mCapacity > 1) {
-				_lmemset(mData, 0, mLength);
-				mData[0] = ch.Value();
-				mLength = 1;
+			if (_capacity > 1) {
+				_lmemset(_data, 0, _length);
+				_data[0] = ch.Value();
+				_length = 1;
 			} else {
 				// reallocate buffer
-				delete[] mData;
-				mData = new _lchar[2];
+				delete[] _data;
+				_data = new _lchar[2];
 
 				// set new values
-				mData[0] = ch.Value();
-				mData[1] = 0;
-				mLength = mCapacity = 1;
+				_data[0] = ch.Value();
+				_data[1] = 0;
+				_length = _capacity = 1;
 			}
 
 			return (*this);
@@ -683,12 +644,12 @@ namespace Lupus {
 		String String::operator+(const String& string) const
 		{
 			// variables
-			_lchar* buffer = new _lchar[mLength + string.Length + 1];
+			_lchar* buffer = new _lchar[_length + string.Length + 1];
 
 			// copy new buffer
-			_lmemcpy(buffer, mData, mLength);
-			_lmemcpy(buffer + mLength, string.Data(), string.Length);
-			buffer[mLength + string.Length] = 0;
+			_lmemcpy(buffer, _data, _length);
+			_lmemcpy(buffer + _length, string.Data, string.Length);
+			buffer[_length + string.Length] = 0;
 
 			// set result and delete[] buffer
 			return CreateWithExistingBuffer(buffer);
@@ -700,23 +661,23 @@ namespace Lupus {
 			int length = _lstrlen(str);
 
 			// check if capacity is big enough
-			if ((mCapacity - mLength) >= length) {
-				_lmemcpy(mData + mLength, str, length);
-				mLength += length;
+			if ((_capacity - _length) >= length) {
+				_lmemcpy(_data + _length, str, length);
+				_length += length;
 			} else {
 				// new buffer
-				_lchar* buffer = new _lchar[mLength + length + 1];
+				_lchar* buffer = new _lchar[_length + length + 1];
 
 				// copy new buffer
-				_lmemcpy(buffer, mData, mLength);
-				_lmemcpy(buffer + mLength, str, length);
-				buffer[mLength + length] = 0;
+				_lmemcpy(buffer, _data, _length);
+				_lmemcpy(buffer + _length, str, length);
+				buffer[_length + length] = 0;
 
 				// set result and delete[] buffer
-				delete[] mData;
-				mData = buffer;
-				mLength += length;
-				mCapacity += length;
+				delete[] _data;
+				_data = buffer;
+				_length += length;
+				_capacity += length;
 			}
 
 			return (*this);
@@ -728,23 +689,23 @@ namespace Lupus {
 			int length = string.Length;
 
 			// check if capacity is big enough
-			if ((mCapacity - mLength) >= length) {
-				_lmemcpy(mData + mLength, string.Data(), length);
-				mLength += length;
+			if ((_capacity - _length) >= length) {
+				_lmemcpy(_data + _length, string.Data, length);
+				_length += length;
 			} else {
 				// new buffer
-				_lchar* buffer = new _lchar[mLength + length + 1];
+				_lchar* buffer = new _lchar[_length + length + 1];
 				
 				// copy new buffer
-				_lmemcpy(buffer, mData, mLength);
-				_lmemcpy(buffer + mLength, string.Data(), length);
-				buffer[mLength + length] = 0;
+				_lmemcpy(buffer, _data, _length);
+				_lmemcpy(buffer + _length, string.Data, length);
+				buffer[_length + length] = 0;
 
 				// set result and delete[] buffer
-				delete[] mData;
-				mData = buffer;
-				mLength += length;
-				mCapacity += length;
+				delete[] _data;
+				_data = buffer;
+				_length += length;
+				_capacity += length;
 			}
 
 			return (*this);
@@ -752,24 +713,24 @@ namespace Lupus {
 
 		String& String::operator+=(const Char& ch)
 		{
-			if ((mCapacity - mLength) >= 1) {
-				_lmemset(mData, 0, mLength);
-				mData[0] = ch.Value();
-				mLength = 1;
+			if ((_capacity - _length) >= 1) {
+				_lmemset(_data, 0, _length);
+				_data[0] = ch.Value();
+				_length = 1;
 			} else {
 				// reallocate buffer
-				_lchar* buffer = new _lchar[mLength + 2];
+				_lchar* buffer = new _lchar[_length + 2];
 
 				// copy new buffer
-				_lmemcpy(buffer, mData, mLength);
-				buffer[mLength] = ch.Value();
-				buffer[mLength + 1] = 0;
+				_lmemcpy(buffer, _data, _length);
+				buffer[_length] = ch.Value();
+				buffer[_length + 1] = 0;
 
 				// set result and delete[] buffer
-				delete[] mData;
-				mData = buffer;
-				mLength += 1;
-				mCapacity += 1;
+				delete[] _data;
+				_data = buffer;
+				_length += 1;
+				_capacity += 1;
 			}
 
 			return (*this);
@@ -792,12 +753,12 @@ namespace Lupus {
 
 		Char& String::Back()
 		{
-			return operator[](mLength - 1);
+			return operator[](_length - 1);
 		}
 
 		const Char& String::Back() const
 		{
-			return operator[](mLength - 1);
+			return operator[](_length - 1);
 		}
 
 		SequenceIterator<Char> String::Begin() const
@@ -807,23 +768,23 @@ namespace Lupus {
 
 		void String::Clear()
 		{
-			_lmemset(mData, 0, mLength);
-			mLength = 0;
+			_lmemset(_data, 0, _length);
+			_length = 0;
 		}
 
 		bool String::Contains(const Char& ch) const
 		{
-			return (_lmemchr(mData, ch.Value(), mLength) != 0);
+			return (_lmemchr(_data, ch.Value(), _length) != 0);
 		}
 
 		void String::CopyTo(ISequence<Char>& sequence, int startIndex) const
 		{
-			CopyTo(0, sequence, startIndex, mLength);
+			CopyTo(0, sequence, startIndex, _length);
 		}
 
 		int String::Count() const
 		{
-			return mLength;
+			return _length;
 		}
 
 		Char& String::Front()
@@ -848,7 +809,7 @@ namespace Lupus {
 
 		bool String::IsEmpty() const
 		{
-			return (mData[0] == 0);
+			return (_data[0] == 0);
 		}
 
 		bool String::RemoveAt(int index)
@@ -874,12 +835,12 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("count must be greater than zero");
 			}
 
-			if (count <= mCapacity) {
-				_lmemset(mData, 0, count);
+			if (count <= _capacity) {
+				_lmemset(_data, 0, count);
 
 				// check for new length
-				if (count < mLength) {
-					mLength = count;
+				if (count < _length) {
+					_length = count;
 				}
 			} else {
 				// new buffer
@@ -887,12 +848,12 @@ namespace Lupus {
 				_lmemset(buffer, 0, count);
 
 				// copy old buffer delete it afterwards
-				_lmemcpy(buffer, mData, mLength);
-				delete[] mData;
+				_lmemcpy(buffer, _data, _length);
+				delete[] _data;
 
 				// set internal buffer and length
-				mData = buffer;
-				mLength = mCapacity = count;
+				_data = buffer;
+				_length = _capacity = count;
 			}
 		}
 
@@ -902,12 +863,12 @@ namespace Lupus {
 			String string;
 
 			// delete buffer
-			delete[] string.mData;
+			delete[] string._data;
 
 			// set values
-			string.mData = str;
-			string.mLength = _lstrlen(str);
-			string.mCapacity = string.mLength;
+			string._data = str;
+			string._length = _lstrlen(str);
+			string._capacity = string._length;
 
 			// return result
 			return string;
