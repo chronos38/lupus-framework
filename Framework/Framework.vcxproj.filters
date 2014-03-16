@@ -44,14 +44,14 @@
     <ClInclude Include="IDictionary.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Iterator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Float.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Property.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Iterator.hpp">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,10 +90,10 @@
     <None Include="Char.inl">
       <Filter>Inline Files</Filter>
     </None>
-    <None Include="Iterator.inl">
+    <None Include="Property.inl">
       <Filter>Inline Files</Filter>
     </None>
-    <None Include="Property.inl">
+    <None Include="Iterator.inl">
       <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>

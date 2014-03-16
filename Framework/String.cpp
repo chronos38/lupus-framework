@@ -18,6 +18,7 @@
 
 #include "String.hpp"
 #include "ISequence.hpp"
+#include "Iterator.hpp"
 #include "Exception.hpp"
 #include <cstring>
 
@@ -216,14 +217,16 @@ namespace Lupus {
 
 			// variables
 			int limit = sourceIndex + count;
-			Iterator<Char> it = sequence.Begin();
+			auto it = sequence.Begin();
 
 			// set correct position
-			it.Move(destinationIndex);
+			for (int i = 0; i < destinationIndex; i++) {
+				it.Next();
+			}
 
 			// copy values
 			for (int i = sourceIndex; i < limit; i++, it.Next()) {
-				(*(it.Value())) = mData[i];
+				it.CurrentItem() = mData[i];
 			}
 		}
 
@@ -302,7 +305,7 @@ namespace Lupus {
 			}
 
 			// variables
-			Iterator<Char> iterator = sequence.Begin();
+			auto iterator = sequence.Begin();
 
 			// comput result
 			switch (sensitivity) {
@@ -310,13 +313,13 @@ namespace Lupus {
 				for (int i = startIndex; i < mLength; i++) {
 					_lchar& ch = mData[i];
 
-					do {
-						if (ch == (*iterator.Value())) {
+					while (!iterator.IsDone()) {
+						if (ch == iterator.CurrentItem()) {
 							return i;
 						}
-					} while (iterator.Next());
+					}
 
-					iterator.Reset();
+					iterator.First();
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
@@ -402,11 +405,6 @@ namespace Lupus {
 			}
 
 			throw NotImplementedException();
-		}
-
-		int String::Length() const
-		{
-			return mLength;
 		}
 
 		String& String::Remove(int startIndex)
@@ -802,9 +800,9 @@ namespace Lupus {
 			return operator[](mLength - 1);
 		}
 
-		Iterator<Char> String::Begin() const
+		SequenceIterator<Char> String::Begin() const
 		{
-			return StringIterator(mData, mLength);
+			return SequenceIterator<Char>(this);
 		}
 
 		void String::Clear()
@@ -843,7 +841,7 @@ namespace Lupus {
 			throw NotImplementedException();
 		}
 		
-		void String::Insert(const Iterator<Char>&, const Char&)
+		void String::Insert(const SequenceIterator<Char>&, const Char&)
 		{
 			throw NotImplementedException();
 		}
@@ -864,7 +862,7 @@ namespace Lupus {
 			return true;
 		}
 
-		bool String::Remove(const Iterator<Char>& iterator)
+		bool String::Remove(const SequenceIterator<Char>& iterator)
 		{
 			throw NotImplementedException();
 		}
@@ -1163,72 +1161,6 @@ namespace Lupus {
 		bool String::RefChar::operator!=(const Char& ch) const
 		{
 			return ((*mRef) != ch.Value());
-		}
-
-		String::StringIterator::StringIterator(_lchar* data, const int& length) :
-			Iterator(),
-			mPosition(data),
-			mInitialPosition(data),
-			mLength(length)
-		{
-		}
-
-		String::StringIterator::StringIterator(const StringIterator& stringIterator) :
-			Iterator(),
-			mPosition(stringIterator.mPosition),
-			mInitialPosition(stringIterator.mInitialPosition),
-			mLength(stringIterator.mLength)
-		{
-		}
-
-		String::StringIterator::~StringIterator()
-		{
-		}
-
-		bool String::StringIterator::Move(int count)
-		{
-			if ((mPosition + count) > (mInitialPosition + mLength)) {
-				return false;
-			} else {
-				mPosition += count;
-			}
-
-			return true;
-		}
-
-		bool String::StringIterator::Next()
-		{
-			if (mPosition > (mInitialPosition + mLength)) {
-				return false;
-			} else {
-				mPosition++;
-			}
-
-			return true;
-		}
-
-		void String::StringIterator::Reset()
-		{
-			mPosition = mInitialPosition;
-		}
-
-		Char* String::StringIterator::Value()
-		{
-			return (&(mValue = RefChar(mPosition)));
-		}
-
-		const Char* String::StringIterator::Value() const
-		{
-			return (&(mValue = RefChar(mPosition)));
-		}
-
-		String::StringIterator& String::StringIterator::operator=(const StringIterator& stringIterator)
-		{
-			mPosition = stringIterator.mPosition;
-			mInitialPosition = stringIterator.mInitialPosition;
-			mLength = stringIterator.mLength;
-			mValue = RefChar(nullptr);
-			return (*this);
 		}
 	}
 }

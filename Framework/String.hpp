@@ -35,9 +35,52 @@ namespace Lupus {
 		/// String class used for internal string operations
 		class LUPUS_API String : public Object, public ISequence<Char>
 		{
+			// instance variables
 			_lchar* mData;
 			int mLength;
 			int mCapacity;
+
+			/// reference char
+			class LUPUS_API RefChar : public Char
+			{
+			public:
+				RefChar();
+				RefChar(_lchar*);
+				virtual ~RefChar();
+				virtual RefChar& operator=(_lchar*);
+				virtual bool IsBlank() const override;
+				virtual bool IsDigit() const override;
+				virtual bool IsGraph() const override;
+				virtual bool IsLetter() const override;
+				virtual bool IsLetterOrDigit() const override;
+				virtual bool IsLower() const override;
+				virtual bool IsPunct() const override;
+				virtual bool IsUpper() const override;
+				virtual bool IsSpace() const override;
+				virtual bool IsPrint() const override;
+				virtual bool IsControl() const override;
+				virtual bool IsHexadecimal() const override;
+				virtual Char ToLower() const override;
+				virtual Char ToUpper() const override;
+				virtual _lchar Value() const override;
+				virtual Char& operator=(char) override;
+				virtual Char& operator=(const Char&) override;
+				virtual Char operator+(const Char&) const override;
+				virtual Char operator-(const Char&) const override;
+				virtual Char& operator+=(int) override;
+				virtual Char& operator-=(int) override;
+				virtual Char& operator++() override;
+				virtual Char& operator--() override;
+				virtual bool operator==(const Char&) const override;
+				virtual bool operator!=(const Char&) const override;
+#if defined(LUPUS_WINDOWS_PLATFORM)
+				virtual Char& operator=(wchar_t);
+#endif
+			private:
+				_lchar* mRef;
+			};
+
+			mutable RefChar mCurrent;
 		public:
 			/// Create an empty string
 			String();
@@ -285,28 +328,14 @@ namespace Lupus {
 			 *
 			 * @return Char at given index
 			 */
-			Char& operator[](uint);
+			virtual Char& operator[](int) final;
 			/**
 			 * \b Exceptions
 			 * - ArgumentOutOfRangeException
 			 *
 			 * @return Char at given index
 			 */
-			const Char& operator[](uint) const;
-			/**
-			 * \b Exceptions
-			 * - ArgumentOutOfRangeException
-			 *
-			 * @return Char at given index
-			 */
-			Char& operator[](int);
-			/**
-			 * \b Exceptions
-			 * - ArgumentOutOfRangeException
-			 *
-			 * @return Char at given index
-			 */
-			const Char& operator[](int) const;
+			virtual const Char& operator[](int) const final;
 			/**
 			 * copy native string to this instance
 			 *
@@ -379,7 +408,7 @@ namespace Lupus {
 			virtual void Add(const Char&) override;
 			virtual Char& Back() override;
 			virtual const Char& Back() const override;
-			virtual Iterator<Char> Begin() const override;
+			virtual SequenceIterator<Char> Begin() const override;
 			virtual void Clear() override;
 			virtual bool Contains(const Char&) const override;
 			virtual void CopyTo(ISequence<Char>&, int) const override;
@@ -387,10 +416,10 @@ namespace Lupus {
 			virtual Char& Front() override;
 			virtual const Char& Front() const override;
 			virtual void Insert(int, const Char&) override;
-			virtual void Insert(const Iterator<Char>&, const Char&) override;
+			virtual void Insert(const SequenceIterator<Char>&, const Char&) override;
 			virtual bool IsEmpty() const override;
 			virtual bool RemoveAt(int) override;
-			virtual bool Remove(const Iterator<Char>&) override;
+			virtual bool Remove(const SequenceIterator<Char>&) override;
 			virtual void Resize(int) override;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
@@ -407,69 +436,6 @@ namespace Lupus {
 			static int KnuthMorrisPrattInsensitive(const _lchar*, int, const _lchar*, int);
 			static int KnuthMorrisPrattInsensitiveLast(const _lchar*, int, const _lchar*, int);
 			static _lchar* Mirror();
-		private:
-			/// reference char
-			class LUPUS_API RefChar : public Char
-			{
-			public:
-				RefChar();
-				RefChar(_lchar*);
-				virtual ~RefChar();
-				virtual RefChar& operator=(_lchar*);
-				virtual bool IsBlank() const override;
-				virtual bool IsDigit() const override;
-				virtual bool IsGraph() const override;
-				virtual bool IsLetter() const override;
-				virtual bool IsLetterOrDigit() const override;
-				virtual bool IsLower() const override;
-				virtual bool IsPunct() const override;
-				virtual bool IsUpper() const override;
-				virtual bool IsSpace() const override;
-				virtual bool IsPrint() const override;
-				virtual bool IsControl() const override;
-				virtual bool IsHexadecimal() const override;
-				virtual Char ToLower() const override;
-				virtual Char ToUpper() const override;
-				virtual _lchar Value() const override;
-				virtual Char& operator=(char) override;
-				virtual Char& operator=(const Char&) override;
-				virtual Char operator+(const Char&) const override;
-				virtual Char operator-(const Char&) const override;
-				virtual Char& operator+=(int) override;
-				virtual Char& operator-=(int) override;
-				virtual Char& operator++() override;
-				virtual Char& operator--() override;
-				virtual bool operator==(const Char&) const override;
-				virtual bool operator!=(const Char&) const override;
-#if defined(LUPUS_WINDOWS_PLATFORM)
-				virtual Char& operator=(wchar_t);
-#endif
-			private:
-				_lchar* mRef;
-			};
-
-			mutable RefChar mCurrent;
-
-			/// iterator
-			class LUPUS_API StringIterator : public Iterator<Char>
-			{
-			public:
-				StringIterator(_lchar*, const int&);
-				StringIterator(const StringIterator&);
-				StringIterator(StringIterator&&) = delete;
-				virtual ~StringIterator();
-				virtual bool Move(int) override;
-				virtual bool Next() override;
-				virtual void Reset() override;
-				virtual Char* Value() override;
-				virtual const Char* Value() const override;
-				virtual StringIterator& operator=(const StringIterator&);
-			private:
-				_lchar* mPosition;
-				_lchar* mInitialPosition;
-				int mLength;
-				mutable RefChar mValue;
-			};
 		};
 
 		template <typename T>

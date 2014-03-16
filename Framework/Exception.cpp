@@ -214,4 +214,24 @@ namespace Lupus {
 		Exception(message, innerException)
 	{
 	}
+
+	ApplicationException::ApplicationException(const String& message) :
+		Exception(message)
+	{
+	}
+
+	ApplicationException::ApplicationException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
+
+	IteratorOutOfBoundException::IteratorOutOfBoundException(const String& message) :
+		Exception(message)
+	{
+	}
+
+	IteratorOutOfBoundException::IteratorOutOfBoundException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 }

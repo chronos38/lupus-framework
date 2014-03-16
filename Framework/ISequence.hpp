@@ -19,10 +19,13 @@
 #ifndef LUPUS_ISEQUENCE_HPP
 #define LUPUS_ISEQUENCE_HPP
 
-#include "Iterator.hpp"
+#include "Object.hpp"
 
 namespace Lupus {
 	namespace System {
+		template <typename T>
+		class SequenceIterator;
+
 		template <typename T>
 		class ISequence
 		{
@@ -31,7 +34,7 @@ namespace Lupus {
 			virtual void Add(const T&) = 0;
 			virtual T& Back() = 0;
 			virtual const T& Back() const = 0;
-			virtual Iterator<T> Begin() const = 0;
+			virtual SequenceIterator<T> Begin() const = 0;
 			virtual void Clear() = 0;
 			virtual bool Contains(const T&) const = 0;
 			virtual void CopyTo(ISequence<T>&, int) const = 0;
@@ -39,11 +42,13 @@ namespace Lupus {
 			virtual T& Front() = 0;
 			virtual const T& Front() const = 0;
 			virtual void Insert(int, const T&) = 0;
-			virtual void Insert(const Iterator<T>&, const T&) = 0;
+			virtual void Insert(const SequenceIterator<T>&, const T&) = 0;
 			virtual bool IsEmpty() const = 0;
 			virtual bool RemoveAt(int) = 0;
-			virtual bool Remove(const Iterator<T>&) = 0;
+			virtual bool Remove(const SequenceIterator<T>&) = 0;
 			virtual void Resize(int) = 0;
+			virtual T& operator[](int) = 0;
+			virtual const T& operator[](int) const = 0;
 		};
 	}
 }

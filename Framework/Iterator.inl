@@ -16,50 +16,60 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Exception.hpp"
-
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		Iterator<T>::Iterator() :
-			Object()
+		SequenceIterator<T>::SequenceIterator(const ISequence<T>& sequence) :
+			_sequence(&sequence)
+		{
+		}
+		template <typename T>
+		SequenceIterator<T>::SequenceIterator(const ISequence<T>* sequence) :
+			_sequence(sequence)
 		{
 		}
 
 		template <typename T>
-		Iterator<T>::~Iterator()
+		SequenceIterator<T>::~SequenceIterator()
 		{
-			throw NotSupportedException();
 		}
 
 		template <typename T>
-		bool Iterator<T>::Move(int)
+		void SequenceIterator<T>::First()
 		{
-			throw NotSupportedException();
+			_current = 0;
 		}
 
 		template <typename T>
-		bool Iterator<T>::Next()
+		void SequenceIterator<T>::Next()
 		{
-			throw NotSupportedException();
+			_current++;
 		}
 
 		template <typename T>
-		void Iterator<T>::Reset()
+		bool SequenceIterator<T>::IsDone() const
 		{
-			throw NotSupportedException();
+			return (_current >= _sequence->Length);
 		}
 
 		template <typename T>
-		T* Iterator<T>::Value()
+		Char& SequenceIterator::CurrentItem()
 		{
-			throw NotSupportedException();
+			if (IsDone()) {
+				throw IteratorOutOfBoundException();
+			}
+
+			return _sequence->operator[](_current);
 		}
 
 		template <typename T>
-		const T* Iterator<T>::Value() const
+		const Char& SequenceIterator::CurrentItem() const
 		{
-			throw NotSupportedException();
+			if (IsDone()) {
+				throw IteratorOutOfBoundException();
+			}
+
+			return _sequence->operator[](_current);
 		}
 	}
 }

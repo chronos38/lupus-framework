@@ -28,6 +28,8 @@ namespace Lupus {
 	
 	class LUPUS_API Exception : public Object
 	{
+		const System::String* mMessage = nullptr;
+		const Exception* mInnerException = nullptr;
 	public:
 		Exception();
 		Exception(const Exception&);
@@ -36,9 +38,6 @@ namespace Lupus {
 		virtual ~Exception();
 		virtual System::String Message() const final;
 		virtual Exception InnerException() const final;
-	private:
-		const System::String* mMessage = nullptr;
-		const Exception* mInnerException = nullptr;
 	};
 
 	class LUPUS_API NullPointerException : public Exception
@@ -122,6 +121,24 @@ namespace Lupus {
 		SystemException(const System::String& message);
 		SystemException(const System::String& message, const Exception& innerException);
 		virtual ~SystemException() = default;
+	};
+
+	class LUPUS_API ApplicationException : public Exception
+	{
+	public:
+		ApplicationException();
+		ApplicationException(const System::String& message);
+		ApplicationException(const System::String& message, const Exception& innerException);
+		virtual ~ApplicationException() = default;
+	};
+
+	class LUPUS_API IteratorOutOfBoundException : public Exception
+	{
+	public:
+		IteratorOutOfBoundException();
+		IteratorOutOfBoundException(const System::String& message);
+		IteratorOutOfBoundException(const System::String& message, const Exception& innerException);
+		virtual ~IteratorOutOfBoundException() = default;
 	};
 }
 

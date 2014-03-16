@@ -127,7 +127,7 @@
 #endif
 
 // lock object
-//#define lock(object, code) object.Lock(); code; object.Unlock()
+#define lock(object, code) object.Lock(); code; object.Unlock()
 
 namespace Lupus {
 	/// single signed byte
