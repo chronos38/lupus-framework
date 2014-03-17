@@ -27,49 +27,16 @@
 
 namespace Lupus {
 	namespace System {
-		const int Char::MaxValue = WCHAR_MAX;
-		const int Char::MinValue = WCHAR_MIN;
-
-		Char::Char(char ch) :
+		Char::Char(wchar_t wc) :
 			Object(),
-			mValue(0)
+			_value(0)
 		{
-			if (ch == '\0') {
-				return;
-			}
-
-			mbstate_t state = mbstate_t();
-
-			if (mbrtowc(&mValue, &ch, sizeof(ch), &state) != sizeof(ch)) {
-				throw FormatException("couldn't convert character to wide character");
-			}
-		}
-
-		Char::Char(wchar_t ch) :
-			Object(),
-			mValue(ch)
-		{
-		}
-
-		Char& Char::operator=(char ch)
-		{
-			if (ch == '\0') {
-				mValue = L'\0';
-				return (*this);
-			}
-
-			mbstate_t state = mbstate_t();
-
-			if (mbrtowc(&mValue, &ch, sizeof(ch), &state) != sizeof(ch)) {
-				throw FormatException("couldn't convert character to wide character");
-			}
-
-			return (*this);
+			wctomb(&_value, wc);
 		}
 
 		Char& Char::operator=(wchar_t wc)
 		{
-			mValue = wc;
+			wctomb(&_value, wc);
 			return (*this);
 		}
 	}

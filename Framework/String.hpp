@@ -33,61 +33,21 @@ namespace Lupus {
 		};
 
 		//! String class used for internal string operations
-		class LUPUS_API String : public Object, public ISequence<Char>
+		class LUPUS_API String : public Object, public ISequence<char>
 		{
-			// instance variables
-			_lchar* _data;
+			//! native string
+			char* _data;
+			//! string length
 			int _length;
+			//! string capacity
 			int _capacity;
-
-			//! reference char
-			class LUPUS_API RefChar : public Char
-			{
-			public:
-				RefChar();
-				RefChar(_lchar*);
-				virtual ~RefChar();
-				virtual RefChar& operator=(_lchar*);
-				virtual bool IsBlank() const override;
-				virtual bool IsDigit() const override;
-				virtual bool IsGraph() const override;
-				virtual bool IsLetter() const override;
-				virtual bool IsLetterOrDigit() const override;
-				virtual bool IsLower() const override;
-				virtual bool IsPunct() const override;
-				virtual bool IsUpper() const override;
-				virtual bool IsSpace() const override;
-				virtual bool IsPrint() const override;
-				virtual bool IsControl() const override;
-				virtual bool IsHexadecimal() const override;
-				virtual Char ToLower() const override;
-				virtual Char ToUpper() const override;
-				virtual _lchar Value() const override;
-				virtual Char& operator=(char) override;
-				virtual Char& operator=(const Char&) override;
-				virtual Char operator+(const Char&) const override;
-				virtual Char operator-(const Char&) const override;
-				virtual Char& operator+=(int) override;
-				virtual Char& operator-=(int) override;
-				virtual Char& operator++() override;
-				virtual Char& operator--() override;
-				virtual bool operator==(const Char&) const override;
-				virtual bool operator!=(const Char&) const override;
-#if defined(LUPUS_WINDOWS_PLATFORM)
-				virtual Char& operator=(wchar_t);
-#endif
-			private:
-				_lchar* mRef;
-			};
-
-			mutable RefChar _refChar;
 		public:
 			//! Return string length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
 			//! Return string capacity
 			PropertyReader<int> Capacity = PropertyReader<int>(_capacity);
 			//! Return native string
-			PropertyReader<_lchar*> Data = PropertyReader<_lchar*>(_data);
+			PropertyReader<char*> Data = PropertyReader<char*>(_data);
 			//! Create an empty string
 			String();
 			/**
@@ -173,7 +133,7 @@ namespace Lupus {
 			 * @param destinationIndex starting index in container
 			 * @param count how many chars get copied
 			 */
-			void CopyTo(int sourceIndex, ISequence<Char>& sequence, int destinationIndex, int count) const;
+			void CopyTo(int sourceIndex, ISequence<char>& sequence, int destinationIndex, int count) const;
 			/**
 			 * Search for given char within this instance
 			 *
@@ -209,7 +169,7 @@ namespace Lupus {
 			 * @param sensitivity defines the case sensitivity for search process
 			 * @return index of first match or -1 if non of the given chars was found
 			 */
-			int IndexOfAny(const ISequence<Char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			int IndexOfAny(const ISequence<char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
 			/**
 			 * Search for the last occurence of given char within this instance
 			 *
@@ -245,7 +205,7 @@ namespace Lupus {
 			 * @param sensitivity defines the case sensitivity for search process
 			 * @return index of first match or -1 if non of the given chars was found
 			 */
-			int LastIndexOfAny(const ISequence<Char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			int LastIndexOfAny(const ISequence<char>& sequence, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
 			/**
 			 * Removes all char from given index to the end of string
 			 *
@@ -325,14 +285,14 @@ namespace Lupus {
 			 *
 			 * @return Char at given index
 			 */
-			virtual Char& operator[](int) final;
+			virtual char& operator[](int) final;
 			/**
 			 * \b Exceptions
 			 * - ArgumentOutOfRangeException
 			 *
 			 * @return Char at given index
 			 */
-			virtual const Char& operator[](int) const final;
+			virtual const char& operator[](int) const final;
 			/**
 			 * copy native string to this instance
 			 *
@@ -341,7 +301,7 @@ namespace Lupus {
 			 *
 			 * @return reference to this instance
 			 */
-			String& operator=(const _lchar*);
+			String& operator=(const char*);
 			/**
 			 * copy string content to this instance
 			 *
@@ -373,7 +333,7 @@ namespace Lupus {
 			 * @param string native string for appending
 			 * @return reference to this instance
 			 */
-			String& operator+=(const _lchar*);
+			String& operator+=(const char*);
 			/**
 			 * Append given string to this instance
 			 *
@@ -402,21 +362,21 @@ namespace Lupus {
 			 * @return true if this instance is not equal to given string, otherwise false
 			 */
 			bool operator!=(const String&) const;
-			virtual void Add(const Char&) override;
-			virtual Char& Back() override;
-			virtual const Char& Back() const override;
-			virtual SequenceIterator<Char> Begin() const override;
+			virtual void Add(const char&) override;
+			virtual char& Back() override;
+			virtual const char& Back() const override;
+			virtual SequenceIterator<char> Begin() const override;
 			virtual void Clear() override;
-			virtual bool Contains(const Char&) const override;
-			virtual void CopyTo(ISequence<Char>&, int) const override;
+			virtual bool Contains(const char&) const override;
+			virtual void CopyTo(ISequence<char>&, int) const override;
 			virtual int Count() const override;
-			virtual Char& Front() override;
-			virtual const Char& Front() const override;
-			virtual void Insert(int, const Char&) override;
-			virtual void Insert(const SequenceIterator<Char>&, const Char&) override;
+			virtual char& Front() override;
+			virtual const char& Front() const override;
+			virtual void Insert(int, const char&) override;
+			virtual void Insert(const SequenceIterator<char>&, const char&) override;
 			virtual bool IsEmpty() const override;
 			virtual bool RemoveAt(int) override;
-			virtual bool Remove(const SequenceIterator<Char>&) override;
+			virtual bool Remove(const SequenceIterator<char>&) override;
 			virtual void Resize(int) override;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
@@ -426,13 +386,12 @@ namespace Lupus {
 			String(const wchar_t*, int startIndex, int length);
 #endif
 		private:
-			static String CreateWithExistingBuffer(_lchar*);
+			static String CreateWithExistingBuffer(char*);
 			static int GetLength(const Char*);
-			static int KnuthMorrisPratt(const _lchar*, int, const _lchar*, int);
-			static int KnuthMorrisPrattLast(const _lchar*, int, const _lchar*, int);
-			static int KnuthMorrisPrattInsensitive(const _lchar*, int, const _lchar*, int);
-			static int KnuthMorrisPrattInsensitiveLast(const _lchar*, int, const _lchar*, int);
-			static _lchar* Mirror();
+			static int KnuthMorrisPratt(const char*, int, const char*, int);
+			static int KnuthMorrisPrattLast(const char*, int, const char*, int);
+			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
+			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int);
 		};
 
 		template <typename T>

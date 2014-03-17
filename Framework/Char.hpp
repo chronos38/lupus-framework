@@ -26,7 +26,10 @@ namespace Lupus {
 		//! Represents a unicode character
 		class LUPUS_API Char : public Object
 		{
+			char _value;
 		public:
+			//! Value of this char
+			PropertyReader<char> Value = PropertyReader<char>(_value);
 			//! Default constructor
 			Char();
 			//! Apply single char value
@@ -133,8 +136,6 @@ namespace Lupus {
 			 * @return New instance with upper value from this instance
 			 */
 			virtual Char ToUpper() const;
-			//! Return value from this instance
-			virtual _lchar Value() const;
 			//! Apply character value to this instance
 			virtual Char& operator=(char);
 			//! Copy value from an other instance
@@ -163,9 +164,11 @@ namespace Lupus {
 			virtual bool operator==(const Char&) const;
 			//! Compare two instances
 			virtual bool operator!=(const Char&) const;
+			//! char conversion operator
+			virtual operator char() const final;
 		public:
-			static const int MaxValue;
-			static const int MinValue;
+			static const uint MaxValue;
+			static const uint MinValue;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
 			//! @sa Char::Char(char)
@@ -173,8 +176,6 @@ namespace Lupus {
 			//! @sa Char::operator=(char)
 			Char& operator=(wchar_t);
 #endif
-		private:
-			_lchar mValue;
 		};
 
 		template <typename T>

@@ -57,77 +57,6 @@
 #  error platform not supported
 #endif
 
-#if defined(LUPUS_WINDOWS_PLATFORM)
-// ignore specific warnings
-#pragma warning(disable:4251)
-#include <cwchar>
-// type
-#define _lchar wchar_t
-#define _lstring(x) L##x
-// conversion
-#define _ltolower towlower
-#define _ltoupper towupper
-// types
-#define _lisalnum iswalnum
-#define _lisalpha iswalpha
-#define _lisblank iswblank
-#define _liscntrl iswcntrl
-#define _lisdigit iswdigit
-#define _lisgraph iswgraph
-#define _lislower iswlower
-#define _lisprint iswprint
-#define _lispunct iswpunct
-#define _lisspace iswspace
-#define _lisupper iswupper
-#define _lisxdigit iswxdigit
-// memory manipulation
-#define _lmemcpy(dst, src, len) wmemcpy_s(dst, len, src, len)
-#define _lmemmove(dst, src, len) wmemmove_s(dst, len, src, len)
-#define _lmemcmp wmemcmp
-#define _lmemchr wmemchr
-#define _lmemset wmemset
-// length
-#define _lstrlen wcslen
-// i/o
-#define _lsprintf swprintf_s
-#define _lsscanf swscanf_s
-#elif defined(LUPUS_UNIX_PLATFORM)
-#include <cstring>
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
-// type
-#define _lchar char
-#define _lstring(x) x
-// conversion
-#define _ltolower tolower
-#define _ltoupper toupper
-// types
-#define _lisalnum isalnum
-#define _lisalpha isalpha
-#define _lisblank isblank
-#define _liscntrl iscntrl
-#define _lisdigit isdigit
-#define _lisgraph isgraph
-#define _lislower islower
-#define _lisprint isprint
-#define _lispunct ispunct
-#define _lisspace isspace
-#define _lisupper isupper
-#define _lisxdigit isxdigit
-// memory manipulation
-#define _lmemcpy memcpy
-#define _lmemmove memmove
-#define _lmemcmp memcmp
-#define _lmemchr memchr
-#define _lmemset memset
-// length
-#define _lstrlen strlen
-// i/o
-#define _lsprintf snprintf
-#define _lsscanf sscanf
-#endif
-
 // lock object
 #define lock(object, code) object.Lock(); code; object.Unlock()
 
@@ -158,6 +87,26 @@ namespace Lupus {
 	}
 }
 
+// compiler warnings
+#if defined(LUPUS_WINDOWS_PLATFORM)
+// ignore specific warnings
+#pragma warning(disable:4251)
+// deavtivate SDL
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
+
+// headers
+#include <cwchar>
+#include <cstring>
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
 #include "Property.hpp"
+
+// snprintf
+#if defined(LUPUS_WINDOWS_PLATFORM)
+//! snprintf
+#define snprintf sprintf_s
+#endif
 
 #endif

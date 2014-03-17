@@ -29,38 +29,38 @@ namespace Lupus {
 
 	Exception::Exception(const String& message) :
 		Object(),
-		mMessage(new String(message))
+		_message(new String(message))
 	{
 	}
 
 	Exception::Exception(const String& message, const Exception& innerException) :
 		Object(),
-		mMessage(new String(message)),
-		mInnerException(new Exception(innerException))
+		_message(new String(message)),
+		_innerException(new Exception(innerException))
 	{
 	}
 
 	Exception::Exception(const Exception& exception) :
 		Object(),
-		mMessage(new String(exception.Message()))
+		_message(new String(exception.Message()))
 	{
 	}
 
 	Exception::~Exception()
 	{
-		if (mMessage) {
-			delete mMessage;
+		if (_message) {
+			delete _message;
 		}
 
-		if (mInnerException) {
-			delete mInnerException;
+		if (_innerException) {
+			delete _innerException;
 		}
 	}
 
 	String Exception::Message() const
 	{
-		if (mMessage) {
-			return (*mMessage);
+		if (_message) {
+			return (*_message);
 		}
 
 		return "";
@@ -68,8 +68,8 @@ namespace Lupus {
 
 	Exception Exception::InnerException() const
 	{
-		if (mInnerException) {
-			return (*mInnerException);
+		if (_innerException) {
+			return (*_innerException);
 		}
 
 		return Exception();

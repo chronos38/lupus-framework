@@ -28,8 +28,8 @@ namespace Lupus {
 	
 	class LUPUS_API Exception : public Object
 	{
-		const System::String* mMessage = nullptr;
-		const Exception* mInnerException = nullptr;
+		const System::String* _message = nullptr;
+		const Exception* _innerException = nullptr;
 	public:
 		Exception();
 		Exception(const Exception&);

@@ -26,18 +26,18 @@ namespace Lupus {
 	namespace System {
 		String Integer::ToString(byte value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%hhd"), value);
+				snprintf(result, sIntegerCount, ("%hhd"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#hhx"), value);
+				snprintf(result, sIntegerCount, ("%#hhx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#hho"), value);
+				snprintf(result, sIntegerCount, ("%#hho"), value);
 				break;
 			}
 			return result;
@@ -45,18 +45,18 @@ namespace Lupus {
 
 		String Integer::ToString(short value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%hd"), value);
+				snprintf(result, sIntegerCount, ("%hd"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#hx"), value);
+				snprintf(result, sIntegerCount, ("%#hx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#ho"), value);
+				snprintf(result, sIntegerCount, ("%#ho"), value);
 				break;
 			}
 			return result;
@@ -64,18 +64,18 @@ namespace Lupus {
 
 		String Integer::ToString(int value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%d"), value);
+				snprintf(result, sIntegerCount, ("%d"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#x"), value);
+				snprintf(result, sIntegerCount, ("%#x"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#o"), value);
+				snprintf(result, sIntegerCount, ("%#o"), value);
 				break;
 			}
 			return result;
@@ -83,18 +83,18 @@ namespace Lupus {
 
 		String Integer::ToString(long value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%ld"), value);
+				snprintf(result, sIntegerCount, ("%ld"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#lx"), value);
+				snprintf(result, sIntegerCount, ("%#lx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#lo"), value);
+				snprintf(result, sIntegerCount, ("%#lo"), value);
 				break;
 			}
 			return result;
@@ -102,36 +102,36 @@ namespace Lupus {
 
 		String Integer::ToString(llong value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%lld"), value);
+				snprintf(result, sIntegerCount, ("%lld"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#llx"), value);
+				snprintf(result, sIntegerCount, ("%#llx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#llo"), value);
+				snprintf(result, sIntegerCount, ("%#llo"), value);
 				break;
 			}
 			return result;
 		}
 		String Integer::ToString(ubyte value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%hhu"), value);
+				snprintf(result, sIntegerCount, ("%hhu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#hhx"), value);
+				snprintf(result, sIntegerCount, ("%#hhx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#hho"), value);
+				snprintf(result, sIntegerCount, ("%#hho"), value);
 				break;
 			}
 			return result;
@@ -139,18 +139,18 @@ namespace Lupus {
 
 		String Integer::ToString(ushort value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%hu"), value);
+				snprintf(result, sIntegerCount, ("%hu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#hx"), value);
+				snprintf(result, sIntegerCount, ("%#hx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#ho"), value);
+				snprintf(result, sIntegerCount, ("%#ho"), value);
 				break;
 			}
 			return result;
@@ -158,18 +158,18 @@ namespace Lupus {
 
 		String Integer::ToString(uint value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%u"), value);
+				snprintf(result, sIntegerCount, ("%u"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#x"), value);
+				snprintf(result, sIntegerCount, ("%#x"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#o"), value);
+				snprintf(result, sIntegerCount, ("%#o"), value);
 				break;
 			}
 			return result;
@@ -177,18 +177,18 @@ namespace Lupus {
 
 		String Integer::ToString(ulong value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%lu"), value);
+				snprintf(result, sIntegerCount, ("%lu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#lx"), value);
+				snprintf(result, sIntegerCount, ("%#lx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#lo"), value);
+				snprintf(result, sIntegerCount, ("%#lo"), value);
 				break;
 			}
 			return result;
@@ -196,18 +196,18 @@ namespace Lupus {
 
 		String Integer::ToString(ullong value, IntegerBase base)
 		{
-			_lchar result[sIntegerCount];
-			_lmemset(result, 0, sIntegerCount);
+			char result[sIntegerCount];
+			memset(result, 0, sIntegerCount);
 
 			switch (base) {
 			case IntegerBase::Decimal:
-				_lsprintf(result, sIntegerCount, _lstring("%llu"), value);
+				snprintf(result, sIntegerCount, ("%llu"), value);
 				break;
 			case IntegerBase::Hexadecimal:
-				_lsprintf(result, sIntegerCount, _lstring("%#llx"), value);
+				snprintf(result, sIntegerCount, ("%#llx"), value);
 				break;
 			case IntegerBase::Octal:
-				_lsprintf(result, sIntegerCount, _lstring("%#llo"), value);
+				snprintf(result, sIntegerCount, ("%#llo"), value);
 				break;
 			}
 			return result;
@@ -217,11 +217,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%hhd"), &result) == 1);
+				return (sscanf(string.Data, ("%hhd"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%hhx"), &result) == 1);
+				return (sscanf(string.Data, ("%hhx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%hho"), &result) == 1);
+				return (sscanf(string.Data, ("%hho"), &result) == 1);
 			}
 			return false;
 		}
@@ -230,11 +230,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%hd"), &result) == 1);
+				return (sscanf(string.Data, ("%hd"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%hx"), &result) == 1);
+				return (sscanf(string.Data, ("%hx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%ho"), &result) == 1);
+				return (sscanf(string.Data, ("%ho"), &result) == 1);
 			}
 			return false;
 		}
@@ -243,11 +243,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%d"), &result) == 1);
+				return (sscanf(string.Data, ("%d"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%x"), &result) == 1);
+				return (sscanf(string.Data, ("%x"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%o"), &result) == 1);
+				return (sscanf(string.Data, ("%o"), &result) == 1);
 			}
 			return false;
 		}
@@ -256,11 +256,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%ld"), &result) == 1);
+				return (sscanf(string.Data, ("%ld"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%lx"), &result) == 1);
+				return (sscanf(string.Data, ("%lx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%lo"), &result) == 1);
+				return (sscanf(string.Data, ("%lo"), &result) == 1);
 			}
 			return false;
 		}
@@ -269,11 +269,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%lld"), &result) == 1);
+				return (sscanf(string.Data, ("%lld"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%llx"), &result) == 1);
+				return (sscanf(string.Data, ("%llx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%llo"), &result) == 1);
+				return (sscanf(string.Data, ("%llo"), &result) == 1);
 			}
 			return false;
 		}
@@ -282,11 +282,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%hhu"), &result) == 1);
+				return (sscanf(string.Data, ("%hhu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%hhx"), &result) == 1);
+				return (sscanf(string.Data, ("%hhx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%hho"), &result) == 1);
+				return (sscanf(string.Data, ("%hho"), &result) == 1);
 			}
 			return false;
 		}
@@ -295,11 +295,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%hu"), &result) == 1);
+				return (sscanf(string.Data, ("%hu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%hx"), &result) == 1);
+				return (sscanf(string.Data, ("%hx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%ho"), &result) == 1);
+				return (sscanf(string.Data, ("%ho"), &result) == 1);
 			}
 			return false;
 		}
@@ -308,11 +308,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%u"), &result) == 1);
+				return (sscanf(string.Data, ("%u"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%x"), &result) == 1);
+				return (sscanf(string.Data, ("%x"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%o"), &result) == 1);
+				return (sscanf(string.Data, ("%o"), &result) == 1);
 			}
 			return false;
 		}
@@ -321,11 +321,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%lu"), &result) == 1);
+				return (sscanf(string.Data, ("%lu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%lx"), &result) == 1);
+				return (sscanf(string.Data, ("%lx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%lo"), &result) == 1);
+				return (sscanf(string.Data, ("%lo"), &result) == 1);
 			}
 			return false;
 		}
@@ -334,11 +334,11 @@ namespace Lupus {
 		{
 			switch (base) {
 			case IntegerBase::Decimal:
-				return (_lsscanf(string.Data, _lstring("%llu"), &result) == 1);
+				return (sscanf(string.Data, ("%llu"), &result) == 1);
 			case IntegerBase::Hexadecimal:
-				return (_lsscanf(string.Data, _lstring("%llx"), &result) == 1);
+				return (sscanf(string.Data, ("%llx"), &result) == 1);
 			case IntegerBase::Octal:
-				return (_lsscanf(string.Data, _lstring("%llo"), &result) == 1);
+				return (sscanf(string.Data, ("%llo"), &result) == 1);
 			}
 			return false;
 		}

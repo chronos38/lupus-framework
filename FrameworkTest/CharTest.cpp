@@ -30,16 +30,16 @@ namespace FrameworkTest
 		TEST_METHOD(CharConstructorTest)
 		{
 			// default constructor
-			Assert::AreEqual(L'\0', Char().Value(), L"default constructor", LINE_INFO());
+			Assert::AreEqual('\0', (char)Char().Value, L"default constructor", LINE_INFO());
 
 			// (char) constructor
-			Assert::AreEqual(L'a', Char('a').Value(), L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
+			Assert::AreEqual('a', (char)Char('a').Value, L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
 
 			// (wchar_t) constructor
-			Assert::AreEqual(L'a', Char(L'a').Value(), L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
+			Assert::AreEqual('a', (char)Char('a').Value, L"(int) constructor with wchar_t eqhals wchar_t", LINE_INFO());
 
 			// (Char) constructor
-			Assert::AreEqual(L'a', Char(Char('a')).Value(), L"(int) constructor with wchar_t", LINE_INFO());
+			Assert::AreEqual('a', (char)Char(Char('a')).Value, L"(int) constructor with wchar_t", LINE_INFO());
 		}
 
 		TEST_METHOD(CharEqualityTest)
@@ -49,18 +49,18 @@ namespace FrameworkTest
 
 			// operator==
 			Assert::IsTrue(ch == 'a', L"operator== equals with char", LINE_INFO());
-			Assert::IsTrue(ch == L'a', L"operator== equals with wchar_t", LINE_INFO());
+			Assert::IsTrue(ch == 'a', L"operator== equals with wchar_t", LINE_INFO());
 			Assert::IsTrue(ch == (int)'a', L"operator== equals with int", LINE_INFO());
 			Assert::IsTrue('a' == ch, L"operator== equals with char", LINE_INFO());
-			Assert::IsTrue(L'a' == ch, L"operator== equals with wchar_t", LINE_INFO());
+			Assert::IsTrue('a' == ch, L"operator== equals with wchar_t", LINE_INFO());
 			Assert::IsTrue((int)'a' == ch, L"operator== equals with int", LINE_INFO());
 
 			// operator!=
 			Assert::IsTrue(ch != 'b', L"operator!= equals with char", LINE_INFO());
-			Assert::IsTrue(ch != L'b', L"operator!= equals with wchar_t", LINE_INFO());
+			Assert::IsTrue(ch != 'b', L"operator!= equals with wchar_t", LINE_INFO());
 			Assert::IsTrue(ch != (int)'b', L"operator!= equals with int", LINE_INFO());
 			Assert::IsTrue('b' != ch, L"operator!= equals with char", LINE_INFO());
-			Assert::IsTrue(L'b' != ch, L"operator!= equals with wchar_t", LINE_INFO());
+			Assert::IsTrue('b' != ch, L"operator!= equals with wchar_t", LINE_INFO());
 			Assert::IsTrue((int)'b' != ch, L"operator!= equals with int", LINE_INFO());
 		}
 
@@ -70,18 +70,18 @@ namespace FrameworkTest
 			Char ch('a');
 
 			// operator+
-			Assert::AreEqual('a' + 1, ch.Value() + 1, L"operator+", LINE_INFO());
-			Assert::AreEqual(1 + 'a', 1 + ch.Value(), L"operator+", LINE_INFO());
+			Assert::AreEqual('a' + 1, ch.Value + 1, L"operator+", LINE_INFO());
+			Assert::AreEqual(1 + 'a', 1 + ch.Value, L"operator+", LINE_INFO());
 
 			// operator-
-			Assert::AreEqual('a' - 1, ch.Value() - 1, L"operator-", LINE_INFO());
-			Assert::AreEqual(1 - 'a', 1 - ch.Value(), L"operator-", LINE_INFO());
+			Assert::AreEqual('a' - 1, ch.Value - 1, L"operator-", LINE_INFO());
+			Assert::AreEqual(1 - 'a', 1 - ch.Value, L"operator-", LINE_INFO());
 
 			// operator+=
-			Assert::AreEqual(L'b', (ch += 1).Value(), L"operator+=", LINE_INFO());
+			Assert::AreEqual('b', (char)(ch += 1).Value, L"operator+=", LINE_INFO());
 
 			// operator-=
-			Assert::AreEqual(L'a', (ch -= 1).Value(), L"operator-=", LINE_INFO());
+			Assert::AreEqual('a', (char)(ch -= 1).Value, L"operator-=", LINE_INFO());
 		}
 
 		TEST_METHOD(CharPropertyTest)
@@ -111,8 +111,8 @@ namespace FrameworkTest
 			Char ch2('A');
 
 			// tests
-			Assert::AreEqual(L'A', (ch1.ToUpper()).Value(), L"ToUpper", LINE_INFO());
-			Assert::AreEqual(L'a', (ch2.ToLower()).Value(), L"ToLower", LINE_INFO());
+			Assert::AreEqual('A', (char)(ch1.ToUpper()).Value, L"ToUpper", LINE_INFO());
+			Assert::AreEqual('a', (char)(ch2.ToLower()).Value, L"ToLower", LINE_INFO());
 		}
 	};
 }

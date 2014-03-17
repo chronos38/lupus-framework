@@ -20,23 +20,32 @@
 
 namespace Lupus {
 	namespace System {
+		const uint Char::MaxValue = WCHAR_MAX;
+		const uint Char::MinValue = WCHAR_MIN;
+
 		Char::Char() :
 			Object(),
-			mValue(0)
+			_value(0)
+		{
+		}
+
+		Char::Char(char ch) :
+			Object(),
+			_value(ch)
 		{
 		}
 
 		Char::Char(const Char& ch) :
 			Object()
 		{
-			mValue = ch.mValue;
+			_value = ch._value;
 		}
 
 		Char::Char(Char&& ch) :
 			Object()
 		{
-			mValue = ch.mValue;
-			ch.mValue = 0;
+			_value = ch._value;
+			ch._value = 0;
 		}
 
 		Char::~Char()
@@ -45,161 +54,167 @@ namespace Lupus {
 
 		bool Char::IsBlank() const
 		{
-			return (_lisblank(mValue) != 0);
+			return (isblank(_value) != 0);
 		}
 
 		bool Char::IsDigit() const
 		{
-			return (_lisdigit(mValue) != 0);
+			return (isdigit(_value) != 0);
 		}
 
 		bool Char::IsGraph() const
 		{
-			return (_lisgraph(mValue) != 0);
+			return (isgraph(_value) != 0);
 		}
 
 		bool Char::IsLetter() const
 		{
-			return (_lisalpha(mValue) != 0);
+			return (isalpha(_value) != 0);
 		}
 
 		bool Char::IsLetterOrDigit() const
 		{
-			return (_lisalnum(mValue) != 0);
+			return (isalnum(_value) != 0);
 		}
 
 		bool Char::IsLower() const
 		{
-			return (_lislower(mValue) != 0);
+			return (islower(_value) != 0);
 		}
 
 		bool Char::IsPunct() const
 		{
-			return (_lispunct(mValue) != 0);
+			return (ispunct(_value) != 0);
 		}
 
 		bool Char::IsUpper() const
 		{
-			return (_lisupper(mValue) != 0);
+			return (isupper(_value) != 0);
 		}
 
 		bool Char::IsSpace() const
 		{
-			return (_lisspace(mValue) != 0);
+			return (isspace(_value) != 0);
 		}
 
 		bool Char::IsPrint() const
 		{
-			return (_lisprint(mValue) != 0);
+			return (isprint(_value) != 0);
 		}
 
 		bool Char::IsControl() const
 		{
-			return (_liscntrl(mValue) != 0);
+			return (iscntrl(_value) != 0);
 		}
 
 		bool Char::IsHexadecimal() const
 		{
-			return (_lisxdigit(mValue) != 0);
+			return (isxdigit(_value) != 0);
 		}
 
 		Char& Char::ToLower()
 		{
-			mValue = _ltolower(mValue);
+			_value = static_cast<char>(tolower(_value));
 			return (*this);
 		}
 
 		Char Char::ToLower() const
 		{
-			return static_cast<_lchar>(_ltolower(mValue));
+			return static_cast<char>(tolower(_value));
 		}
 
 		Char& Char::ToUpper()
 		{
-			mValue = _ltoupper(mValue);
+			_value = static_cast<char>(toupper(_value));
 			return (*this);
 		}
 
 		Char Char::ToUpper() const
 		{
-			return static_cast<_lchar>(_ltoupper(mValue));
+			return static_cast<char>(toupper(_value));
 		}
 
-		_lchar Char::Value() const
+		Char& Char::operator=(char ch)
 		{
-			return mValue;
+			_value = ch;
+			return (*this);
 		}
 
 		Char& Char::operator=(const Char& ch)
 		{
-			mValue = ch.mValue;
+			_value = ch._value;
 			return (*this);
 		}
 
 		Char Char::operator+(int value) const
 		{
-			return static_cast<decltype(mValue)>(mValue + value);
+			return static_cast<decltype(_value)>(_value + value);
 		}
 
 		Char Char::operator+(const Char& ch) const
 		{
-			return static_cast<decltype(mValue)>(mValue + ch.Value());
+			return static_cast<decltype(_value)>(_value + (int)ch.Value);
 		}
 
 		Char Char::operator-(int value) const
 		{
-			return static_cast<decltype(mValue)>(mValue - value);
+			return static_cast<decltype(_value)>(_value - value);
 		}
 
 		Char Char::operator-(const Char& ch) const
 		{
-			return static_cast<decltype(mValue)>(mValue - ch.Value());
+			return static_cast<decltype(_value)>(_value - (int)ch.Value);
 		}
 
 		Char& Char::operator+=(int value)
 		{
-			mValue += static_cast<decltype(mValue)>(value);
+			_value += static_cast<decltype(_value)>(value);
 			return (*this);
 		}
 
 		Char& Char::operator+=(const Char& ch)
 		{
-			mValue += static_cast<decltype(mValue)>(ch.Value());
+			_value += static_cast<decltype(_value)>(ch.Value);
 			return (*this);
 		}
 
 		Char& Char::operator-=(int value)
 		{
-			mValue -= static_cast<decltype(mValue)>(value);
+			_value -= static_cast<decltype(_value)>(value);
 			return (*this);
 		}
 
 		Char& Char::operator-=(const Char& ch)
 		{
-			mValue -= static_cast<decltype(mValue)>(ch.Value());
+			_value -= static_cast<decltype(_value)>(ch.Value);
 			return (*this);
 		}
 
 		Char& Char::operator++()
 		{
-			mValue++;
+			_value++;
 			return (*this);
 		}
 
 		Char& Char::operator--()
 		{
-			mValue--;
+			_value--;
 			return (*this);
 		}
 
 		bool Char::operator==(const Char& ch) const
 		{
-			return (mValue == ch.Value());
+			return (_value == ch.Value);
 		}
 
 		bool Char::operator!=(const Char& ch) const
 		{
-			return (mValue != ch.Value());
+			return (_value != ch.Value);
+		}
+
+		Char::operator char() const
+		{
+			return _value;
 		}
 	}
 }

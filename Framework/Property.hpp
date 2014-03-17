@@ -56,6 +56,33 @@ namespace Lupus {
 		T operator=(const T& value);
 		operator T() const;
 	};
+
+	template <typename T, typename U>
+	bool operator==(const PropertyReader<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyReader<T>& rhs);
+	template <typename T, typename U>
+	bool operator!=(const PropertyReader<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyReader<T>& rhs);
+
+	template <typename T, typename U>
+	bool operator==(const PropertyWriter<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyWriter<T>& rhs);
+	template <typename T, typename U>
+	bool operator!=(const PropertyWriter<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyWriter<T>& rhs);
+
+	template <typename T, typename U>
+	bool operator==(const PropertyAccess<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyAccess<T>& rhs);
+	template <typename T, typename U>
+	bool operator!=(const PropertyAccess<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyAccess<T>& rhs);
 }
 
 #include "Property.inl"

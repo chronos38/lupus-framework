@@ -76,4 +76,76 @@ namespace Lupus {
 	{
 		return (_reference = value);
 	}
+
+	template <typename T, typename U>
+	bool operator==(const PropertyReader<T>& lhs, const U& rhs)
+	{
+		return (static_cast<U>(lhs) == rhs);
+	}
+
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyReader<T>& rhs)
+	{
+		return (lhs == static_cast<U>(rhs));
+	}
+
+	template <typename T, typename U>
+	bool operator!=(const PropertyReader<T>& lhs, const U& rhs)
+	{
+		return (static_cast<U>(lhs) != rhs);
+	}
+
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyReader<T>& rhs)
+	{
+		return (lhs != static_cast<U>(rhs));
+	}
+
+	template <typename T, typename U>
+	bool operator==(const PropertyWriter<T>& lhs, const U& rhs)
+	{
+		return (static_cast<U>(lhs) == rhs);
+	}
+
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyWriter<T>& rhs)
+	{
+		return (lhs == static_cast<U>(rhs));
+	}
+
+	template <typename T, typename U>
+	bool operator!=(const PropertyWriter<T>& lhs, const U& rhs)
+	{
+		return (static_cast<U>(lhs) != rhs);
+	}
+
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyWriter<T>& rhs)
+	{
+		return (lhs != static_cast<U>(rhs));
+	}
+
+	template <typename T, typename U>
+	bool operator==(const PropertyAccess<T>& lhs, const U& rhs)
+	{
+		return (static_cast<U>(lhs) == rhs);
+	}
+
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyAccess<T>& rhs)
+	{
+		return (lhs == static_cast<U>(rhs));
+	}
+
+	template <typename T, typename U>
+	bool operator!=(const PropertyAccess<T>& lhs, const U& rhs)
+	{
+		return (static_cast<U>(lhs) != rhs);
+	}
+
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyAccess<T>& rhs)
+	{
+		return (lhs != static_cast<U>(rhs));
+	}
 }

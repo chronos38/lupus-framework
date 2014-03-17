@@ -26,23 +26,23 @@
 namespace Lupus {
 	Object::Object()
 	{
-		mMutex = CreateMutex(NULL, FALSE, NULL);
+		_mutex = CreateMutex(NULL, FALSE, NULL);
 
-		if (!mMutex) {
+		if (!_mutex) {
 			throw SystemException("couldn't create mutex object");
 		}
 	}
 
 	Object::~Object()
 	{
-		if (!CloseHandle(mMutex)) {
+		if (!CloseHandle(_mutex)) {
 			throw SystemException("couldn't close mutex");
 		}
 	}
 
 	void Object::Lock()
 	{
-		switch (WaitForSingleObject(mMutex, INFINITE)) {
+		switch (WaitForSingleObject(_mutex, INFINITE)) {
 		case WAIT_OBJECT_0:
 			return;
 		case WAIT_FAILED:
@@ -54,7 +54,7 @@ namespace Lupus {
 
 	bool Object::TryLock()
 	{
-		switch (WaitForSingleObject(mMutex, 0)) {
+		switch (WaitForSingleObject(_mutex, 0)) {
 		case WAIT_OBJECT_0:
 			return true;
 		case WAIT_TIMEOUT:
@@ -69,7 +69,7 @@ namespace Lupus {
 	
 	void Object::Unlock()
 	{
-		if (!ReleaseMutex(mMutex)) {
+		if (!ReleaseMutex(_mutex)) {
 			throw SystemException("error while ownership of mutex was released");
 		}
 	}

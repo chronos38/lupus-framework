@@ -26,41 +26,41 @@ namespace Lupus {
 	namespace System {
 		String Float::ToString(float value)
 		{
-			_lchar result[sFloatCount];
-			_lmemset(result, 0, sFloatCount);
-			_lsprintf(result, sFloatCount, _lstring("%f"), value);
+			char result[sFloatCount];
+			memset(result, 0, sFloatCount);
+			snprintf(result, sFloatCount, ("%f"), value);
 			return result;
 		}
 
 		String Float::ToString(double value)
 		{
-			_lchar result[sFloatCount];
-			_lmemset(result, 0, sFloatCount);
-			_lsprintf(result, sFloatCount, _lstring("%lf"), value);
+			char result[sFloatCount];
+			memset(result, 0, sFloatCount);
+			snprintf(result, sFloatCount, ("%lf"), value);
 			return result;
 		}
 		
 		String Float::ToString(real value)
 		{
-			_lchar result[sFloatCount];
-			_lmemset(result, 0, sFloatCount);
-			_lsprintf(result, sFloatCount, _lstring("%Lf"), value);
+			char result[sFloatCount];
+			memset(result, 0, sFloatCount);
+			snprintf(result, sFloatCount, ("%Lf"), value);
 			return result;
 		}
 
 		bool Float::TryParse(const String& string, float& result)
 		{
-			return (_lsscanf(string.Data, _lstring("%f"), &result) == 1);
+			return (sscanf(string.Data, ("%f"), &result) == 1);
 		}
 
 		bool Float::TryParse(const String& string, double& result)
 		{
-			return (_lsscanf(string.Data, _lstring("%lf"), &result) == 1);
+			return (sscanf(string.Data, ("%lf"), &result) == 1);
 		}
 
 		bool Float::TryParse(const String& string, real& result)
 		{
-			return (_lsscanf(string.Data, _lstring("%Lf"), &result) == 1);
+			return (sscanf(string.Data, ("%Lf"), &result) == 1);
 		}
 	}
 }
