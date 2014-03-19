@@ -85,6 +85,7 @@
     <ClInclude Include="Iterator.hpp" />
     <ClInclude Include="Integer.hpp" />
     <ClInclude Include="Object.hpp" />
+    <ClInclude Include="Pair.hpp" />
     <ClInclude Include="Property.hpp" />
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
@@ -103,6 +104,7 @@
   <ItemGroup>
     <None Include="Char.inl" />
     <None Include="Iterator.inl" />
+    <None Include="Pair.inl" />
     <None Include="Property.inl" />
     <None Include="String.inl" />
   </ItemGroup>

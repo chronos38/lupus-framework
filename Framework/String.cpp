@@ -343,7 +343,7 @@ namespace Lupus {
 				break;
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = startIndex; i < _length; i++) {
-					char ch = tolower(_data[i]);
+					char ch = static_cast<char>(tolower(_data[i]));
 
 					while (!iterator.IsDone()) {
 						if (ch == iterator.CurrentItem()) {
@@ -493,6 +493,24 @@ namespace Lupus {
 		{
 			throw NotImplementedException();
 		}
+
+		String& String::Reverse()
+		{
+			// variables
+			char* swap = _data;
+			char* data = new char[_length + 1];
+
+			// reverse string
+			for (int i = (_length - 1), j = 0; i >= 0; i--, j++) {
+				data[j] = _data[i];
+			}
+
+			_data = data;
+			delete[] swap;
+			_data[_length] = 0;
+
+			return (*this);
+		}
 		
 		/*
 		Vector<String> String::Split(const Vector<Char>&, StringSplitOptions)
@@ -543,7 +561,7 @@ namespace Lupus {
 
 			// compute result
 			for (char* ch = _data; ch != limit; ch++) {
-				(*ch) = tolower(*ch);
+				(*ch) = static_cast<char>(tolower(*ch));
 			}
 
 			return (*this);
@@ -556,7 +574,7 @@ namespace Lupus {
 
 			// compute result
 			for (char* ch = _data; ch != limit; ch++) {
-				(*ch) = toupper(*ch);
+				(*ch) = static_cast<char>(toupper(*ch));
 			}
 
 			return (*this);
@@ -974,8 +992,10 @@ namespace Lupus {
 
 		int String::KnuthMorrisPrattLast(const char* text, int textLength, const char* search, int searchLength)
 		{
-			// TODO: implement reverse search logic
-			throw NotImplementedException();
+			// variables
+			String string = Reverse(text);
+			// comput result
+			return KnuthMorrisPratt(string.Data, textLength, search, searchLength);
 		}
 
 		int String::KnuthMorrisPrattInsensitive(const char* text, int textLength, const char* search, int searchLength)
@@ -1020,8 +1040,15 @@ namespace Lupus {
 
 		int String::KnuthMorrisPrattInsensitiveLast(const char* text, int textLength, const char* search, int searchLength)
 		{
-			// TODO: implement reverse search logic
-			throw NotImplementedException();
+			// variables
+			String string = Reverse(text);
+			// comput result
+			return KnuthMorrisPrattInsensitive(string.Data, textLength, search, searchLength);
+		}
+
+		String String::Reverse(const String& string)
+		{
+			return (String(string).Reverse());
 		}
 	}
 }

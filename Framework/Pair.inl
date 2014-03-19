@@ -16,31 +16,34 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_IDICTIONARY_HPP
-#define LUPUS_IDICTIONARY_HPP
-
-#include "Iterator.hpp"
-
 namespace Lupus {
 	namespace System {
-		template <typename Key, typename Value>
-		class IDictionary
+		template <typename KeyT, typename ValueT>
+		Pair<KeyT, ValueT>::Pair(const Pair<KeyT, ValueT>& pair) :
+			Object(),
+			_key(pair.Key),
+			_value(pair.Value)
 		{
-		public:
-			virtual ~IDictionary() { }
-			virtual void Add(const Key&, const Value&) = 0;
-			virtual void Clear() = 0;
-			virtual bool Contains(const Value&) const = 0;
-			virtual bool ContainsKey(const Key&) const = 0;
-			virtual void CopyTo(ISequence<Value>&, int);
-			virtual int Count() = 0;
-			virtual bool Remove(const Value&) = 0;
-			virtual bool RemoveKey(const Key&) = 0;
-			virtual bool IsEmpty() const = 0;
-			// Vector<Key> GetKeys();
-			// Vector<Value> GetValues();
-		};
+		}
+
+		template <typename KeyT, typename ValueT>
+		Pair<KeyT, ValueT>::Pair(const KeyT& key, const ValueT& value) :
+			Object(),
+			_key(key),
+			_value(value)
+		{
+		}
+
+		template <typename KeyT, typename ValueT>
+		Pair<KeyT, ValueT>::~Pair()
+		{
+		}
+
+		template <typename KeyT, typename ValueT>
+		Pair<KeyT, ValueT>& Pair<KeyT, ValueT>::operator=(const Pair<KeyT, ValueT>& pair)
+		{
+			_key = pair.Key;
+			_value = pair.Value;
+		}
 	}
 }
-
-#endif

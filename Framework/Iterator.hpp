@@ -19,10 +19,16 @@
 #ifndef LUPUS_ITERATOR_HPP
 #define LUPUS_ITERATOR_HPP
 
+#include "Pair.hpp"
+
 namespace Lupus {
 	namespace System {
 		template <typename T>
 		class ISequence;
+		template <typename Key, typename Value>
+		class IDictionary;
+		template <typename Key, typename Value>
+		class Pair;
 
 		template <typename T>
 		class Iterator
@@ -36,7 +42,7 @@ namespace Lupus {
 		};
 
 		template <typename T>
-		class SequenceIterator : public Iterator<T>
+		class SequenceIterator : public Object, public Iterator<T>
 		{
 			const ISequence<T>* _sequence = nullptr;
 			int _current = 0;
@@ -49,6 +55,21 @@ namespace Lupus {
 			virtual bool IsDone() const override;
 			virtual const T& CurrentItem() const override;
 			SequenceIterator<T>& operator=(const SequenceIterator<T>&) = default;
+		};
+
+		template <typename Key, typename Value>
+		class DictionaryIterator : public Object, public Iterator<Pair<Key,Value>>
+		{
+			const IDictionary<Key, Value>* _dictionary = nullptr;
+		public:
+			DictionaryIterator(const IDictionary<Key, Value>&);
+			DictionaryIterator(const IDictionary<Key, Value>*);
+			virtual ~DictionaryIterator();
+			virtual void First() override;
+			virtual void Next() override;
+			virtual bool IsDone() const override;
+			virtual const Pair<Key, Value>& CurrentItem() const override;
+			DictionaryIterator<Key, Value>& operator=(const DictionaryIterator<Key, Value>&) = default;
 		};
 	}
 }

@@ -23,12 +23,14 @@ namespace Lupus {
 	namespace System {
 		template <typename T>
 		SequenceIterator<T>::SequenceIterator(const ISequence<T>& sequence) :
+			Object(),
 			_sequence(&sequence)
 		{
 		}
 
 		template <typename T>
 		SequenceIterator<T>::SequenceIterator(const ISequence<T>* sequence) :
+			Object(),
 			_sequence(sequence)
 		{
 		}
@@ -64,6 +66,50 @@ namespace Lupus {
 			}
 
 			return (_sequence->operator[](_current));
+		}
+
+		template <typename Key, typename Value>
+		DictionaryIterator<Key, Value>::DictionaryIterator(const IDictionary<Key, Value>& dictionary) :
+			_dictionary(&dictionary)
+		{
+			throw NotImplementedException();
+		}
+
+		template <typename Key, typename Value>
+		DictionaryIterator<Key, Value>::DictionaryIterator(const IDictionary<Key, Value>* dictionary) :
+			_dictionary(dictionary)
+		{
+			throw NotImplementedException();
+		}
+
+		template <typename Key, typename Value>
+		DictionaryIterator<Key, Value>::~DictionaryIterator()
+		{
+			throw NotImplementedException();
+		}
+
+		template <typename Key, typename Value>
+		void DictionaryIterator<Key, Value>::First()
+		{
+			throw NotImplementedException();
+		}
+
+		template <typename Key, typename Value>
+		void DictionaryIterator<Key, Value>::Next()
+		{
+			throw NotImplementedException();
+		}
+
+		template <typename Key, typename Value>
+		bool DictionaryIterator<Key, Value>::IsDone() const
+		{
+			throw NotImplementedException();
+		}
+
+		template <typename Key, typename Value>
+		const Pair<Key, Value>& DictionaryIterator<Key, Value>::CurrentItem() const
+		{
+			throw NotImplementedException();
 		}
 	}
 }

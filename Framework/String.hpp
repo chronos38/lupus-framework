@@ -242,6 +242,11 @@ namespace Lupus {
 			 * @return reference to this instance
 			 */
 			String& Replace(const String& before, const String& after, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive);
+			/**
+			 * Reverse the whole string
+			 * @return reference to this instance
+			 */
+			String& Reverse();
 			//Vector<String> Split(const Vector<Char>&, StringSplitOptions = StringSplitOptions::None) const;
 			//Vector<String> Split(const Vector<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
 			//Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
@@ -392,6 +397,7 @@ namespace Lupus {
 			static int KnuthMorrisPrattLast(const char*, int, const char*, int);
 			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
 			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int);
+			static String Reverse(const String&);
 		};
 
 		template <typename T>
