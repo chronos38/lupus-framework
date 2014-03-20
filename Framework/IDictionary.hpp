@@ -33,7 +33,7 @@ namespace Lupus {
 			virtual bool Contains(const Value&) const = 0;
 			virtual bool ContainsKey(const Key&) const = 0;
 			virtual void CopyTo(ISequence<Value>&, int);
-			virtual int Count() = 0;
+			virtual s32 Count() = 0;
 			virtual bool Remove(const Value&) = 0;
 			virtual bool RemoveKey(const Key&) = 0;
 			virtual bool IsEmpty() const = 0;

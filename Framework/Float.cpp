@@ -19,6 +19,8 @@
 #include "Float.hpp"
 #include "Char.hpp"
 #include "String.hpp"
+#include <cstdio>
+#include <cstring>
 
 static const size_t sFloatCount = 32;
 

@@ -166,9 +166,6 @@ namespace Lupus {
 			virtual bool operator!=(const Char&) const;
 			//! char conversion operator
 			virtual operator char() const final;
-		public:
-			static const uint MaxValue;
-			static const uint MinValue;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
 			//! @sa Char::Char(char)

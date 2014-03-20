@@ -20,7 +20,6 @@ namespace Lupus {
 	namespace System {
 		template <typename KeyT, typename ValueT>
 		Pair<KeyT, ValueT>::Pair(const Pair<KeyT, ValueT>& pair) :
-			Object(),
 			_key(pair.Key),
 			_value(pair.Value)
 		{
@@ -28,7 +27,6 @@ namespace Lupus {
 
 		template <typename KeyT, typename ValueT>
 		Pair<KeyT, ValueT>::Pair(const KeyT& key, const ValueT& value) :
-			Object(),
 			_key(key),
 			_value(value)
 		{

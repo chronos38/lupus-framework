@@ -27,7 +27,6 @@
 namespace Lupus {
 	namespace System {
 		String::String(const wchar_t* source) :
-			Object(),
 			_data(nullptr)
 		{
 			// check argument
@@ -56,7 +55,6 @@ namespace Lupus {
 		}
 
 		String::String(const wchar_t* source, int startIndex, int length) :
-			Object(),
 			_data(nullptr)
 		{
 			// check source string

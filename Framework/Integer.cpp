@@ -19,12 +19,14 @@
 #include "Integer.hpp"
 #include "Char.hpp"
 #include "String.hpp"
+#include <cstdio>
+#include <cstring>
 
 static const size_t sIntegerCount = 32;
 
 namespace Lupus {
 	namespace System {
-		String Integer::ToString(byte value, IntegerBase base)
+		String Integer::ToString(sbyte value, IntegerBase base)
 		{
 			char result[sIntegerCount];
 			memset(result, 0, sIntegerCount);
@@ -118,6 +120,7 @@ namespace Lupus {
 			}
 			return result;
 		}
+
 		String Integer::ToString(ubyte value, IntegerBase base)
 		{
 			char result[sIntegerCount];
@@ -213,7 +216,7 @@ namespace Lupus {
 			return result;
 		}
 
-		bool Integer::TryParse(const String& string, byte& result, IntegerBase base)
+		bool Integer::TryParse(const String& string, sbyte& result, IntegerBase base)
 		{
 			switch (base) {
 			case IntegerBase::Decimal:

@@ -394,10 +394,9 @@ namespace Lupus {
 			static String CreateWithExistingBuffer(char*);
 			static int GetLength(const Char*);
 			static int KnuthMorrisPratt(const char*, int, const char*, int);
-			static int KnuthMorrisPrattLast(const char*, int, const char*, int);
+			static int KnuthMorrisPrattLast(const char*, int, const char*, int, int);
 			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
-			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int);
-			static String Reverse(const String&);
+			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int, int);
 		};
 
 		template <typename T>

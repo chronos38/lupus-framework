@@ -22,13 +22,11 @@
 #include "..\..\String.hpp"
 #include "..\..\Integer.hpp"
 #include "..\..\Exception.hpp"
-#include <cwchar>
-#include <cwctype>
+#include <cstdlib>
 
 namespace Lupus {
 	namespace System {
 		Char::Char(wchar_t wc) :
-			Object(),
 			_value(0)
 		{
 			wctomb(&_value, wc);

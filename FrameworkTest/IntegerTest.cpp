@@ -30,7 +30,7 @@ namespace FrameworkTest {
 		TEST_METHOD(IntegerToStringTest)
 		{
 			// variables
-			byte value = 127;
+			sbyte value = 127;
 
 			// decimal
 			Assert::IsTrue(String("127").Compare(Integer::ToString(value)) == 0, L"ToString", LINE_INFO());
@@ -77,7 +77,7 @@ namespace FrameworkTest {
 			String oct = "0001";
 
 			// results
-			byte hhd;
+			sbyte hhd;
 			short hd;
 			int d;
 			long ld;

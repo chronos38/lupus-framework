@@ -32,6 +32,6 @@ namespace Lupus {
 	ulong Object::GetHashCode() const
 	{
 		const std::type_info& info = typeid(*this);
-		return static_cast<ulong>(info.hash_code());
+		return static_cast<ulong>(static_cast<ulong>(info.hash_code()) + reinterpret_cast<ulong>(this));
 	}
 }

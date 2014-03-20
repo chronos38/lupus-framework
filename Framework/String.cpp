@@ -21,13 +21,13 @@
 #include "Iterator.hpp"
 #include "Exception.hpp"
 #include <cstring>
+#include <cctype>
 
 static const int DEFAULT_STRING_LENGTH = 64;
 
 namespace Lupus {
 	namespace System {
 		String::String() :
-			Object(),
 			_data(new char[DEFAULT_STRING_LENGTH]),
 			_length(0),
 			_capacity(0)
@@ -35,7 +35,6 @@ namespace Lupus {
 			memset(_data, 0, DEFAULT_STRING_LENGTH);
 		}
 		String::String(const char* source) :
-			Object(),
 			_data(nullptr)
 		{
 			// check argument
@@ -54,7 +53,6 @@ namespace Lupus {
 		}
 
 		String::String(const char* source, int startIndex, int length) :
-			Object(),
 			_data(nullptr)
 		{
 			// check source string
@@ -73,8 +71,7 @@ namespace Lupus {
 			_length = _capacity = length;
 		}
 
-		String::String(const Char* source) :
-			Object()
+		String::String(const Char* source)
 		{
 			// check argument
 			if (!source) {
@@ -102,8 +99,7 @@ namespace Lupus {
 			_length = _capacity = length;
 		}
 
-		String::String(const Char* source, int startIndex, int count) :
-			Object()
+		String::String(const Char* source, int startIndex, int count)
 		{
 			// check arguments
 			if (!source) {
@@ -142,7 +138,6 @@ namespace Lupus {
 		}
 
 		String::String(const String& string) :
-			Object(),
 			_data(new char[string.Length + 1]),
 			_length(string.Length),
 			_capacity(string.Length)
@@ -332,26 +327,22 @@ namespace Lupus {
 				for (int i = startIndex; i < _length; i++) {
 					char& ch = _data[i];
 
-					while (!iterator.IsDone()) {
-						if (ch == iterator.CurrentItem()) {
+					foreach (item, sequence) {
+						if (ch == item.CurrentItem()) {
 							return i;
 						}
 					}
-
-					iterator.First();
 				}
 				break;
 			case CaseSensitivity::CaseInsensitive:
 				for (int i = startIndex; i < _length; i++) {
-					char ch = static_cast<char>(tolower(_data[i]));
+					int ch = tolower(_data[i]);
 
-					while (!iterator.IsDone()) {
-						if (ch == iterator.CurrentItem()) {
+					foreach (item, sequence) {
+						if (ch == tolower(item.CurrentItem())) {
 							return i;
 						}
 					}
-
-					iterator.First();
 				}
 				break;
 			}
@@ -404,9 +395,9 @@ namespace Lupus {
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPrattLast(_data + startIndex, _length - startIndex, string.Data, string.Length);
+				return KnuthMorrisPrattLast(_data, _length, string.Data, string.Length, startIndex);
 			case CaseSensitivity::CaseInsensitive:
-				return KnuthMorrisPrattInsensitiveLast(_data + startIndex, _length - startIndex, string.Data, string.Length);
+				return KnuthMorrisPrattInsensitiveLast(_data, _length, string.Data, string.Length, startIndex);
 			}
 
 			return -1;
@@ -423,7 +414,11 @@ namespace Lupus {
 				return -1;
 			}
 
-			throw NotImplementedException();
+			// variables
+			String string(*this);
+			
+			// compute
+			return (string.Reverse().IndexOfAny(sequence, startIndex, sensitivity));
 		}
 
 		String& String::Remove(int startIndex)
@@ -990,12 +985,14 @@ namespace Lupus {
 			return -1;
 		}
 
-		int String::KnuthMorrisPrattLast(const char* text, int textLength, const char* search, int searchLength)
+		int String::KnuthMorrisPrattLast(const char* text, int textLength, const char* search, int searchLength, int startIndex)
 		{
 			// variables
-			String string = Reverse(text);
+			String textString(text);
+			String searchString(search);
+			int length = textString.Length - searchLength - startIndex;
 			// comput result
-			return KnuthMorrisPratt(string.Data, textLength, search, searchLength);
+			return (length - KnuthMorrisPratt(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength));
 		}
 
 		int String::KnuthMorrisPrattInsensitive(const char* text, int textLength, const char* search, int searchLength)
@@ -1038,17 +1035,14 @@ namespace Lupus {
 			return -1;
 		}
 
-		int String::KnuthMorrisPrattInsensitiveLast(const char* text, int textLength, const char* search, int searchLength)
+		int String::KnuthMorrisPrattInsensitiveLast(const char* text, int textLength, const char* search, int searchLength, int startIndex)
 		{
 			// variables
-			String string = Reverse(text);
+			String textString(text);
+			String searchString(search);
+			int length = textString.Length - searchLength - startIndex;
 			// comput result
-			return KnuthMorrisPrattInsensitive(string.Data, textLength, search, searchLength);
-		}
-
-		String String::Reverse(const String& string)
-		{
-			return (String(string).Reverse());
+			return (length - KnuthMorrisPrattInsensitive(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength));
 		}
 	}
 }

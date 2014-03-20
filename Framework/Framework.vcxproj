@@ -89,6 +89,7 @@
     <ClInclude Include="Property.hpp" />
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
+    <ClInclude Include="Utility.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Char.cpp" />

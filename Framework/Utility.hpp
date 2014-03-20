@@ -16,33 +16,16 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_OBJECT_HPP
-#define LUPUS_OBJECT_HPP
+#ifndef LUPUS_UTILITY_HPP
+#define LUPUS_UTITLIY_HPP
 
-#include "Types.hpp"
-
-namespace Lupus {
-	namespace System {
-		class String;
-	}
-
-	class LUPUS_API Object
-	{
-	public:
-		Object();
-		virtual ~Object();
-		virtual ulong GetHashCode() const;
-		virtual System::String GetName() const final;
-		virtual void Lock() final;
-		virtual bool TryLock() final;
-		virtual void Unlock() final;
-#if defined(LUPUS_WINDOWS_PLATFORM)
-	private:
-		HANDLE _mutex;
-#elif defined(LUPUS_UNIX_PLATFORM)
-	private:
-#endif
-	};
-}
+/**
+ * Iterate through whole container
+ * @param item iteration variable as iterator type
+ * @param container sequence or dictionary type
+ *
+ * usage: foreach(item, container) { do things with 'item' }
+ */
+#define foreach(item, container) for (auto item = container.Begin(); !(item.IsDone()); item.Next())
 
 #endif

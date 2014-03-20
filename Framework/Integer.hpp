@@ -37,7 +37,7 @@ namespace Lupus {
 		class LUPUS_API Integer : public Object
 		{
 		public:
-			static String ToString(byte, IntegerBase = IntegerBase::Decimal);
+			static String ToString(sbyte, IntegerBase = IntegerBase::Decimal);
 			static String ToString(short, IntegerBase = IntegerBase::Decimal);
 			static String ToString(int, IntegerBase = IntegerBase::Decimal);
 			static String ToString(long, IntegerBase = IntegerBase::Decimal);
@@ -47,7 +47,7 @@ namespace Lupus {
 			static String ToString(uint, IntegerBase = IntegerBase::Decimal);
 			static String ToString(ulong, IntegerBase = IntegerBase::Decimal);
 			static String ToString(ullong, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, byte&, IntegerBase = IntegerBase::Decimal);
+			static bool TryParse(const String&, sbyte&, IntegerBase = IntegerBase::Decimal);
 			static bool TryParse(const String&, short&, IntegerBase = IntegerBase::Decimal);
 			static bool TryParse(const String&, int&, IntegerBase = IntegerBase::Decimal);
 			static bool TryParse(const String&, long&, IntegerBase = IntegerBase::Decimal);

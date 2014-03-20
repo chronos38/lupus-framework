@@ -58,7 +58,7 @@ namespace Lupus {
 		};
 
 		template <typename Key, typename Value>
-		class DictionaryIterator : public Object, public Iterator<Pair<Key,Value>>
+		class DictionaryIterator : public Object, public Iterator<Pair<Key, Value>>
 		{
 			const IDictionary<Key, Value>* _dictionary = nullptr;
 		public:

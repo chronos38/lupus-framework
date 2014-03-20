@@ -22,26 +22,22 @@
 using namespace Lupus::System;
 
 namespace Lupus {
-	Exception::Exception() :
-		Object()
+	Exception::Exception()
 	{
 	}
 
 	Exception::Exception(const String& message) :
-		Object(),
 		_message(new String(message))
 	{
 	}
 
 	Exception::Exception(const String& message, const Exception& innerException) :
-		Object(),
 		_message(new String(message)),
 		_innerException(new Exception(innerException))
 	{
 	}
 
 	Exception::Exception(const Exception& exception) :
-		Object(),
 		_message(new String(exception.Message()))
 	{
 	}

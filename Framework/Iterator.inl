@@ -23,16 +23,17 @@ namespace Lupus {
 	namespace System {
 		template <typename T>
 		SequenceIterator<T>::SequenceIterator(const ISequence<T>& sequence) :
-			Object(),
 			_sequence(&sequence)
 		{
 		}
 
 		template <typename T>
 		SequenceIterator<T>::SequenceIterator(const ISequence<T>* sequence) :
-			Object(),
 			_sequence(sequence)
 		{
+			if (!sequence) {
+				throw ArgumentNullException();
+			}
 		}
 
 		template <typename T>
@@ -72,14 +73,15 @@ namespace Lupus {
 		DictionaryIterator<Key, Value>::DictionaryIterator(const IDictionary<Key, Value>& dictionary) :
 			_dictionary(&dictionary)
 		{
-			throw NotImplementedException();
 		}
 
 		template <typename Key, typename Value>
 		DictionaryIterator<Key, Value>::DictionaryIterator(const IDictionary<Key, Value>* dictionary) :
 			_dictionary(dictionary)
 		{
-			throw NotImplementedException();
+			if (!sequence) {
+				throw ArgumentNullException();
+			}
 		}
 
 		template <typename Key, typename Value>

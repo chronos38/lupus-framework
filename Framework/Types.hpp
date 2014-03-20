@@ -19,57 +19,72 @@
 #ifndef LUPUS_TYPES_HPP
 #define LUPUS_TYPES_HPP
 
+// Platform makro
 #if defined(__linux) || defined(__linux__) || defined(__gnu_linx)
 #  define LUPUS_LINUX_PLATFORM
+#  define LUPUS_UNIX_PLATFORM
 #elif defined(__APPLE__) || defined(__MACH__)
 #  define LUPUS_APPLE_PLATTFORM
+#  define LUPUS_UNIX_PLATFORM
 #elif defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
 #  define LUPUS_WINDOWS_PLATFORM
+#else
+#  error platform not supported
 #endif
 
-#if defined(__unix) || defined(__unix__) || defined(LUPUS_APPLE_PLATFORM) || defined(LUPUS_LINUX_PLATFORM)
-#  define LUPUS_UNIX_PLATFORM
-#endif
-
-#if defined(LUPUS_WINDOWS_PLATFORM)
+// DLL export symbols
+#if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
 #  ifdef LUPUS_DLL_EXPORT
 #    ifdef __GNUC__
-#      undef LUPUS_WINDOWS_PLATFORM
 #      define LUPUS_API __attribute__ ((dllexport))
 #    else
 #      define LUPUS_API __declspec(dllexport)
 #    endif
 #  else
 #    ifdef __GNUC__
-#      undef LUPUS_WINDOWS_PLATFORM
 #      define LUPUS_API __attribute__ ((dllimport))
 #    else
 #      define LUPUS_API __declspec(dllimport)
 #    endif
 #  endif
-#elif defined(LUPUS_UNIX_PLATFORM)
+#else
 #  if __GNUC__ >= 4
 #    define LUPUS_API __attribute__ ((visibility ("default")))
 #  else
 #    define LUPUS_API
 #  endif
-#else
-#  error platform not supported
 #endif
 
-// lock object
-#define lock(object, code) object.Lock(); code; object.Unlock()
+// windows stuff
+#ifdef LUPUS_WINDOWS_PLATFORM
+// ignore specific warnings
+#pragma warning(disable:4251)
+// deavtivate SDL
+#define _CRT_SECURE_NO_WARNINGS 1
+// windows header
+#include <Windows.h>
+//! snprintf
+#define snprintf sprintf_s
+#endif
+
+// unix stuff
+#ifdef LUPUS_UNIX_PLATFORM
+#endif
+
+// headers
+#include "Property.hpp"
+#include "Utility.hpp"
 
 namespace Lupus {
 	//! single signed byte
-	typedef signed char byte;
-	//! single unsigned byte
+	typedef signed char sbyte;
+	//! unsingle unsigned byte
 	typedef unsigned char ubyte;
-	//! 16-bit unsigned integer
+	//! unsigned integer
 	typedef unsigned short ushort;
-	//! 32-bit unsigned integer
+	//! unsigned integer
 	typedef unsigned int uint;
-	//! >=32-bit unsigned integer
+	//! unsigned long integer
 	typedef unsigned long ulong;
 	//! >=64-bit signed integer
 	typedef long long llong;
@@ -86,27 +101,5 @@ namespace Lupus {
 		};
 	}
 }
-
-// compiler warnings
-#if defined(LUPUS_WINDOWS_PLATFORM)
-// ignore specific warnings
-#pragma warning(disable:4251)
-// deavtivate SDL
-#define _CRT_SECURE_NO_WARNINGS 1
-#endif
-
-// headers
-#include <cwchar>
-#include <cstring>
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
-#include "Property.hpp"
-
-// snprintf
-#if defined(LUPUS_WINDOWS_PLATFORM)
-//! snprintf
-#define snprintf sprintf_s
-#endif
 
 #endif

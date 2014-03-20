@@ -17,32 +17,27 @@
  */
 
 #include "Char.hpp"
+#include <cwchar>
+#include <cctype>
 
 namespace Lupus {
 	namespace System {
-		const uint Char::MaxValue = WCHAR_MAX;
-		const uint Char::MinValue = WCHAR_MIN;
-
 		Char::Char() :
-			Object(),
 			_value(0)
 		{
 		}
 
 		Char::Char(char ch) :
-			Object(),
 			_value(ch)
 		{
 		}
 
-		Char::Char(const Char& ch) :
-			Object()
+		Char::Char(const Char& ch)
 		{
 			_value = ch._value;
 		}
 
-		Char::Char(Char&& ch) :
-			Object()
+		Char::Char(Char&& ch)
 		{
 			_value = ch._value;
 			ch._value = 0;
