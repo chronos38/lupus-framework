@@ -24,6 +24,8 @@
 namespace Lupus {
 	namespace System {
 		template <typename T>
+		class Iterator;
+		template <typename T>
 		class SequenceIterator;
 
 		template <typename T>
@@ -42,10 +44,8 @@ namespace Lupus {
 			virtual T& Front() = 0;
 			virtual const T& Front() const = 0;
 			virtual void Insert(int, const T&) = 0;
-			virtual void Insert(const SequenceIterator<T>&, const T&) = 0;
 			virtual bool IsEmpty() const = 0;
 			virtual bool RemoveAt(int) = 0;
-			virtual bool Remove(const SequenceIterator<T>&) = 0;
 			virtual void Resize(int) = 0;
 			virtual T& operator[](int) = 0;
 			virtual const T& operator[](int) const = 0;

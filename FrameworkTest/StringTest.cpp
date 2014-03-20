@@ -186,18 +186,12 @@ namespace FrameworkTest
 			Assert::AreEqual(5, string.LastIndexOf('A', 2, CaseSensitivity::CaseInsensitive), L"(Char) case insensitive", LINE_INFO());
 
 			// (String) case sensitive
-			try {
-				Assert::AreEqual(4, string.LastIndexOf("Aa"), L"(String) case sensitive", LINE_INFO());
-				Assert::AreEqual(0, string.LastIndexOf("Aa", 3), L"(String, int) case sensitive", LINE_INFO());
-			} catch (NotImplementedException&) {
-			}
+			Assert::AreEqual(4, string.LastIndexOf("Aa"), L"(String) case sensitive", LINE_INFO());
+			Assert::AreEqual(0, string.LastIndexOf("Aa", 3), L"(String, int) case sensitive", LINE_INFO());
 
 			// (String) case insensitive
-			try {
-				Assert::AreEqual(4, string.LastIndexOf("aA", 0, CaseSensitivity::CaseInsensitive), L"(String) case sensitive", LINE_INFO());
-				Assert::AreEqual(0, string.LastIndexOf("aA", 3, CaseSensitivity::CaseInsensitive), L"(String, int) case sensitive", LINE_INFO());
-			} catch (NotImplementedException&) {
-			}
+			Assert::AreEqual(4, string.LastIndexOf("aA", 0, CaseSensitivity::CaseInsensitive), L"(String) case sensitive", LINE_INFO());
+			Assert::AreEqual(0, string.LastIndexOf("aA", 3, CaseSensitivity::CaseInsensitive), L"(String, int) case sensitive", LINE_INFO());
 		}
 
 		TEST_METHOD(StringRemoveTest)
@@ -224,16 +218,10 @@ namespace FrameworkTest
 			Assert::IsTrue(string.Replace('B', 'C', CaseSensitivity::CaseInsensitive).Compare("aaCCaaCC") == 0, L"(Char, Char) case insensitive", LINE_INFO());
 
 			// (String, String) case sensitive
-			try {
-				Assert::IsTrue(string.Replace("aa", "AA").Compare("AACCAACC") == 0, L"(String, String) case sensitive", LINE_INFO());
-			} catch (NotImplementedException&) {
-			}
+			Assert::IsTrue(string.Replace("aa", "AA").Compare("AACCAACC") == 0, L"(String, String) case sensitive", LINE_INFO());
 
 			// (String, String) case insensitive
-			try {
-				Assert::IsTrue(string.Replace("aacc", "bbee", CaseSensitivity::CaseInsensitive).Compare("") == 0, L"(String, String) case insensitive", LINE_INFO());
-			} catch (NotImplementedException&) {
-			}
+			Assert::IsTrue(string.Replace("aacc", "bbee", CaseSensitivity::CaseInsensitive).Compare("bbeebbee") == 0, L"(String, String) case insensitive", LINE_INFO());
 		}
 
 		TEST_METHOD(StringSubstringTest)

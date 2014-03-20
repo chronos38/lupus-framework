@@ -378,11 +378,18 @@ namespace Lupus {
 			virtual char& Front() override;
 			virtual const char& Front() const override;
 			virtual void Insert(int, const char&) override;
-			virtual void Insert(const SequenceIterator<char>&, const char&) override;
 			virtual bool IsEmpty() const override;
 			virtual bool RemoveAt(int) override;
-			virtual bool Remove(const SequenceIterator<char>&) override;
 			virtual void Resize(int) override;
+		private:
+			explicit String(int);
+			static String CreateWithExistingBuffer(char*);
+			static int GetLength(const Char*);
+			static int KnuthMorrisPratt(const char*, int, const char*, int);
+			static int KnuthMorrisPrattLast(const char*, int, const char*, int, int);
+			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
+			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int, int);
+			static void Swap(String&, String&);
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
 			//! @sa String::String(const char*)
@@ -390,13 +397,6 @@ namespace Lupus {
 			//! @sa String::String(const char*, int, int)
 			String(const wchar_t*, int startIndex, int length);
 #endif
-		private:
-			static String CreateWithExistingBuffer(char*);
-			static int GetLength(const Char*);
-			static int KnuthMorrisPratt(const char*, int, const char*, int);
-			static int KnuthMorrisPrattLast(const char*, int, const char*, int, int);
-			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
-			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int, int);
 		};
 
 		template <typename T>
