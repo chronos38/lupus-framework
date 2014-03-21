@@ -140,6 +140,24 @@ namespace Lupus {
 		IteratorOutOfBoundException(const System::String& message, const Exception& innerException);
 		virtual ~IteratorOutOfBoundException() = default;
 	};
+
+	class LUPUS_API EncodingException : public Exception
+	{
+	public:
+		EncodingException();
+		EncodingException(const System::String& message);
+		EncodingException(const System::String& message, const Exception& innerException);
+		virtual ~EncodingException() = default;
+	};
+
+	class LUPUS_API InvalidOperationException : public Exception
+	{
+	public:
+		InvalidOperationException();
+		InvalidOperationException(const System::String& message);
+		InvalidOperationException(const System::String& message, const Exception& innerException);
+		virtual ~InvalidOperationException() = default;
+	};
 }
 
 #endif

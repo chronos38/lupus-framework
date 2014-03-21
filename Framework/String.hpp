@@ -26,6 +26,10 @@
 
 namespace Lupus {
 	namespace System {
+		// declarations
+		template <typename T>
+		class Vector;
+
 		//! string split flag
 		enum class StringSplitOptions {
 			None,
@@ -122,18 +126,6 @@ namespace Lupus {
 			 * @return true if this instance contains given string
 			 */
 			bool Contains(const String& string, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
-			/**
-			 * Copy content from this instance to a sequence container
-			 *
-			 * \b Exceptions
-			 * - ArgumentOutOfRangeException
-			 *
-			 * @param sourceIndex starting index for this instance
-			 * @param sequence container to copy into
-			 * @param destinationIndex starting index in container
-			 * @param count how many chars get copied
-			 */
-			void CopyTo(int sourceIndex, ISequence<char>& sequence, int destinationIndex, int count) const;
 			/**
 			 * Search for given char within this instance
 			 *
@@ -247,10 +239,10 @@ namespace Lupus {
 			 * @return reference to this instance
 			 */
 			String& Reverse();
-			//Vector<String> Split(const Vector<Char>&, StringSplitOptions = StringSplitOptions::None) const;
-			//Vector<String> Split(const Vector<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
-			//Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
-			//Vector<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
+			Vector<String> Split(const Vector<Char>&, StringSplitOptions = StringSplitOptions::None) const;
+			Vector<String> Split(const Vector<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
+			Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
+			Vector<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
 			/**
 			 * Create substring at starting index from this instance
 			 *
@@ -374,6 +366,7 @@ namespace Lupus {
 			virtual void Clear() override;
 			virtual bool Contains(const char&) const override;
 			virtual void CopyTo(ISequence<char>&, int) const override;
+			virtual void CopyTo(int sourceIndex, ISequence<char>& sequence, int destinationIndex, int count) const override;
 			virtual int Count() const override;
 			virtual char& Front() override;
 			virtual const char& Front() const override;

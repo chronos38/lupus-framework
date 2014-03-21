@@ -40,6 +40,18 @@ namespace Lupus {
 			virtual void Clear() = 0;
 			virtual bool Contains(const T&) const = 0;
 			virtual void CopyTo(ISequence<T>&, int) const = 0;
+			/**
+			 * Copy content from this instance to a sequence container
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param sourceIndex starting index for this instance
+			 * @param sequence container to copy into
+			 * @param destinationIndex starting index in container
+			 * @param count how many chars get copied
+			 */
+			virtual void CopyTo(int, ISequence<T>&, int, int) const = 0;
 			virtual int Count() const = 0;
 			virtual T& Front() = 0;
 			virtual const T& Front() const = 0;

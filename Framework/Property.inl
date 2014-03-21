@@ -27,6 +27,7 @@ namespace Lupus {
 	PropertyReader<T>& PropertyReader<T>::operator=(const PropertyReader<T>& propertyReader)
 	{
 		_reference = propertyReader._reference;
+		return (*this);
 	}
 
 	template <typename T>
@@ -45,6 +46,7 @@ namespace Lupus {
 	PropertyWriter<T>& PropertyWriter<T>::operator=(const PropertyWriter<T>& propertyWriter)
 	{
 		_reference = propertyWriter._reference;
+		return (*this);
 	}
 
 	template <typename T>
@@ -63,6 +65,7 @@ namespace Lupus {
 	PropertyAccess<T>& PropertyAccess<T>::operator=(const PropertyAccess<T>& propertyAccess)
 	{
 		_reference = propertyAccess._reference;
+		return (*this);
 	}
 
 	template <typename T>

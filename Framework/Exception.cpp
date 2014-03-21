@@ -240,4 +240,34 @@ namespace Lupus {
 		Exception(message, innerException)
 	{
 	}
+
+	EncodingException::EncodingException() :
+		Exception()
+	{
+	}
+
+	EncodingException::EncodingException(const String& message) :
+		Exception(message)
+	{
+	}
+
+	EncodingException::EncodingException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
+
+	InvalidOperationException::InvalidOperationException() :
+		Exception()
+	{
+	}
+
+	InvalidOperationException::InvalidOperationException(const String& message) :
+		Exception(message)
+	{
+	}
+
+	InvalidOperationException::InvalidOperationException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 }

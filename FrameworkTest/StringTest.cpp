@@ -20,6 +20,7 @@
 #include "..\Framework\Char.hpp"
 #include "..\Framework\String.hpp"
 #include "..\Framework\Exception.hpp"
+#include "..\Framework\Vector.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Lupus;
@@ -252,6 +253,21 @@ namespace FrameworkTest
 
 			// test
 			Assert::IsTrue(string.ToUpper().Compare("ABCDEF") == 0, L"to upper", LINE_INFO());
+		}
+
+		TEST_METHOD(StringSplitTest)
+		{
+			// variables
+			String string("ABCDABCDABCD");
+			Vector<Char> delimiter = { 'A', 'C' };
+			Vector<String> result;
+
+			// test
+			result = string.Split(delimiter);
+
+			foreach(item, result) {
+				item;
+			}
 		}
 
 		TEST_METHOD(StringOperatorTest)

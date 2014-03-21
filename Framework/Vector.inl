@@ -1,0 +1,323 @@
+/* Copyright © 2014 David Wolf <d.wolf@live.at>
+ *
+ * This file is part of LupusFramwork.
+ *
+ * LupusFramwork is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LupusFramwork is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "Exception.hpp"
+#include "Iterator.hpp"
+
+namespace Lupus {
+	namespace System {
+		template <typename T>
+		Vector<T>::Vector() :
+			_data(new T[DEFAULT_ARRAY_SIZE]),
+			_length(0),
+			_capacity(DEFAULT_ARRAY_SIZE)
+		{
+		}
+
+		template <typename T>
+		Vector<T>::Vector(const Vector<T>& vector) :
+			_data(new T[vector.Count()]),
+			_length(vector.Count()),
+			_capacity(vector.Count())
+		{
+			for (int i = 0; i < _length; i++) {
+				_data[i] = vector[i];
+			}
+		}
+
+		template <typename T>
+		Vector<T>::Vector(const ISequence<T>& sequence) :
+			_data(new T[sequence.Count()]),
+			_length(sequence.Count()),
+			_capacity(sequence.Count())
+		{
+			for (int i = 0; i < _length; i++) {
+				_data[i] = sequence[i];
+			}
+		}
+
+		template <typename T>
+		Vector<T>::Vector(const std::initializer_list<T>& list) :
+			_data(new T[list.size()]),
+			_length((int)list.size()),
+			_capacity((int)list.size())
+		{
+			auto it = list.begin();
+
+			for (int i = 0; i < _length; i++) {
+				_data[i] = *(it + i);
+			}
+		}
+
+		template <typename T>
+		Vector<T>::Vector(int count) :
+			_data(new T[count]),
+			_length(0),
+			_capacity(count)
+		{
+		}
+
+		template <typename T>
+		Vector<T>::~Vector()
+		{
+			delete[] _data;
+		}
+
+		template <typename T>
+		void Vector<T>::Add(const T& value)
+		{
+			if (_length < _capacity) {
+				_data[_length] = value;
+			} else {
+				T* buffer = new T[_capacity + 1];
+
+				for (int i = 0; i < _length; i++) {
+					buffer[i] = _data[i];
+				}
+
+				buffer[_length] = value;
+			}
+
+			_length += 1;
+		}
+
+		template <typename T>
+		T& Vector<T>::Back()
+		{
+			// validate
+			if (_length <= 0) {
+				throw InvalidOperationException();
+			}
+
+			return _data[_length - 1];
+		}
+
+		template <typename T>
+		const T& Vector<T>::Back() const
+		{
+			// validate
+			if (_length <= 0) {
+				throw InvalidOperationException();
+			}
+
+			return _data[_length - 1];
+		}
+
+		template <typename T>
+		SequenceIterator<T> Vector<T>::Begin() const
+		{
+			// validate
+			if (_length <= 0) {
+				throw InvalidOperationException();
+			}
+
+			return SequenceIterator<T>(this);
+		}
+
+		template <typename T>
+		void Vector<T>::Clear()
+		{
+			_length = 0;
+		}
+
+		template <typename T>
+		bool Vector<T>::Contains(const T& value) const
+		{
+			for (int i = _length - 1; i >= 0; i--) {
+				if (_data[i] == value) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		template <typename T>
+		void Vector<T>::CopyTo(ISequence<T>& sequence, int startIndex) const
+		{
+			// copy values
+			for (int i = 0, j = startIndex; i < _length; i++, j++) {
+				sequence[j] = _data[i];
+			}
+		}
+
+		template <typename T>
+		void Vector<T>::CopyTo(int sourceIndex, ISequence<T>& sequence, int destinationIndex, int count) const
+		{
+			// check argument
+			if ((sourceIndex + count) > _length) {
+				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes string length");
+			} else if (sourceIndex < 0) {
+				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
+			} else if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			}
+
+			// variables
+			int limit = sourceIndex + count;
+
+			// copy values
+			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
+				sequence[j] = _data[i];
+			}
+		}
+
+		template <typename T>
+		int Vector<T>::Count() const
+		{
+			return _length;
+		}
+
+		template <typename T>
+		T& Vector<T>::Front()
+		{
+			// validate
+			if (_length <= 0) {
+				throw InvalidOperationException();
+			}
+
+			return _data[0];
+		}
+
+		template <typename T>
+		const T& Vector<T>::Front() const
+		{
+			// validate
+			if (_length <= 0) {
+				throw InvalidOperationException();
+			}
+
+			return _data[0];
+		}
+
+		template <typename T>
+		void Vector<T>::Insert(int index, const T& value)
+		{
+			// check arguments
+			if (index > _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
+			}
+
+			// variables
+			Vector<T> vector(_length + 1);
+
+			// set result
+			CopyTo(0, vector, 0, index);
+			vector[index] = value;
+			CopyTo(index, vector, index + 1, _length - index);
+			Swap(vector, *this);
+		}
+
+		template <typename T>
+		bool Vector<T>::IsEmpty() const
+		{
+			return (_length == 0);
+		}
+
+		template <typename T>
+		bool Vector<T>::RemoveAt(int index)
+		{
+			// check arguments
+			if (index >= _length || index < 0) {
+				return false;
+			}
+
+			for (int i = index; i < _length; i++) {
+				_data[i] = _data[i + 1];
+			}
+
+			_length -= 1;
+			return true;
+		}
+
+		template <typename T>
+		void Vector<T>::Resize(int count)
+		{
+			_length = count;
+		}
+
+		template <typename T>
+		T& Vector<T>::operator[](int index)
+		{
+			if (index >= _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
+			}
+
+			return (_data[index]);
+		}
+
+		template <typename T>
+		const T& Vector<T>::operator[](int index) const
+		{
+			if (index >= _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
+			}
+
+			return (_data[index]);
+		}
+
+		template <typename T>
+		Vector<T>& Vector<T>::operator=(const ISequence<T>& sequence)
+		{
+			// copy content
+			if (_length < sequence.Count()) {
+				T* buffer = new T[sequence.Count()];
+				_length = sequence.Count();
+
+				for (int i = 0; i < _length; i++) {
+					buffer[i] = sequence[i];
+				}
+
+				// swap content
+				delete[] _data;
+				_data = buffer;
+			} else {
+				_length = sequence.Count();
+
+				for (int i = 0; i < _length; i++) {
+					_data[i] = sequence[i];
+				}
+			}
+		}
+
+		template <typename T>
+		void Vector<T>::Swap(Vector<T>& lhs, Vector<T>& rhs)
+		{
+			// variables
+			T* data = lhs._data;
+			int length = lhs._length;
+			int capacity = lhs._length;
+
+			// set lhs
+			lhs._data = rhs._data;
+			lhs._length = rhs._length;
+			lhs._capacity = rhs._capacity;
+
+			// set rhs
+			rhs._data = data;
+			rhs._length = length;
+			rhs._capacity = capacity;
+		}
+	}
+}

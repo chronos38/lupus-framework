@@ -72,6 +72,7 @@
 #endif
 
 // headers
+#include <initializer_list>
 #include "Property.hpp"
 #include "Utility.hpp"
 
@@ -100,6 +101,9 @@ namespace Lupus {
 			CaseInsensitive
 		};
 	}
+
+	//! default array size for all array types
+	static const int DEFAULT_ARRAY_SIZE = 64;
 }
 
 #endif

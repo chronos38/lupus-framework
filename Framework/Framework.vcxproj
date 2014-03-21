@@ -90,6 +90,7 @@
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="Utility.hpp" />
+    <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Char.cpp" />
@@ -108,6 +109,7 @@
     <None Include="Pair.inl" />
     <None Include="Property.inl" />
     <None Include="String.inl" />
+    <None Include="Vector.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

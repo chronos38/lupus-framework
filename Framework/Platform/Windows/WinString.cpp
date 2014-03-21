@@ -39,14 +39,14 @@ namespace Lupus {
 			int size = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, source, length, NULL, 0, NULL, NULL);
 
 			if (size <= 0) {
-				throw ApplicationException("invalid string encoding");
+				throw EncodingException("invalid string encoding");
 			}
 
 			// set internal buffer
 			_data = new char[size + 1];
 
 			if (size != WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, source, length, _data, size, NULL, NULL)) {
-				throw ApplicationException("couldn't convert all characters");
+				throw EncodingException("couldn't convert all characters");
 			}
 
 			// set internal buffer
@@ -72,14 +72,14 @@ namespace Lupus {
 			int size = WideCharToMultiByte(CP_UTF8, 0, source + startIndex, length, NULL, 0, NULL, NULL);
 
 			if (size <= 0) {
-				throw ApplicationException("invalid string encoding");
+				throw EncodingException("invalid string encoding");
 			}
 
 			// set internal buffer
 			_data = new char[size + 1];
 
 			if (size != WideCharToMultiByte(CP_UTF8, 0, source + startIndex, length, _data, size, NULL, NULL)) {
-				throw ApplicationException("couldn't convert all characters");
+				throw EncodingException("couldn't convert all characters");
 			}
 
 			// set internal buffer
