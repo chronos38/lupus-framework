@@ -193,6 +193,9 @@ namespace FrameworkTest
 			// (String) case insensitive
 			Assert::AreEqual(4, string.LastIndexOf("aA", 0, CaseSensitivity::CaseInsensitive), L"(String) case sensitive", LINE_INFO());
 			Assert::AreEqual(0, string.LastIndexOf("aA", 3, CaseSensitivity::CaseInsensitive), L"(String, int) case sensitive", LINE_INFO());
+
+			// (Char) cas sensitive
+			Assert::AreEqual(-1, string.LastIndexOf('C'), L"(Char) case sensitive -1", LINE_INFO());
 		}
 
 		TEST_METHOD(StringRemoveTest)
@@ -294,6 +297,44 @@ namespace FrameworkTest
 			Assert::IsTrue(result[0] == "");
 			Assert::IsTrue(result[1] == "");
 			Assert::IsTrue(result[2] == "CDABCDABCD");
+		}
+
+		TEST_METHOD(StringSplitStringTest)
+		{
+			// variables
+			String string("ABCDABCDABCD");
+			String delimiter = "C";
+			Vector<String> result;
+
+			// test
+			result = string.Split(delimiter);
+			Assert::IsTrue(result.Length == 4);
+			Assert::IsTrue(result[0] == "AB");
+			Assert::IsTrue(result[1] == "DAB");
+			Assert::IsTrue(result[2] == "DAB");
+			Assert::IsTrue(result[3] == "D");
+
+			// test
+			result = string.Split(delimiter, 2);
+			Assert::IsTrue(result.Length == 2);
+			Assert::IsTrue(result[0] == "AB");
+			Assert::IsTrue(result[1] == "DABCDABCD");
+
+			// test
+			delimiter = "AB";
+			result = string.Split(delimiter);
+			Assert::IsTrue(result.Length == 4);
+			Assert::IsTrue(result[0] == "");
+			Assert::IsTrue(result[1] == "CD");
+			Assert::IsTrue(result[2] == "CD");
+			Assert::IsTrue(result[3] == "CD");
+
+			// test
+			result = string.Split(delimiter, 3);
+			Assert::IsTrue(result.Length == 3);
+			Assert::IsTrue(result[0] == "");
+			Assert::IsTrue(result[1] == "CD");
+			Assert::IsTrue(result[2] == "CDABCD");
 		}
 
 		TEST_METHOD(StringSplitNoEmptyTest)

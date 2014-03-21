@@ -44,20 +44,9 @@ namespace Lupus {
 		Vector<T>::Vector(Vector<T>&& vector) :
 			Vector()
 		{
-			// swap variable
-			T* data = _data;
-			int length = _length;
-			int capacity = _capacity;
-
-			// swap this
-			_data = vector._data;
-			_length = vector._length;
-			_capacity = vector._capacity;
-
-			// swap vector
-			vector._data = data;
-			vector._length = length;
-			vector._capacity = capacity;
+			Swap(_data, vector._data);
+			Swap(_length, vector._length);
+			Swap(_capacity, vector._capacity);
 		}
 		
 		template <typename T>
@@ -318,21 +307,9 @@ namespace Lupus {
 		template <typename T>
 		Vector<T>& Vector<T>::operator=(Vector<T>&& vector)
 		{
-			// swap variables
-			T* data = _data;
-			int length = _length;
-			int capacity = _capacity;
-
-			// swap this
-			_data = vector._data;
-			_length = vector._length;
-			_capacity = vector._capacity;
-
-			// swap vector
-			vector._data = data;
-			vector._length = length;
-			vector._capacity = capacity;
-
+			Swap(_data, vector._data);
+			Swap(_length, vector._length);
+			Swap(_capacity, vector._capacity);
 			return (*this);
 		}
 
@@ -358,25 +335,6 @@ namespace Lupus {
 					_data[i] = sequence[i];
 				}
 			}
-		}
-
-		template <typename T>
-		void Vector<T>::Swap(Vector<T>& lhs, Vector<T>& rhs)
-		{
-			// variables
-			T* data = lhs._data;
-			int length = lhs._length;
-			int capacity = lhs._length;
-
-			// set lhs
-			lhs._data = rhs._data;
-			lhs._length = rhs._length;
-			lhs._capacity = rhs._capacity;
-
-			// set rhs
-			rhs._data = data;
-			rhs._length = length;
-			rhs._capacity = capacity;
 		}
 	}
 }

@@ -223,26 +223,6 @@ namespace Lupus {
 			return false;
 		}
 
-		void String::CopyTo(int sourceIndex, ISequence<char>& sequence, int destinationIndex, int count) const
-		{
-			// check argument
-			if ((sourceIndex + count) > _length) {
-				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes string length");
-			} else if (sourceIndex < 0) {
-				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
-			} else if (count < 0) {
-				throw ArgumentOutOfRangeException("count must be greater than zero");
-			}
-
-			// variables
-			int limit = sourceIndex + count;
-
-			// copy values
-			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
-				sequence[j] = _data[i];
-			}
-		}
-
 		int String::IndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
@@ -285,15 +265,20 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
 			}
 
+			// variables
+			int result = -1;
+
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPratt(_data + startIndex, _length - startIndex, string.Data, string.Length);
+				result = KnuthMorrisPratt(_data + startIndex, _length - startIndex, string.Data, string.Length);
+				break;
 			case CaseSensitivity::CaseInsensitive:
-				return KnuthMorrisPrattInsensitive(_data + startIndex, _length - startIndex, string.Data, string.Length);
+				result = KnuthMorrisPrattInsensitive(_data + startIndex, _length - startIndex, string.Data, string.Length);
+				break;
 			}
 
-			return -1;
+			return (result == -1 ? -1 : (startIndex + result));
 		}
 
 		int String::IndexOfAny(const ISequence<char>& sequence, int startIndex, CaseSensitivity sensitivity) const
@@ -381,15 +366,20 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
 			}
 
+			// variables
+			int result = -1;
+
 			// compute result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
-				return KnuthMorrisPrattLast(_data, _length, string.Data, string.Length, startIndex);
+				result = KnuthMorrisPrattLast(_data, _length, string.Data, string.Length, startIndex);
+				break;
 			case CaseSensitivity::CaseInsensitive:
-				return KnuthMorrisPrattInsensitiveLast(_data, _length, string.Data, string.Length, startIndex);
+				result = KnuthMorrisPrattInsensitiveLast(_data, _length, string.Data, string.Length, startIndex);
+				break;
 			}
 
-			return -1;
+			return (result == -1 ? -1 : (_length - string._length - result - startIndex));
 		}
 
 		int String::LastIndexOfAny(const ISequence<char>& sequence, int startIndex, CaseSensitivity sensitivity) const
@@ -532,36 +522,15 @@ namespace Lupus {
 		}
 
 		Vector<String> String::Split(const String& delimiter, StringSplitOptions splitOptions) const
-		{
-			// variables
-			int index = 0;
-			int lastIndex = 0;
-			Vector<String> vector;
-			
+		{	
 			switch (splitOptions) {
 			case StringSplitOptions::None:
-				while ((index = IndexOf(delimiter, index)) != -1) {
-					if (lastIndex == index) {
-						vector.Add(String());
-					} else {
-						vector.Add(String(_data, lastIndex, index));
-					}
-
-					lastIndex = index;
-				}
-				break;
+				return SplitEmptyEntries(*this, delimiter, _length);
 			case StringSplitOptions::RemoveEmptyEntries:
-				while ((index = IndexOf(delimiter, index)) != -1) {
-					if (lastIndex != index) {
-						vector.Add(String(_data, lastIndex, index));
-					}
-
-					lastIndex = index;
-				}
-				break;
+				return SplitNoEmptyEntries(*this, delimiter, _length);
 			}
 
-			return vector;
+			return Vector<String>();
 		}
 
 		Vector<String> String::Split(const String& delimiter, int count, StringSplitOptions splitOptions) const
@@ -571,44 +540,14 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("count is negativ");
 			}
 
-			// variables
-			int counter = 0;
-			int index = 0;
-			int lastIndex = 0;
-			Vector<String> vector;
-
 			switch (splitOptions) {
 			case StringSplitOptions::None:
-				while ((index = IndexOf(delimiter, index)) != -1) {
-					if (counter >= count) {
-						vector.Add(String(_data, lastIndex, _length - index + delimiter.Length));
-						break;
-					} else if (lastIndex == index) {
-						vector.Add(String());
-					} else {
-						vector.Add(String(_data, lastIndex, index));
-					}
-
-					lastIndex = index;
-					counter++;
-				}
-				break;
+				return SplitEmptyEntries(*this, delimiter, count);
 			case StringSplitOptions::RemoveEmptyEntries:
-				while ((index = IndexOf(delimiter, index)) != -1) {
-					if (counter >= count) {
-						vector.Add(String(_data, lastIndex, _length - index + delimiter.Length));
-						break;
-					} else if (lastIndex != index) {
-						vector.Add(String(_data, lastIndex, index));
-					}
-
-					lastIndex = index;
-					counter++;
-				}
-				break;
+				return SplitNoEmptyEntries(*this, delimiter, count);
 			}
 
-			return vector;
+			return Vector<String>();
 		}
 
 		String String::Substring(int startIndex) const
@@ -914,6 +853,26 @@ namespace Lupus {
 			CopyTo(0, sequence, startIndex, _length);
 		}
 
+		void String::CopyTo(int sourceIndex, ISequence<char>& sequence, int destinationIndex, int count) const
+		{
+			// check argument
+			if ((sourceIndex + count) > _length) {
+				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes string length");
+			} else if (sourceIndex < 0) {
+				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
+			} else if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			}
+
+			// variables
+			int limit = sourceIndex + count;
+
+			// copy values
+			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
+				sequence[j] = _data[i];
+			}
+		}
+
 		int String::Count() const
 		{
 			return _length;
@@ -1078,9 +1037,11 @@ namespace Lupus {
 			// variables
 			String textString(text);
 			String searchString(search);
-			int length = textString.Length - searchLength - startIndex;
+			int result = -1;
+
 			// comput result
-			return (length - KnuthMorrisPratt(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength));
+			result = KnuthMorrisPratt(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength);
+			return (result == -1 ? -1 : result);
 		}
 
 		int String::KnuthMorrisPrattInsensitive(const char* text, int textLength, const char* search, int searchLength)
@@ -1128,9 +1089,11 @@ namespace Lupus {
 			// variables
 			String textString(text);
 			String searchString(search);
-			int length = textString.Length - searchLength - startIndex;
+			int result = -1;
+
 			// comput result
-			return (length - KnuthMorrisPrattInsensitive(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength));
+			result = KnuthMorrisPrattInsensitive(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength);
+			return (result == -1 ? -1 : result);
 		}
 
 		Vector<String> String::SplitEmptyEntries(const String& string, const Vector<Char>& delimiter, int count)
@@ -1176,7 +1139,6 @@ namespace Lupus {
 
 			// compute result
 			for (int i = 0; i < string._length; i++) {
-
 				foreach(item, delimiter) {
 					if (string._data[i] != item.CurrentItem()) {
 						continue;
@@ -1200,6 +1162,58 @@ namespace Lupus {
 			}
 
 			return vector;
+		}
+
+		Vector<String> String::SplitEmptyEntries(const String& string, const String& delimiter, int count)
+		{
+			// variables
+			int index = 0;
+			int lastIndex = -1;
+			Vector<String> vector;
+
+			while (index != -1) {
+				index = string.IndexOf(delimiter, lastIndex + 1);
+				
+				if (lastIndex + 1 == index) {
+					vector.Add(String());
+				} else {
+					int startIndex = (lastIndex == -1 ? 0 : lastIndex + delimiter._length);
+					int length = (index == -1 ? string._length - lastIndex - delimiter._length : index - lastIndex - delimiter._length);
+					vector.Add(String(string._data, startIndex, length));
+				}
+
+				lastIndex = index;
+
+				if (vector.Length >= count - 1) {
+					int startIndex = (lastIndex == -1 ? 0 : lastIndex + delimiter._length);
+					int length = (lastIndex == -1 ? string._length : string._length - lastIndex - delimiter._length);
+					vector.Add(String(string._data, startIndex, length));
+					return vector;
+				}
+			}
+
+			return vector;
+		}
+
+		Vector<String> String::SplitNoEmptyEntries(const String& string, const String& delimiter, int count)
+		{
+			// variables
+			int index = 0;
+			int lastIndex = -1;
+			Vector<String> vector;
+
+			while ((index = string.IndexOf(delimiter, index)) != -1) {
+				if (lastIndex + 1 != index) {
+					vector.Add(String(string._data, lastIndex + delimiter.Length, index - lastIndex - 1));
+				}
+
+				lastIndex = index;
+
+				if (vector.Length >= count - 1) {
+					vector.Add(String(string._data, lastIndex + delimiter.Length, string._length - index - 1));
+					return vector;
+				}
+			}
 		}
 	}
 }

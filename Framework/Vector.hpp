@@ -27,11 +27,11 @@ namespace Lupus {
 		template <typename T>
 		class Vector : public Object, public ISequence<T>
 		{
-			//! native string
+			//! native array
 			T* _data;
-			//! string length
+			//! array length
 			int _length;
-			//! string capacity
+			//! array capacity
 			int _capacity;
 		public:
 			//! Return string length
@@ -67,8 +67,6 @@ namespace Lupus {
 			Vector<T>& operator=(const Vector<T>&);
 			Vector<T>& operator=(Vector<T>&&);
 			Vector<T>& operator=(const ISequence<T>&);
-		private:
-			static void Swap(Vector<T>&, Vector<T>&);
 		};
 	}
 }
