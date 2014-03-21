@@ -382,7 +382,8 @@ namespace Lupus {
 			static int KnuthMorrisPrattLast(const char*, int, const char*, int, int);
 			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
 			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int, int);
-			static void Swap(String&, String&);
+			static Vector<String> SplitEmptyEntries(const String&, const Vector<Char>&, int);
+			static Vector<String> SplitNoEmptyEntries(const String&, const Vector<Char>&, int);
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
 			//! @sa String::String(const char*)

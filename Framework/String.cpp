@@ -148,19 +148,9 @@ namespace Lupus {
 		String::String(String&& string) :
 			String()
 		{
-			// variables
-			char* swapData = _data;
-			int swapLength = _length;
-			int swapCapacity = _capacity;
-
-			// swap memory
-			_data = string._data;
-			_length = string._length;
-			_capacity = string._capacity;
-
-			string._data = swapData;
-			string._length = swapLength;
-			string._capacity = swapCapacity;
+			Swap(_data, string._data);
+			Swap(_length, string._length);
+			Swap(_capacity, string._capacity);
 		}
 
 		String::~String()
@@ -521,42 +511,7 @@ namespace Lupus {
 		
 		Vector<String> String::Split(const Vector<Char>& delimiter, StringSplitOptions splitOptions) const
 		{
-			// variables
-			int lastIndex = 0;
-			Vector<String> vector;
-
-			switch (splitOptions) {
-			case StringSplitOptions::None:
-				for (int i = 0; i < _length; i++) {
-					foreach(item, delimiter) {
-						if (_data[i] == item.CurrentItem()) {
-							if (i == lastIndex) {
-								vector.Add(String());
-							} else {
-								vector.Add(String(_data, lastIndex, i));
-							}
-
-							lastIndex = i;
-						}
-					}
-				}
-				break;
-			case StringSplitOptions::RemoveEmptyEntries:
-				for (int i = 0; i < _length; i++) {
-					foreach(item, delimiter) {
-						if (_data[i] == item.CurrentItem()) {
-							if (i != lastIndex) {
-								vector.Add(String(_data, lastIndex, i));
-							}
-
-							lastIndex = i;
-						}
-					}
-				}
-				break;
-			}
-
-			return vector;
+			return Split(delimiter, _length, splitOptions);
 		}
 
 		Vector<String> String::Split(const Vector<Char>& delimiter, int count, StringSplitOptions splitOptions) const
@@ -566,55 +521,14 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("count is negativ");
 			}
 
-			// variables
-			int counter = 0;
-			int lastIndex = 0;
-			Vector<String> vector;
-
 			switch (splitOptions) {
 			case StringSplitOptions::None:
-				for (int i = 0; i < _length; i++) {
-					if (counter >= count) {
-						vector.Add(String(_data, lastIndex, _length - i + 1));
-						break;
-					}
-
-					foreach(item, delimiter) {
-						if (_data[i] == item.CurrentItem()) {
-							if (i == lastIndex) {
-								vector.Add(String());
-							} else {
-								vector.Add(String(_data, lastIndex, i));
-							}
-
-							lastIndex = i;
-							counter++;
-						}
-					}
-				}
-				break;
+				return SplitEmptyEntries(*this, delimiter, count);
 			case StringSplitOptions::RemoveEmptyEntries:
-				for (int i = 0; i < _length; i++) {
-					if (counter >= count) {
-						vector.Add(String(_data, lastIndex, _length - i + 1));
-						break;
-					}
-
-					foreach(item, delimiter) {
-						if (_data[i] == item.CurrentItem()) {
-							if (i != lastIndex) {
-								vector.Add(String(_data, lastIndex, i));
-							}
-
-							lastIndex = i;
-							counter++;
-						}
-					}
-				}
-				break;
+				return SplitNoEmptyEntries(*this, delimiter, count);
 			}
 
-			return vector;
+			return Vector<String>();
 		}
 
 		Vector<String> String::Split(const String& delimiter, StringSplitOptions splitOptions) const
@@ -826,19 +740,9 @@ namespace Lupus {
 
 		String& String::operator=(String&& string)
 		{
-			// delete[] current buffer
-			delete[] _data;
-
-			// move memory
-			_data = string._data;
-			_length = string._length;
-			_capacity = string._capacity;
-
-			// reset string
-			string._data = new char[DEFAULT_ARRAY_SIZE];
-			string._length = 0;
-			string._capacity = DEFAULT_ARRAY_SIZE - 1;
-
+			Swap(_data, string._data);
+			Swap(_length, string._length);
+			Swap(_capacity, string._capacity);
 			return (*this);
 		}
 
@@ -1229,22 +1133,73 @@ namespace Lupus {
 			return (length - KnuthMorrisPrattInsensitive(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength));
 		}
 
-		void String::Swap(String& lhs, String& rhs)
+		Vector<String> String::SplitEmptyEntries(const String& string, const Vector<Char>& delimiter, int count)
 		{
 			// variables
-			char* data = lhs._data;
-			int length = lhs._length;
-			int capacity = lhs._length;
+			int lastIndex = -1;
+			Vector<String> vector;
 
-			// set lhs
-			lhs._data = rhs._data;
-			lhs._length = rhs._length;
-			lhs._capacity = rhs._capacity;
+			// compute result
+			for (int i = 0; i < string._length; i++) {
+				foreach(item, delimiter) {
+					if (string._data[i] != item.CurrentItem()) {
+						continue;
+					} else if (i == lastIndex + 1) {
+						vector.Add(String());
+					} else {
+						vector.Add(String(string._data, lastIndex + 1, i - lastIndex - 1));
+					}
 
-			// set rhs
-			rhs._data = data;
-			rhs._length = length;
-			rhs._capacity = capacity;
+					lastIndex = i;
+
+					if (vector.Length >= count - 1) {
+						vector.Add(String(string._data, lastIndex + 1, string._length - i - 1));
+						return vector;
+					}
+
+					break;
+				}
+			}
+
+			if (lastIndex != string._length - 1) {
+				vector.Add(String(string._data, lastIndex + 1, string._length - lastIndex - 1));
+			}
+
+			return vector;
+		}
+
+		Vector<String> String::SplitNoEmptyEntries(const String& string, const Vector<Char>& delimiter, int count)
+		{
+			// variables
+			int lastIndex = -1;
+			Vector<String> vector;
+
+			// compute result
+			for (int i = 0; i < string._length; i++) {
+
+				foreach(item, delimiter) {
+					if (string._data[i] != item.CurrentItem()) {
+						continue;
+					} else if (i != lastIndex + 1) {
+						vector.Add(String(string._data, lastIndex + 1, i - lastIndex - 1));
+					}
+
+					lastIndex = i;
+
+					if (vector.Length >= count - 1) {
+						vector.Add(String(string._data, lastIndex + 1, string._length - i - 1));
+						return vector;
+					}
+
+					break;
+				}
+			}
+
+			if (lastIndex != string._length - 1) {
+				vector.Add(String(string._data, lastIndex + 1, string._length - lastIndex - 1));
+			}
+
+			return vector;
 		}
 	}
 }

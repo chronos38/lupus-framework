@@ -47,6 +47,9 @@ namespace Lupus {
 			const ISequence<T>* _sequence = nullptr;
 			int _current = 0;
 		public:
+			SequenceIterator() = delete;
+			SequenceIterator(const SequenceIterator<T>&) = delete;
+			SequenceIterator(SequenceIterator<T>&&);
 			SequenceIterator(const ISequence<T>&);
 			SequenceIterator(const ISequence<T>*);
 			virtual ~SequenceIterator();
@@ -54,7 +57,8 @@ namespace Lupus {
 			virtual void Next() override;
 			virtual bool IsDone() const override;
 			virtual const T& CurrentItem() const override;
-			SequenceIterator<T>& operator=(const SequenceIterator<T>&) = default;
+			SequenceIterator<T>& operator=(const SequenceIterator<T>&) = delete;
+			SequenceIterator<T>& operator=(SequenceIterator<T>&&);
 		};
 
 		template <typename Key, typename Value>

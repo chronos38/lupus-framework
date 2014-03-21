@@ -42,6 +42,7 @@ namespace Lupus {
 			PropertyReader<T*> Data = PropertyReader<T*>(_data);
 			Vector();
 			Vector(const Vector<T>&);
+			Vector(Vector<T>&&);
 			Vector(const ISequence<T>&);
 			Vector(const std::initializer_list<T>&);
 			Vector(int);
@@ -63,6 +64,8 @@ namespace Lupus {
 			virtual void Resize(int) override;
 			virtual T& operator[](int) override;
 			virtual const T& operator[](int) const override;
+			Vector<T>& operator=(const Vector<T>&);
+			Vector<T>& operator=(Vector<T>&&);
 			Vector<T>& operator=(const ISequence<T>&);
 		private:
 			static void Swap(Vector<T>&, Vector<T>&);

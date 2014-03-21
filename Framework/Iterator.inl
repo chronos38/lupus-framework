@@ -22,6 +22,13 @@
 namespace Lupus {
 	namespace System {
 		template <typename T>
+		SequenceIterator<T>::SequenceIterator(SequenceIterator<T>&& iterator)
+		{
+			Swap(iterator._sequence, nullptr);
+			Swap(iterator._current, 0);
+		}
+
+		template <typename T>
 		SequenceIterator<T>::SequenceIterator(const ISequence<T>& sequence) :
 			_sequence(&sequence)
 		{
@@ -67,6 +74,13 @@ namespace Lupus {
 			}
 
 			return (_sequence->operator[](_current));
+		}
+
+		template <typename T>
+		SequenceIterator<T>& SequenceIterator<T>::operator=(SequenceIterator<T>&& iterator)
+		{
+			Swap(iterator._sequence, _sequence);
+			Swap(iterator._current, _current);
 		}
 
 		template <typename Key, typename Value>

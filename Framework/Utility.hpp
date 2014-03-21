@@ -28,4 +28,18 @@
  */
 #define foreach(item, container) for (auto item = container.Begin(); !(item.IsDone()); item.Next())
 
+/**
+ * Swaps two values
+ *
+ * @param lhs left hand value
+ * @param rhs right hand value
+ */
+template <typename T>
+void Swap(T& lhs, T& rhs)
+{
+	T swp = lhs;
+	lhs = rhs;
+	rhs = swp;
+}
+
 #endif

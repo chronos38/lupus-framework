@@ -90,7 +90,7 @@ namespace FrameworkTest
 			// operator+=
 			string += "abc";
 			Assert::AreEqual(3, (int)string.Length, L"operator+=", LINE_INFO());
-			Assert::AreEqual(3, (int)string.Capacity, L"operator+=", LINE_INFO());
+			Assert::AreEqual(63, (int)string.Capacity, L"operator+=", LINE_INFO());
 			Assert::AreEqual('a', string[0], L"operator+=", LINE_INFO());
 			Assert::AreEqual('b', string[1], L"operator+=", LINE_INFO());
 			Assert::AreEqual('c', string[2], L"operator+=", LINE_INFO());
@@ -98,7 +98,7 @@ namespace FrameworkTest
 			// Append
 			string.Append("def");
 			Assert::AreEqual(6, (int)string.Length, L"Append", LINE_INFO());
-			Assert::AreEqual(6, (int)string.Capacity, L"Append", LINE_INFO());
+			Assert::AreEqual(63, (int)string.Capacity, L"Append", LINE_INFO());
 			Assert::AreEqual('a', string[0], L"Append", LINE_INFO());
 			Assert::AreEqual('b', string[1], L"Append", LINE_INFO());
 			Assert::AreEqual('c', string[2], L"Append", LINE_INFO());
@@ -259,15 +259,78 @@ namespace FrameworkTest
 		{
 			// variables
 			String string("ABCDABCDABCD");
-			Vector<Char> delimiter = { 'A', 'C' };
+			Vector<Char> delimiter = { 'C' };
 			Vector<String> result;
 
 			// test
 			result = string.Split(delimiter);
+			Assert::IsTrue(result.Length == 4);
+			Assert::IsTrue(result[0] == "AB");
+			Assert::IsTrue(result[1] == "DAB");
+			Assert::IsTrue(result[2] == "DAB");
+			Assert::IsTrue(result[3] == "D");
 
-			foreach(item, result) {
-				item;
-			}
+			// test
+			result = string.Split(delimiter, 2);
+			Assert::IsTrue(result.Length == 2);
+			Assert::IsTrue(result[0] == "AB");
+			Assert::IsTrue(result[1] == "DABCDABCD");
+
+			// test
+			delimiter = { 'A', 'B' };
+			result = string.Split(delimiter);
+			Assert::IsTrue(result.Length == 7);
+			Assert::IsTrue(result[0] == "");
+			Assert::IsTrue(result[1] == "");
+			Assert::IsTrue(result[2] == "CD");
+			Assert::IsTrue(result[3] == "");
+			Assert::IsTrue(result[4] == "CD");
+			Assert::IsTrue(result[5] == "");
+			Assert::IsTrue(result[6] == "CD");
+
+			// test
+			result = string.Split(delimiter, 3);
+			Assert::IsTrue(result.Length == 3);
+			Assert::IsTrue(result[0] == "");
+			Assert::IsTrue(result[1] == "");
+			Assert::IsTrue(result[2] == "CDABCDABCD");
+		}
+
+		TEST_METHOD(StringSplitNoEmptyTest)
+		{
+			// variables
+			String string("ABCDABCDABCD");
+			Vector<Char> delimiter = { 'C' };
+			Vector<String> result;
+
+			// test
+			result = string.Split(delimiter, StringSplitOptions::RemoveEmptyEntries);
+			Assert::IsTrue(result.Length == 4);
+			Assert::IsTrue(result[0] == "AB");
+			Assert::IsTrue(result[1] == "DAB");
+			Assert::IsTrue(result[2] == "DAB");
+			Assert::IsTrue(result[3] == "D");
+
+			// test
+			result = string.Split(delimiter, 2, StringSplitOptions::RemoveEmptyEntries);
+			Assert::IsTrue(result.Length == 2);
+			Assert::IsTrue(result[0] == "AB");
+			Assert::IsTrue(result[1] == "DABCDABCD");
+
+			// test
+			delimiter = { 'A', 'B' };
+			result = string.Split(delimiter, StringSplitOptions::RemoveEmptyEntries);
+			Assert::IsTrue(result.Length == 3);
+			Assert::IsTrue(result[0] == "CD");
+			Assert::IsTrue(result[1] == "CD");
+			Assert::IsTrue(result[2] == "CD");
+
+			// test
+			result = string.Split(delimiter, 3, StringSplitOptions::RemoveEmptyEntries);
+			Assert::IsTrue(result.Length == 3);
+			Assert::IsTrue(result[0] == "CD");
+			Assert::IsTrue(result[1] == "CD");
+			Assert::IsTrue(result[2] == "BCD");
 		}
 
 		TEST_METHOD(StringOperatorTest)

@@ -28,25 +28,45 @@ namespace Lupus {
 			_capacity(DEFAULT_ARRAY_SIZE)
 		{
 		}
-
+		
 		template <typename T>
 		Vector<T>::Vector(const Vector<T>& vector) :
 			_data(new T[vector.Count()]),
 			_length(vector.Count()),
 			_capacity(vector.Count())
 		{
-			for (int i = 0; i < _length; i++) {
+			for (int i = _length - 1; i >= 0; i--) {
 				_data[i] = vector[i];
 			}
 		}
 
+		template <typename T>
+		Vector<T>::Vector(Vector<T>&& vector) :
+			Vector()
+		{
+			// swap variable
+			T* data = _data;
+			int length = _length;
+			int capacity = _capacity;
+
+			// swap this
+			_data = vector._data;
+			_length = vector._length;
+			_capacity = vector._capacity;
+
+			// swap vector
+			vector._data = data;
+			vector._length = length;
+			vector._capacity = capacity;
+		}
+		
 		template <typename T>
 		Vector<T>::Vector(const ISequence<T>& sequence) :
 			_data(new T[sequence.Count()]),
 			_length(sequence.Count()),
 			_capacity(sequence.Count())
 		{
-			for (int i = 0; i < _length; i++) {
+			for (int i = _length - 1; i >= 0; i--) {
 				_data[i] = sequence[i];
 			}
 		}
@@ -79,10 +99,10 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		void Vector<T>::Add(const T& value)
+		void Vector<T>::Add(const T& item)
 		{
 			if (_length < _capacity) {
-				_data[_length] = value;
+				_data[_length] = item;
 			} else {
 				T* buffer = new T[_capacity + 1];
 
@@ -90,7 +110,7 @@ namespace Lupus {
 					buffer[i] = _data[i];
 				}
 
-				buffer[_length] = value;
+				buffer[_length] = item;
 			}
 
 			_length += 1;
@@ -136,10 +156,10 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		bool Vector<T>::Contains(const T& value) const
+		bool Vector<T>::Contains(const T& item) const
 		{
 			for (int i = _length - 1; i >= 0; i--) {
-				if (_data[i] == value) {
+				if (_data[i] == item) {
 					return true;
 				}
 			}
@@ -150,7 +170,7 @@ namespace Lupus {
 		template <typename T>
 		void Vector<T>::CopyTo(ISequence<T>& sequence, int startIndex) const
 		{
-			// copy values
+			// copy items
 			for (int i = 0, j = startIndex; i < _length; i++, j++) {
 				sequence[j] = _data[i];
 			}
@@ -171,7 +191,7 @@ namespace Lupus {
 			// variables
 			int limit = sourceIndex + count;
 
-			// copy values
+			// copy items
 			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
 				sequence[j] = _data[i];
 			}
@@ -206,7 +226,7 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		void Vector<T>::Insert(int index, const T& value)
+		void Vector<T>::Insert(int index, const T& item)
 		{
 			// check arguments
 			if (index > _length) {
@@ -220,7 +240,7 @@ namespace Lupus {
 
 			// set result
 			CopyTo(0, vector, 0, index);
-			vector[index] = value;
+			vector[index] = item;
 			CopyTo(index, vector, index + 1, _length - index);
 			Swap(vector, *this);
 		}
@@ -275,6 +295,45 @@ namespace Lupus {
 			}
 
 			return (_data[index]);
+		}
+
+		template <typename T>
+		Vector<T>& Vector<T>::operator=(const Vector<T>& vector)
+		{
+			if (vector._length > _capacity) {
+				delete[] _data;
+				_data = new T[vector._length];
+				_capacity = vector._length;
+			}
+
+			for (int i = vector._length - 1; i >= 0; i--) {
+				_data[i] = vector._data[i];
+			}
+
+			_length = vector._length;
+
+			return (*this);
+		}
+
+		template <typename T>
+		Vector<T>& Vector<T>::operator=(Vector<T>&& vector)
+		{
+			// swap variables
+			T* data = _data;
+			int length = _length;
+			int capacity = _capacity;
+
+			// swap this
+			_data = vector._data;
+			_length = vector._length;
+			_capacity = vector._capacity;
+
+			// swap vector
+			vector._data = data;
+			vector._length = length;
+			vector._capacity = capacity;
+
+			return (*this);
 		}
 
 		template <typename T>

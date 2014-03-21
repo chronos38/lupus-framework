@@ -57,7 +57,7 @@
 
 // windows stuff
 #ifdef LUPUS_WINDOWS_PLATFORM
-// ignore specific warnings
+// ignore "'Lupus::PropertyReader<T>' needs to have dll-interface"
 #pragma warning(disable:4251)
 // deavtivate SDL
 #define _CRT_SECURE_NO_WARNINGS 1
