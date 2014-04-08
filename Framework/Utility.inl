@@ -16,31 +16,12 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_UTILITY_HPP
-#define LUPUS_UTITLIY_HPP
-
-/**
- * Iterate through whole container
- * @param item iteration variable as iterator type
- * @param container sequence or dictionary type
- *
- * usage:	foreach(item, container) { 
- *			// do things with 'item'
- *		}
- */
-#define foreach(item, container) for (auto item = container.GetIterator(); !(item.IsDone()); item.Next())
-
 namespace Lupus {
-	/**
-	 * Swaps two values
-	 *
-	 * @param lhs left hand value
-	 * @param rhs right hand value
-	 */
 	template <typename T>
-	void Swap(T& lhs, T& rhs);
+	void Swap(T& lhs, T& rhs)
+	{
+		T swp = lhs;
+		lhs = rhs;
+		rhs = swp;
+	}
 }
-
-#include "Utility.inl"
-
-#endif

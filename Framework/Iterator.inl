@@ -17,115 +17,31 @@
  */
 
 #include "Exception.hpp"
-#include "ISequence.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		SequenceIterator<T>::SequenceIterator(SequenceIterator<T>&& iterator)
+		const T& Iterator<T>::CurrentItem() const
 		{
-			Swap(iterator._sequence, nullptr);
-			Swap(iterator._current, 0);
+			throw NotSupportedException("iterator does not support this method");
 		}
 
 		template <typename T>
-		SequenceIterator<T>::SequenceIterator(const ISequence<T>& sequence) :
-			_sequence(&sequence)
+		bool Iterator<T>::IsDone() const
 		{
+			throw NotSupportedException("iterator does not support this method");
 		}
 
 		template <typename T>
-		SequenceIterator<T>::SequenceIterator(const ISequence<T>* sequence) :
-			_sequence(sequence)
+		void Iterator<T>::First()
 		{
-			if (!sequence) {
-				throw ArgumentNullException();
-			}
+			throw NotSupportedException("iterator does not support this method");
 		}
 
 		template <typename T>
-		SequenceIterator<T>::~SequenceIterator()
+		void Iterator<T>::Next()
 		{
-		}
-
-		template <typename T>
-		void SequenceIterator<T>::First()
-		{
-			_current = 0;
-		}
-
-		template <typename T>
-		void SequenceIterator<T>::Next()
-		{
-			_current++;
-		}
-
-		template <typename T>
-		bool SequenceIterator<T>::IsDone() const
-		{
-			return (_current >= _sequence->Count());
-		}
-
-		template <typename T>
-		const T& SequenceIterator<T>::CurrentItem() const
-		{
-			if (IsDone()) {
-				throw IteratorOutOfBoundException();
-			}
-
-			return (_sequence->operator[](_current));
-		}
-
-		template <typename T>
-		SequenceIterator<T>& SequenceIterator<T>::operator=(SequenceIterator<T>&& iterator)
-		{
-			Swap(iterator._sequence, _sequence);
-			Swap(iterator._current, _current);
-		}
-
-		template <typename Key, typename Value>
-		DictionaryIterator<Key, Value>::DictionaryIterator(const IDictionary<Key, Value>& dictionary) :
-			_dictionary(&dictionary)
-		{
-		}
-
-		template <typename Key, typename Value>
-		DictionaryIterator<Key, Value>::DictionaryIterator(const IDictionary<Key, Value>* dictionary) :
-			_dictionary(dictionary)
-		{
-			if (!sequence) {
-				throw ArgumentNullException();
-			}
-		}
-
-		template <typename Key, typename Value>
-		DictionaryIterator<Key, Value>::~DictionaryIterator()
-		{
-			throw NotImplementedException();
-		}
-
-		template <typename Key, typename Value>
-		void DictionaryIterator<Key, Value>::First()
-		{
-			throw NotImplementedException();
-		}
-
-		template <typename Key, typename Value>
-		void DictionaryIterator<Key, Value>::Next()
-		{
-			throw NotImplementedException();
-		}
-
-		template <typename Key, typename Value>
-		bool DictionaryIterator<Key, Value>::IsDone() const
-		{
-			throw NotImplementedException();
-		}
-
-		template <typename Key, typename Value>
-		const Pair<Key, Value>& DictionaryIterator<Key, Value>::CurrentItem() const
-		{
-			throw NotImplementedException();
+			throw NotSupportedException("iterator does not support this method");
 		}
 	}
 }

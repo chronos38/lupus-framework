@@ -292,9 +292,6 @@ namespace Lupus {
 				return -1;
 			}
 
-			// variables
-			auto iterator = sequence.Begin();
-
 			// comput result
 			switch (sensitivity) {
 			case CaseSensitivity::CaseSensitive:
@@ -826,9 +823,9 @@ namespace Lupus {
 			return operator[](_length - 1);
 		}
 
-		SequenceIterator<char> String::Begin() const
+		Iterator<char> String::GetIterator() const
 		{
-			return SequenceIterator<char>(this);
+			return StringIterator(this);
 		}
 
 		void String::Clear()
@@ -1177,16 +1174,18 @@ namespace Lupus {
 				if (lastIndex + 1 == index) {
 					vector.Add(String());
 				} else {
-					int startIndex = (lastIndex == -1 ? 0 : lastIndex + delimiter._length);
-					int length = (index == -1 ? string._length - lastIndex - delimiter._length : index - lastIndex - delimiter._length);
+					// TODO: readable calculation
+					int startIndex = ((lastIndex == -1) ? (0) : (lastIndex + delimiter._length));
+					int length = ((index == -1) ? (string._length - lastIndex - delimiter._length) : (index - lastIndex - delimiter._length));
 					vector.Add(String(string._data, startIndex, length));
 				}
 
 				lastIndex = index;
 
 				if (vector.Length >= count - 1) {
-					int startIndex = (lastIndex == -1 ? 0 : lastIndex + delimiter._length);
-					int length = (lastIndex == -1 ? string._length : string._length - lastIndex - delimiter._length);
+					// TODO: readable calculation
+					int startIndex = ((lastIndex == -1) ? (0) : (lastIndex + delimiter._length));
+					int length = ((lastIndex == -1) ? (string._length) : (string._length - lastIndex - delimiter._length));
 					vector.Add(String(string._data, startIndex, length));
 					return vector;
 				}
@@ -1214,6 +1213,60 @@ namespace Lupus {
 					return vector;
 				}
 			}
+		}
+
+		StringIterator::StringIterator(StringIterator&& iterator)
+		{
+			Swap(iterator._sequence, _sequence);
+			Swap(iterator._current, _current);
+		}
+
+		StringIterator::StringIterator(const String& sequence) :
+			_sequence(&sequence)
+		{
+		}
+
+		StringIterator::StringIterator(const String* sequence) :
+			_sequence(sequence)
+		{
+			if (!sequence) {
+				throw ArgumentNullException();
+			}
+		}
+
+		StringIterator::~StringIterator()
+		{
+		}
+
+		void StringIterator::First()
+		{
+			_current = 0;
+		}
+
+		void StringIterator::Next()
+		{
+			_current++;
+		}
+
+		bool StringIterator::IsDone() const
+		{
+			return (_current >= _sequence->Count());
+		}
+
+		const char& StringIterator::CurrentItem() const
+		{
+			if (IsDone()) {
+				throw IteratorOutOfBoundException();
+			}
+
+			return (_sequence->operator[](_current));
+		}
+
+		StringIterator& StringIterator::operator=(StringIterator&& iterator)
+		{
+			Swap(iterator._sequence, _sequence);
+			Swap(iterator._current, _current);
+			return (*this);
 		}
 	}
 }

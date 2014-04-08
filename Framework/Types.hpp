@@ -102,8 +102,7 @@ namespace Lupus {
 		};
 	}
 
-	//! default array size for all array types
-	static const int DEFAULT_ARRAY_SIZE = 64;
+	static const int DEFAULT_ARRAY_SIZE = 32;
 }
 
 #endif

@@ -17,7 +17,6 @@
  */
 
 #include "Exception.hpp"
-#include "Iterator.hpp"
 
 namespace Lupus {
 	namespace System {
@@ -128,14 +127,14 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		SequenceIterator<T> Vector<T>::Begin() const
+		Iterator<T> Vector<T>::GetIterator() const
 		{
 			// validate
 			if (_length <= 0) {
 				throw InvalidOperationException();
 			}
 
-			return SequenceIterator<T>(this);
+			return VectorIterator<T>(this);
 		}
 
 		template <typename T>
@@ -335,6 +334,69 @@ namespace Lupus {
 					_data[i] = sequence[i];
 				}
 			}
+		}
+
+		template <typename T>
+		VectorIterator<T>::VectorIterator(VectorIterator<T>&& iterator)
+		{
+			Swap(iterator._sequence, _sequence);
+			Swap(iterator._current, _current);
+		}
+
+		template <typename T>
+		VectorIterator<T>::VectorIterator(const Vector<T>& sequence) :
+			_sequence(&sequence)
+		{
+		}
+
+		template <typename T>
+		VectorIterator<T>::VectorIterator(const Vector<T>* sequence) :
+			_sequence(sequence)
+		{
+			if (!sequence) {
+				throw ArgumentNullException();
+			}
+		}
+
+		template <typename T>
+		VectorIterator<T>::~VectorIterator()
+		{
+		}
+
+		template <typename T>
+		void VectorIterator<T>::First()
+		{
+			_current = 0;
+		}
+
+		template <typename T>
+		void VectorIterator<T>::Next()
+		{
+			_current++;
+		}
+
+		template <typename T>
+		bool VectorIterator<T>::IsDone() const
+		{
+			return (_current >= _sequence->Count());
+		}
+
+		template <typename T>
+		const T& VectorIterator<T>::CurrentItem() const
+		{
+			if (IsDone()) {
+				throw IteratorOutOfBoundException();
+			}
+
+			return (_sequence->operator[](_current));
+		}
+
+		template <typename T>
+		VectorIterator<T>& VectorIterator<T>::operator=(VectorIterator<T>&& iterator)
+		{
+			Swap(iterator._sequence, _sequence);
+			Swap(iterator._current, _current);
+			return (*this);
 		}
 	}
 }

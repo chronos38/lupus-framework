@@ -29,6 +29,26 @@ namespace Lupus {
 		// declarations
 		template <typename T>
 		class Vector;
+		class String;
+
+		class LUPUS_API StringIterator : public Object, public Iterator<char>
+		{
+			const String* _sequence = nullptr;
+			int _current = 0;
+		public:
+			StringIterator() = delete;
+			StringIterator(const StringIterator&) = delete;
+			StringIterator(StringIterator&&);
+			StringIterator(const String&);
+			StringIterator(const String*);
+			virtual ~StringIterator();
+			virtual void First() override;
+			virtual void Next() override;
+			virtual bool IsDone() const override;
+			virtual const char& CurrentItem() const override;
+			StringIterator& operator=(const StringIterator&) = delete;
+			StringIterator& operator=(StringIterator&&);
+		};
 
 		//! string split flag
 		enum class StringSplitOptions {
@@ -362,7 +382,7 @@ namespace Lupus {
 			virtual void Add(const char&) override;
 			virtual char& Back() override;
 			virtual const char& Back() const override;
-			virtual SequenceIterator<char> Begin() const override;
+			virtual Iterator<char> GetIterator() const override;
 			virtual void Clear() override;
 			virtual bool Contains(const char&) const override;
 			virtual void CopyTo(ISequence<char>&, int) const override;

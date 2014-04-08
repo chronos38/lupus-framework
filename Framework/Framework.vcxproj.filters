@@ -62,6 +62,9 @@
     <ClInclude Include="Vector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="List.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -102,13 +105,19 @@
     <None Include="Property.inl">
       <Filter>Inline Files</Filter>
     </None>
-    <None Include="Iterator.inl">
-      <Filter>Inline Files</Filter>
-    </None>
     <None Include="Pair.inl">
       <Filter>Inline Files</Filter>
     </None>
     <None Include="Vector.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="List.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="Utility.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="Iterator.inl">
       <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>

@@ -20,23 +20,18 @@
 #define LUPUS_ISEQUENCE_HPP
 
 #include "Object.hpp"
+#include "Iterator.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class Iterator;
-		template <typename T>
-		class SequenceIterator;
-
-		template <typename T>
-		class ISequence
+		class ISequence : public Iterable<T>
 		{
 		public:
 			virtual ~ISequence() { }
 			virtual void Add(const T&) = 0;
 			virtual T& Back() = 0;
 			virtual const T& Back() const = 0;
-			virtual SequenceIterator<T> Begin() const = 0;
 			virtual void Clear() = 0;
 			virtual bool Contains(const T&) const = 0;
 			virtual void CopyTo(ISequence<T>&, int) const = 0;
@@ -51,7 +46,7 @@ namespace Lupus {
 			 * @param destinationIndex starting index in container
 			 * @param count how many chars get copied
 			 */
-			virtual void CopyTo(int, ISequence<T>&, int, int) const = 0;
+			virtual void CopyTo(int sourceIndex, ISequence<T>& sequence, int destinationIndex, int count) const = 0;
 			virtual int Count() const = 0;
 			virtual T& Front() = 0;
 			virtual const T& Front() const = 0;

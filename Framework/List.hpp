@@ -20,57 +20,63 @@
 #define LUPUS_VECTOR_HPP
 
 #include "Object.hpp"
+#include "Vector.hpp"
 #include "ISequence.hpp"
-#include "Iterator.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class Vector;
+		class List;
 
 		template <typename T>
-		class VectorIterator : public Object, public Iterator<T>
+		class ListIterator : public Iterator<T>
 		{
-			const ISequence<T>* _sequence = nullptr;
-			int _current = 0;
 		public:
-			VectorIterator() = delete;
-			VectorIterator(const VectorIterator<T>&) = delete;
-			VectorIterator(VectorIterator<T>&&);
-			VectorIterator(const Vector<T>&);
-			VectorIterator(const Vector<T>*);
-			virtual ~VectorIterator();
+			ListIterator() = delete;
+			ListIterator(const ListIterator<T>&) = delete;
+			ListIterator(ListIterator<T>&&);
+			ListIterator(const List<T>&);
+			ListIterator(const List<T>*);
+			virtual ~ListIterator();
 			virtual void First() override;
 			virtual void Next() override;
 			virtual bool IsDone() const override;
 			virtual const T& CurrentItem() const override;
-			VectorIterator<T>& operator=(const VectorIterator<T>&) = delete;
-			VectorIterator<T>& operator=(VectorIterator<T>&&);
+			ListIterator<T>& operator=(const ListIterator<T>&) = delete;
+			ListIterator<T>& operator=(ListIterator<T>&&);
 		};
 
 		template <typename T>
-		class Vector : public Object, public ISequence<T>
+		class List : public Object, public ISequence<T>
 		{
-			//! native array
-			T* _data;
-			//! array length
+			friend class ListIterator<T>;
+
+			class Node
+			{
+				T _data = T();
+				Node* _next = nullptr;
+				Node* _prev = nullptr;
+			public:
+				PropertyAccess<T> Data = PropertyAccess<T>(_data);
+				PropertyAccess<Node*> Next = PropertyAccess<Node*>(_next);
+				PropertyAccess<Node*> Previous = PropertyAccess<Node*>(_prev);
+			};
+			
+			Node* _head[32];
+
+			Node _first;
+			Node _last;
 			int _length;
-			//! array capacity
-			int _capacity;
 		public:
-			//! Return vector length
+			//! Return list length length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
-			//! Return vector capacity
-			PropertyReader<int> Capacity = PropertyReader<int>(_capacity);
-			//! Return vector string
-			PropertyReader<T*> Data = PropertyReader<T*>(_data);
-			Vector();
-			Vector(const Vector<T>&);
-			Vector(Vector<T>&&);
-			Vector(const ISequence<T>&);
-			Vector(const std::initializer_list<T>&);
-			Vector(int);
-			virtual ~Vector();
+			List();
+			List(const List<T>&);
+			List(List<T>&&);
+			List(const ISequence<T>&);
+			List(const std::initializer_list<T>&);
+			List(int);
+			virtual ~List();
 			virtual void Add(const T&) override;
 			virtual T& Back() override;
 			virtual const T& Back() const override;
@@ -88,13 +94,13 @@ namespace Lupus {
 			virtual void Resize(int) override;
 			virtual T& operator[](int) override;
 			virtual const T& operator[](int) const override;
-			Vector<T>& operator=(const Vector<T>&);
-			Vector<T>& operator=(Vector<T>&&);
-			Vector<T>& operator=(const ISequence<T>&);
+			List<T>& operator=(const List<T>&);
+			List<T>& operator=(List<T>&&);
+			List<T>& operator=(const ISequence<T>&);
 		};
 	}
 }
 
-#include "Vector.inl"
+#include "List.inl"
 
 #endif

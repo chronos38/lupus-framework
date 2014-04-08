@@ -379,7 +379,12 @@ namespace FrameworkTest
 			// variables
 			String string("ABCdef");
 
-			// TODO: implement tests
+			Assert::IsTrue(string != "a", L"!=", LINE_INFO());
+			Assert::IsFalse(string == "a", L"!=", LINE_INFO());
+
+			Assert::IsTrue((string + "GHI") == "ABCdefGHI", L"+", LINE_INFO());
+
+			string += "GHI";
 		}
 	};
 }
