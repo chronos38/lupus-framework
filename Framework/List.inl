@@ -53,18 +53,15 @@ namespace Lupus {
 		template <typename T>
 		List<T>::~List()
 		{
-			Node* node = _node->Next;
-			delete _node;
-
-			for (int i = 1; i < _length; i++) {
-				Node swap = node;
-				node = node->Next;
-				delete swap;
+			for (Node* node = _node; node; ) {
+				Node* next = node->next;
+				delete node;
+				node = next;
 			}
 		}
 
 		template <typename T>
-		void List<T>::Add(const T&)
+		void List<T>::Add(const T& value)
 		{
 		}
 
@@ -95,12 +92,12 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		void List<T>::CopyTo(ISequence<T>&, int) const
+		void List<T>::CopyTo(Vector<T>&, int) const
 		{
 		}
 
 		template <typename T>
-		void List<T>::CopyTo(int, ISequence<T>&, int, int) const
+		void List<T>::CopyTo(int, Vector<T>&, int, int) const
 		{
 		}
 

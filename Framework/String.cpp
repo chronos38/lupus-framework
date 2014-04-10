@@ -520,6 +520,18 @@ namespace Lupus {
 
 			return (*this);
 		}
+
+		void String::ShrinkToFit()
+		{
+			char* swap = new char[_length];
+
+			for (int i = 0; i < _length; i++) {
+				swap[i] = _data[i];
+			}
+
+			Swap(swap, _data);
+			delete swap;
+		}
 		
 		Vector<String> String::Split(const Vector<char>& delimiter, StringSplitOptions splitOptions) const
 		{

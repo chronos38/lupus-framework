@@ -19,12 +19,17 @@
 #ifndef LUPUS_IDICTIONARY_HPP
 #define LUPUS_IDICTIONARY_HPP
 
+#include "Pair.hpp"
 #include "Iterator.hpp"
+#include "ICollection.hpp"
 
 namespace Lupus {
 	namespace System {
+		template <typename T>
+		class Vector;
+
 		template <typename Key, typename Value>
-		class IDictionary
+		class IDictionary : public ICollection<Pair<Key, Value>>
 		{
 		public:
 			virtual ~IDictionary() { }
@@ -37,8 +42,8 @@ namespace Lupus {
 			virtual bool Remove(const Value&) = 0;
 			virtual bool RemoveKey(const Key&) = 0;
 			virtual bool IsEmpty() const = 0;
-			// Vector<Key> GetKeys();
-			// Vector<Value> GetValues();
+			Vector<Key> GetKeys();
+			Vector<Value> GetValues();
 		};
 	}
 }

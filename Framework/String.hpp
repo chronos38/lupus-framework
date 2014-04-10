@@ -262,6 +262,7 @@ namespace Lupus {
 			 * @return reference to this instance
 			 */
 			String& Reverse();
+			void ShrinkToFit();
 			Vector<String> Split(const Vector<char>&, StringSplitOptions = StringSplitOptions::None) const;
 			Vector<String> Split(const Vector<char>&, int, StringSplitOptions = StringSplitOptions::None) const;
 			Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;

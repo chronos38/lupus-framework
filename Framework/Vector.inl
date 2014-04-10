@@ -258,6 +258,19 @@ namespace Lupus {
 		}
 
 		template <typename T>
+		void Vector<T>::ShrinkToFit()
+		{
+			T* swap = new T[_length];
+
+			for (int i = 0; i < _length; i++) {
+				swap[i] = _data[i];
+			}
+
+			Swap(swap, _data);
+			delete swap;
+		}
+
+		template <typename T>
 		T& Vector<T>::operator[](int index)
 		{
 			if (index >= _length) {

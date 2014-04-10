@@ -16,8 +16,8 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_VECTOR_HPP
-#define LUPUS_VECTOR_HPP
+#ifndef LUPUS_LIST_HPP
+#define LUPUS_LIST_HPP
 
 #include "Object.hpp"
 #include "Vector.hpp"
@@ -56,6 +56,9 @@ namespace Lupus {
 				T _data = T();
 				Node* _next = nullptr;
 			public:
+				Node() = default;
+				Node(const Node&) = default;
+				Node(Node&&) = default;
 				PropertyAccess<T> Data = PropertyAccess<T>(_data);
 				PropertyAccess<Node*> Next = PropertyAccess<Node*>(_next);
 			};
@@ -64,6 +67,7 @@ namespace Lupus {
 
 			Node* _node = new Node();
 			int _length = 0;
+			int _capacity = 0;
 		public:
 			//! Return list length length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
@@ -94,6 +98,7 @@ namespace Lupus {
 			List<T>& operator=(const List<T>&);
 			List<T>& operator=(List<T>&&);
 			List<T>& operator=(const ISequence<T>&);
+		private:
 		};
 	}
 }
