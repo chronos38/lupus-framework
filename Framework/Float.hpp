@@ -19,7 +19,7 @@
 #ifndef LUPUS_FLOAT_HPP
 #define LUPUS_FLOAT_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 
 namespace Lupus {
 	namespace System {

@@ -23,9 +23,6 @@
     <ClInclude Include="Types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Object.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="String.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,9 +42,6 @@
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="Float.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Property.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Iterator.hpp">
@@ -71,7 +65,10 @@
     <ClInclude Include="IComparable.hpp">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Pointer.hpp">
+    <ClInclude Include="ICopyable.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Preprocessor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

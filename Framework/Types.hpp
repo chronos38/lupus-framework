@@ -19,41 +19,7 @@
 #ifndef LUPUS_TYPES_HPP
 #define LUPUS_TYPES_HPP
 
-// Platform makro
-#if defined(__linux) || defined(__linux__) || defined(__gnu_linx)
-#  define LUPUS_LINUX_PLATFORM
-#  define LUPUS_UNIX_PLATFORM
-#elif defined(__APPLE__) || defined(__MACH__)
-#  define LUPUS_APPLE_PLATTFORM
-#  define LUPUS_UNIX_PLATFORM
-#elif defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
-#  define LUPUS_WINDOWS_PLATFORM
-#else
-#  error platform not supported
-#endif
-
-// DLL export symbols
-#if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
-#  ifdef LUPUS_DLL_EXPORT
-#    ifdef __GNUC__
-#      define LUPUS_API __attribute__ ((dllexport))
-#    else
-#      define LUPUS_API __declspec(dllexport)
-#    endif
-#  else
-#    ifdef __GNUC__
-#      define LUPUS_API __attribute__ ((dllimport))
-#    else
-#      define LUPUS_API __declspec(dllimport)
-#    endif
-#  endif
-#else
-#  if __GNUC__ >= 4
-#    define LUPUS_API __attribute__ ((visibility ("default")))
-#  else
-#    define LUPUS_API
-#  endif
-#endif
+#include "Preprocessor.hpp"
 
 // windows stuff
 #ifdef LUPUS_WINDOWS_PLATFORM
@@ -73,10 +39,14 @@
 
 // headers
 #include <initializer_list>
-#include "Property.hpp"
 #include "Utility.hpp"
 
 namespace Lupus {
+	// declarations
+	namespace System {
+		class String;
+	}
+
 	//! single signed byte
 	typedef signed char sbyte;
 	//! unsingle unsigned byte
@@ -93,6 +63,8 @@ namespace Lupus {
 	typedef unsigned long long ullong;
 	//! 128-bit float point number
 	typedef long double real;
+	//! default allocation size for every class with array implementation
+	static const int DEFAULT_ARRAY_SIZE = 32;
 
 	namespace System {
 		//! sensitivity flag
@@ -102,7 +74,112 @@ namespace Lupus {
 		};
 	}
 
-	static const int DEFAULT_ARRAY_SIZE = 32;
+	template <typename T>
+	class Pointer
+	{
+		T* _pointer = nullptr;
+	public:
+		Pointer() = delete;
+		Pointer(const Pointer<T>&) = delete;
+		Pointer(Pointer<T>&&);
+		Pointer(T* pointer);
+		~Pointer();
+		T* Release();
+		T& operator*();
+		const T& operator*() const;
+		T* operator->();
+		const T* operator->() const;
+		Pointer<T>& operator=(const Pointer<T>&) = delete;
+		Pointer<T>& operator=(Pointer<T>&&);
+		Pointer<T>& operator=(T*);
+	};
+
+	template <typename T>
+	class PropertyReader
+	{
+		T& _reference;
+	public:
+		PropertyReader() = delete;
+		PropertyReader(const PropertyReader<T>&) = default;
+		PropertyReader<T>& operator=(const PropertyReader<T>&);
+		PropertyReader(T& reference);
+		operator T() const;
+	};
+
+	template <typename T>
+	class PropertyWriter
+	{
+		T& _reference;
+	public:
+		PropertyWriter() = delete;
+		PropertyWriter(const PropertyWriter<T>&) = default;
+		PropertyWriter<T>& operator=(const PropertyWriter<T>&);
+		PropertyWriter(T& reference);
+		T operator=(const T& value);
+	};
+
+	template <typename T>
+	class PropertyAccess
+	{
+		T& _reference;
+	public:
+		PropertyAccess() = delete;
+		PropertyAccess(const PropertyAccess<T>&) = default;
+		PropertyAccess<T>& operator=(const PropertyAccess<T>&);
+		PropertyAccess(T& reference);
+		T operator=(const T& value);
+		operator T() const;
+	};
+
+	class LUPUS_API Object
+	{
+	public:
+		Object();
+		virtual ~Object();
+		virtual ulong GetHashCode() const;
+		virtual System::String GetName() const final;
+		virtual void Lock() final;
+		virtual bool TryLock() final;
+		virtual void Unlock() final;
+#if defined(LUPUS_WINDOWS_PLATFORM)
+	private:
+		HANDLE _mutex;
+#elif defined(LUPUS_UNIX_PLATFORM)
+	private:
+		// TODO: add unix mutex
+#endif
+	};
+
+	template <typename T, typename U>
+	bool operator==(const PropertyReader<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyReader<T>& rhs);
+	template <typename T, typename U>
+	bool operator!=(const PropertyReader<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyReader<T>& rhs);
+
+	template <typename T, typename U>
+	bool operator==(const PropertyWriter<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyWriter<T>& rhs);
+	template <typename T, typename U>
+	bool operator!=(const PropertyWriter<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyWriter<T>& rhs);
+
+	template <typename T, typename U>
+	bool operator==(const PropertyAccess<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator==(const U& lhs, const PropertyAccess<T>& rhs);
+	template <typename T, typename U>
+	bool operator!=(const PropertyAccess<T>& lhs, const U& rhs);
+	template <typename T, typename U>
+	bool operator!=(const U& lhs, const PropertyAccess<T>& rhs);
 }
+
+#include "Exception.hpp"
+#include "Pointer.inl"
+#include "Property.inl"
 
 #endif

@@ -24,15 +24,21 @@
 
 namespace Lupus {
 	namespace System {
+		Pointer<TextSearchStrategy> String::_defaultStrategy = new KnuthMorrisPratt();
+		PropertyWriter<Pointer<TextSearchStrategy>> String::DefaultTextSearchAlgorithm = PropertyWriter<Pointer<TextSearchStrategy>>(String::_defaultStrategy);
+
 		String::String() :
 			_data(new char[DEFAULT_ARRAY_SIZE]),
 			_length(0),
-			_capacity(DEFAULT_ARRAY_SIZE - 1)
+			_capacity(DEFAULT_ARRAY_SIZE - 1),
+			_strategy(_defaultStrategy->Copy())
 		{
 			memset(_data, 0, DEFAULT_ARRAY_SIZE);
 		}
+
 		String::String(const char* source) :
-			_data(nullptr)
+			_data(nullptr),
+			_strategy(_defaultStrategy->Copy())
 		{
 			// check argument
 			if (!source) {
@@ -50,7 +56,8 @@ namespace Lupus {
 		}
 
 		String::String(const char* source, int startIndex, int length) :
-			_data(nullptr)
+			_data(nullptr),
+			_strategy(_defaultStrategy->Copy())
 		{
 			// check source string
 			if (!source) {
@@ -68,7 +75,8 @@ namespace Lupus {
 			_length = _capacity = length;
 		}
 
-		String::String(const Char* source)
+		String::String(const Char* source) :
+			_strategy(_defaultStrategy->Copy())
 		{
 			// check argument
 			if (!source) {
@@ -96,7 +104,8 @@ namespace Lupus {
 			_length = _capacity = length;
 		}
 
-		String::String(const Char* source, int startIndex, int count)
+		String::String(const Char* source, int startIndex, int count) :
+			_strategy(_defaultStrategy->Copy())
 		{
 			// check arguments
 			if (!source) {
@@ -137,7 +146,8 @@ namespace Lupus {
 		String::String(const String& string) :
 			_data(new char[string.Length + 1]),
 			_length(string.Length),
-			_capacity(string.Length)
+			_capacity(string.Length),
+			_strategy(_defaultStrategy->Copy())
 		{
 			strncpy(_data, string.Data, _length);
 			_data[_length] = 0;
@@ -210,15 +220,7 @@ namespace Lupus {
 				return (Compare(string, sensitivity) == 0);
 			}
 
-			// compute result
-			switch (sensitivity) {
-			case CaseSensitivity::CaseSensitive:
-				return (KnuthMorrisPratt(_data, _length, string.Data, string.Length) != -1);
-			case CaseSensitivity::CaseInsensitive:
-				return (KnuthMorrisPrattInsensitive(_data, _length, string.Data, string.Length) != -1);
-			}
-
-			return false;
+			return (_strategy->Search(_data, _length, string._data, string._length, sensitivity) != -1);
 		}
 
 		void String::CopyTo(String& string, int startIndex) const
@@ -290,18 +292,8 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("startIndex must be greater than zero");
 			}
 
-			// variables
-			int result = -1;
-
 			// compute result
-			switch (sensitivity) {
-			case CaseSensitivity::CaseSensitive:
-				result = KnuthMorrisPratt(_data + startIndex, _length - startIndex, string.Data, string.Length);
-				break;
-			case CaseSensitivity::CaseInsensitive:
-				result = KnuthMorrisPrattInsensitive(_data + startIndex, _length - startIndex, string.Data, string.Length);
-				break;
-			}
+			int result = _strategy->Search(_data + startIndex, _length, string._data, string._length, sensitivity);
 
 			return (result == -1 ? -1 : (startIndex + result));
 		}
@@ -389,18 +381,18 @@ namespace Lupus {
 			}
 
 			// variables
+			String textString(*this);
+			String searchString(string);
 			int result = -1;
 
-			// compute result
-			switch (sensitivity) {
-			case CaseSensitivity::CaseSensitive:
-				result = KnuthMorrisPrattLast(_data, _length, string.Data, string.Length, startIndex);
-				break;
-			case CaseSensitivity::CaseInsensitive:
-				result = KnuthMorrisPrattInsensitiveLast(_data, _length, string.Data, string.Length, startIndex);
-				break;
-			}
-
+			// comput result
+			result = _strategy->Search(
+				textString.Reverse().Data + startIndex, 
+				textString._length - startIndex, 
+				searchString.Reverse().Data, 
+				searchString._length, 
+				sensitivity);
+			
 			return (result == -1 ? -1 : (_length - string._length - result - startIndex));
 		}
 
@@ -999,7 +991,8 @@ namespace Lupus {
 		String::String(int capacity) :
 			_data(new char[capacity + 1]),
 			_length(capacity),
-			_capacity(capacity)
+			_capacity(capacity),
+			_strategy(_defaultStrategy->Copy())
 		{
 			memset(_data, ' ', capacity);
 			_data[capacity] = 0;
@@ -1031,110 +1024,6 @@ namespace Lupus {
 			}
 
 			return result;
-		}
-
-		int String::KnuthMorrisPratt(const char* text, int textLength, const char* search, int searchLength)
-		{
-			// variables
-			int* n = new int[searchLength + 1];
-			int i = 0;
-			int j = -1;
-
-			// create prefix
-			n[0] = -1;
-
-			while (i < searchLength) {
-				while (j >= 0 && search[i] != search[j]) {
-					j = n[j];
-				}
-				i++;
-				j++;
-				n[i] = j;
-			}
-
-			// reset variables
-			i = j = 0;
-
-			// search
-			while (i < textLength) {
-				while (j >= 0 && text[i] != search[j]) {
-					j = n[j];
-				}
-				i++;
-				j++;
-
-				if (j == searchLength) {
-					delete[] n;
-					return (i - j);
-				}
-			}
-
-			delete[] n;
-			return -1;
-		}
-
-		int String::KnuthMorrisPrattLast(const char* text, int textLength, const char* search, int searchLength, int startIndex)
-		{
-			// variables
-			String textString(text);
-			String searchString(search);
-			int result = -1;
-
-			// comput result
-			result = KnuthMorrisPratt(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength);
-			return (result == -1 ? -1 : result);
-		}
-
-		int String::KnuthMorrisPrattInsensitive(const char* text, int textLength, const char* search, int searchLength)
-		{
-			// variables
-			int* n = new int[searchLength + 1];
-			int i = 0;
-			int j = -1;
-
-			// create prefix
-			n[0] = -1;
-
-			while (i < searchLength) {
-				while (j >= 0 && tolower(search[i]) != tolower(search[j])) {
-					j = n[j];
-				}
-				i++;
-				j++;
-				n[i] = j;
-			}
-
-			// reset variables
-			i = j = 0;
-
-			// search
-			while (i < textLength) {
-				while (j >= 0 && tolower(text[i]) != tolower(search[j])) {
-					j = n[j];
-				}
-				i++;
-				j++;
-
-				if (j == searchLength) {
-					delete[] n;
-					return (i - j);
-				}
-			}
-
-			delete[] n;
-			return -1;
-		}
-
-		int String::KnuthMorrisPrattInsensitiveLast(const char* text, int textLength, const char* search, int searchLength, int startIndex)
-		{
-			// variables
-			String textString(text);
-			String searchString(search);
-			int result = -1;
-
-			// comput result
-			result = KnuthMorrisPrattInsensitive(textString.Reverse().Data + startIndex, textLength - startIndex, searchString.Reverse().Data, searchLength);
-			return (result == -1 ? -1 : result);
 		}
 
 		Vector<String> String::SplitEmptyEntries(const String& string, const Vector<char>& delimiter, int count)
@@ -1311,6 +1200,103 @@ namespace Lupus {
 			Swap(iterator._sequence, _sequence);
 			Swap(iterator._current, _current);
 			return (*this);
+		}
+
+		Pointer<TextSearchStrategy> KnuthMorrisPratt::Copy() const
+		{
+			return new KnuthMorrisPratt();
+		}
+
+		int KnuthMorrisPratt::Search(const char* text, int textLength, const char* search, int searchLength, CaseSensitivity sensitivity) const
+		{
+			switch (sensitivity) {
+			case CaseSensitivity::CaseSensitive:
+				return SearchSensitive(text, textLength, search, searchLength);
+			case CaseSensitivity::CaseInsensitive:
+				return SearchInsensitive(text, textLength, search, searchLength);
+			}
+
+			return -1;
+		}
+
+		int KnuthMorrisPratt::SearchSensitive(const char* text, int textLength, const char* search, int searchLength) const
+		{
+			// variables
+			int* n = new int[searchLength + 1];
+			int i = 0;
+			int j = -1;
+
+			// create prefix
+			n[0] = -1;
+
+			while (i < searchLength) {
+				while (j >= 0 && search[i] != search[j]) {
+					j = n[j];
+				}
+				i++;
+				j++;
+				n[i] = j;
+			}
+
+			// reset variables
+			i = j = 0;
+
+			// search
+			while (i < textLength) {
+				while (j >= 0 && text[i] != search[j]) {
+					j = n[j];
+				}
+				i++;
+				j++;
+
+				if (j == searchLength) {
+					delete[] n;
+					return (i - j);
+				}
+			}
+
+			delete[] n;
+			return -1;
+		}
+
+		int KnuthMorrisPratt::SearchInsensitive(const char* text, int textLength, const char* search, int searchLength) const
+		{
+			// variables
+			int* n = new int[searchLength + 1];
+			int i = 0;
+			int j = -1;
+
+			// create prefix
+			n[0] = -1;
+
+			while (i < searchLength) {
+				while (j >= 0 && tolower(search[i]) != tolower(search[j])) {
+					j = n[j];
+				}
+				i++;
+				j++;
+				n[i] = j;
+			}
+
+			// reset variables
+			i = j = 0;
+
+			// search
+			while (i < textLength) {
+				while (j >= 0 && tolower(text[i]) != tolower(search[j])) {
+					j = n[j];
+				}
+				i++;
+				j++;
+
+				if (j == searchLength) {
+					delete[] n;
+					return (i - j);
+				}
+			}
+
+			delete[] n;
+			return -1;
 		}
 	}
 }

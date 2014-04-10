@@ -19,34 +19,14 @@
 #ifndef LUPUS_VECTOR_HPP
 #define LUPUS_VECTOR_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 #include "ISequence.hpp"
 #include "Iterator.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class Vector;
-
-		template <typename T>
-		class VectorIterator : public Object, public Iterator<T>
-		{
-			const Vector<T>* _sequence = nullptr;
-			int _current = 0;
-		public:
-			VectorIterator() = delete;
-			VectorIterator(const VectorIterator<T>&) = delete;
-			VectorIterator(VectorIterator<T>&&);
-			VectorIterator(const Vector<T>&);
-			VectorIterator(const Vector<T>*);
-			virtual ~VectorIterator();
-			virtual void First() override;
-			virtual void Next() override;
-			virtual bool IsDone() const override;
-			virtual const T& CurrentItem() const override;
-			VectorIterator<T>& operator=(const VectorIterator<T>&) = delete;
-			VectorIterator<T>& operator=(VectorIterator<T>&&);
-		};
+		class VectorIterator;
 
 		template <typename T>
 		class Vector : public Object, public ISequence<T>
@@ -92,6 +72,26 @@ namespace Lupus {
 			Vector<T>& operator=(const Vector<T>&);
 			Vector<T>& operator=(Vector<T>&&);
 			Vector<T>& operator=(const ISequence<T>&);
+		};
+
+		template <typename T>
+		class VectorIterator : public Object, public Iterator<T>
+		{
+			const Vector<T>* _sequence = nullptr;
+			int _current = 0;
+		public:
+			VectorIterator() = delete;
+			VectorIterator(const VectorIterator<T>&) = delete;
+			VectorIterator(VectorIterator<T>&&);
+			VectorIterator(const Vector<T>&);
+			VectorIterator(const Vector<T>*);
+			virtual ~VectorIterator();
+			virtual void First() override;
+			virtual void Next() override;
+			virtual bool IsDone() const override;
+			virtual const T& CurrentItem() const override;
+			VectorIterator<T>& operator=(const VectorIterator<T>&) = delete;
+			VectorIterator<T>& operator=(VectorIterator<T>&&);
 		};
 	}
 }

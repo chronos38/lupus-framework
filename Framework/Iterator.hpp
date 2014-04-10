@@ -20,10 +20,10 @@
 #define LUPUS_ITERATOR_HPP
 
 namespace Lupus {
-	namespace System {
-		template <typename T>
-		class Pointer;
+	template <typename T>
+	class Pointer;
 
+	namespace System {
 		template <typename T>
 		class Iterator
 		{

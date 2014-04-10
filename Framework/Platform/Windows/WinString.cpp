@@ -27,7 +27,8 @@
 namespace Lupus {
 	namespace System {
 		String::String(const wchar_t* source) :
-			_data(nullptr)
+			_data(nullptr),
+			_strategy(_defaultStrategy->Copy())
 		{
 			// check argument
 			if (!source) {
@@ -55,7 +56,8 @@ namespace Lupus {
 		}
 
 		String::String(const wchar_t* source, int startIndex, int length) :
-			_data(nullptr)
+			_data(nullptr),
+			_strategy(_defaultStrategy->Copy())
 		{
 			// check source string
 			if (!source) {

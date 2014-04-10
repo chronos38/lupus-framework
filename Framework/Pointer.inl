@@ -16,69 +16,80 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Exception.hpp"
-
 namespace Lupus {
-	namespace System {
-		template <typename T>
-		Pointer<T>::Pointer(Pointer<T>&& pointer)
-		{
-			Swap(_pointer, pointer._pointer);
+	template <typename T>
+	Pointer<T>::Pointer(Pointer<T>&& pointer)
+	{
+		Swap(_pointer, pointer._pointer);
+	}
+
+	template <typename T>
+	Pointer<T>::Pointer(T* pointer)
+	{
+		_pointer = pointer;
+	}
+
+	template <typename T>
+	Pointer<T>::~Pointer()
+	{
+		if (_pointer) {
+			delete _pointer;
+		}
+	}
+
+	template <typename T>
+	T* Pointer<T>::Release()
+	{
+		T* result = _pointer;
+		_pointer = nullptr;
+		return result;
+	}
+
+	template <typename T>
+	T& Pointer<T>::operator*()
+	{
+		if (!_pointer) {
+			throw NullPointerException();
 		}
 
-		template <typename T>
-		Pointer<T>::Pointer(T* pointer)
-		{
-			if (!pointer) {
-				throw NullPointerException();
-			}
+		return (*_pointer);
+	}
 
-			_pointer = pointer;
+	template <typename T>
+	const T& Pointer<T>::operator*() const
+	{
+		if (!_pointer) {
+			throw NullPointerException();
 		}
 
-		template <typename T>
-		Pointer<T>::~Pointer()
-		{
+		return (*_pointer);
+	}
+
+	template <typename T>
+	T* Pointer<T>::operator->()
+	{
+		return _pointer;
+	}
+
+	template <typename T>
+	const T* Pointer<T>::operator->() const
+	{
+		return _pointer;
+	}
+
+	template <typename T>
+	Pointer<T>& Pointer<T>::operator=(Pointer<T>&& pointer)
+	{
+		Swap(_pointer, pointer._pointer);
+	}
+
+	template <typename T>
+	Pointer<T>& Pointer<T>::operator=(T* pointer)
+	{
+		if (_pointer) {
 			delete _pointer;
 		}
 
-		template <typename T>
-		T& Pointer<T>::operator*()
-		{
-			return (*_pointer);
-		}
-
-		template <typename T>
-		const T& Pointer<T>::operator*() const
-		{
-			return (*_pointer);
-		}
-
-		template <typename T>
-		T* Pointer<T>::operator->()
-		{
-			return _pointer;
-		}
-
-		template <typename T>
-		const T* Pointer<T>::operator->() const
-		{
-			return _pointer;
-		}
-
-		template <typename T>
-		Pointer<T>& Pointer<T>::operator=(Pointer<T>&& pointer)
-		{
-			delete _pointer;
-			_pointer = nullptr;
-			Swap(_pointer, pointer._pointer);
-		}
-
-		template <typename T>
-		Pointer<T>& Pointer<T>::operator=(T* pointer)
-		{
-			delete _pointer;
-			_pointer = pointer;
-		}
+		_pointer = pointer;
 	}
 }

@@ -19,14 +19,14 @@
 #ifndef LUPUS_EXCEPTION_HPP
 #define LUPUS_EXCEPTION_HPP
 
-#include "Object.hpp"
+#include "Preprocessor.hpp"
 
 namespace Lupus {
 	namespace System {
 		class String;
 	}
 	
-	class LUPUS_API Exception : public Object
+	class LUPUS_API Exception
 	{
 		const System::String* _message = nullptr;
 		const Exception* _innerException = nullptr;

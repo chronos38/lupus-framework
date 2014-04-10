@@ -19,7 +19,7 @@
 #ifndef LUPUS_INTEGER_HPP
 #define LUPUS_INTEGER_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 
 namespace Lupus {
 	namespace System {

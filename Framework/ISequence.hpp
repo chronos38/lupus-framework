@@ -19,7 +19,7 @@
 #ifndef LUPUS_ISEQUENCE_HPP
 #define LUPUS_ISEQUENCE_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 #include "ICollection.hpp"
 
 namespace Lupus {

@@ -16,7 +16,7 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "..\..\Object.hpp"
+#include "..\..\Types.hpp"
 
 #ifdef LUPUS_WINDOWS_PLATFORM
 #include <Windows.h>

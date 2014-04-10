@@ -16,32 +16,21 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_POINTER_HPP
-#define LUPUS_POINTER_HPP
+#ifndef LUPUS_ICOPYABLE_HPP
+#define LUPUS_ICOPYABLE_HPP
 
 namespace Lupus {
+	template <typename T>
+	class Pointer;
+
 	namespace System {
 		template <typename T>
-		class Pointer
+		class ICopyable
 		{
-			T* _pointer = nullptr;
 		public:
-			Pointer() = delete;
-			Pointer(const Pointer<T>&) = delete;
-			Pointer(Pointer<T>&&);
-			Pointer(T* pointer);
-			~Pointer();
-			T& operator*();
-			const T& operator*() const;
-			T* operator->();
-			const T* operator->() const;
-			Pointer<T>& operator=(const Pointer<T>&) = delete;
-			Pointer<T>& operator=(Pointer<T>&&);
-			Pointer<T>& operator=(T*);
+			virtual Pointer<T> Copy() const = 0;
 		};
 	}
 }
-
-#include "Pointer.inl"
 
 #endif

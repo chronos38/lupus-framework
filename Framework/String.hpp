@@ -19,11 +19,12 @@
 #ifndef LUPUS_STRING_HPP
 #define LUPUS_STRING_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 #include "Char.hpp"
 #include "ISequence.hpp"
 #include "Iterator.hpp"
 #include "IComparable.hpp"
+#include "ICopyable.hpp"
 
 namespace Lupus {
 	namespace System {
@@ -31,24 +32,13 @@ namespace Lupus {
 		template <typename T>
 		class Vector;
 		class String;
+		class StringIterator;
 
-		class LUPUS_API StringIterator : public Object, public Iterator<char>
+		//! text search algorithm interface
+		class TextSearchStrategy : public ICopyable<TextSearchStrategy>
 		{
-			const String* _sequence = nullptr;
-			int _current = 0;
 		public:
-			StringIterator() = delete;
-			StringIterator(const StringIterator&) = delete;
-			StringIterator(StringIterator&&);
-			StringIterator(const String&);
-			StringIterator(const String*);
-			virtual ~StringIterator();
-			virtual void First() override;
-			virtual void Next() override;
-			virtual bool IsDone() const override;
-			virtual const char& CurrentItem() const override;
-			StringIterator& operator=(const StringIterator&) = delete;
-			StringIterator& operator=(StringIterator&&);
+			virtual int Search(const char* text, int textLength, const char* search, int searchLength, CaseSensitivity sensitivity) const = 0;
 		};
 
 		//! string split flag
@@ -66,6 +56,10 @@ namespace Lupus {
 			int _length;
 			//! string capacity
 			int _capacity;
+			//! text search algorithm
+			Pointer<TextSearchStrategy> _strategy;
+			//! default search algorithm
+			static Pointer<TextSearchStrategy> _defaultStrategy;
 		public:
 			//! Return string length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
@@ -73,6 +67,10 @@ namespace Lupus {
 			PropertyReader<int> Capacity = PropertyReader<int>(_capacity);
 			//! Return native string
 			PropertyReader<char*> Data = PropertyReader<char*>(_data);
+			//! Get or set text search algorithm
+			PropertyWriter<Pointer<TextSearchStrategy>> TextSearchAlgorithm = PropertyWriter<Pointer<TextSearchStrategy>>(_strategy);
+			//! Set default serach algorithm
+			static PropertyWriter<Pointer<TextSearchStrategy>> DefaultTextSearchAlgorithm;
 			//! Create an empty string
 			String();
 			/**
@@ -403,10 +401,6 @@ namespace Lupus {
 			explicit String(int);
 			static String CreateWithExistingBuffer(char*);
 			static int GetLength(const Char*);
-			static int KnuthMorrisPratt(const char*, int, const char*, int);
-			static int KnuthMorrisPrattLast(const char*, int, const char*, int, int);
-			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
-			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int, int);
 			static Vector<String> SplitEmptyEntries(const String&, const Vector<char>&, int);
 			static Vector<String> SplitNoEmptyEntries(const String&, const Vector<char>&, int);
 			static Vector<String> SplitEmptyEntries(const String&, const String&, int);
@@ -418,6 +412,35 @@ namespace Lupus {
 			//! @sa String::String(const char*, int, int)
 			String(const wchar_t*, int startIndex, int length);
 #endif
+		};
+
+		class LUPUS_API StringIterator : public Object, public Iterator<char>
+		{
+			const String* _sequence = nullptr;
+			int _current = 0;
+		public:
+			StringIterator() = delete;
+			StringIterator(const StringIterator&) = delete;
+			StringIterator(StringIterator&&);
+			StringIterator(const String&);
+			StringIterator(const String*);
+			virtual ~StringIterator();
+			virtual void First() override;
+			virtual void Next() override;
+			virtual bool IsDone() const override;
+			virtual const char& CurrentItem() const override;
+			StringIterator& operator=(const StringIterator&) = delete;
+			StringIterator& operator=(StringIterator&&);
+		};
+
+		class LUPUS_API KnuthMorrisPratt : public TextSearchStrategy
+		{
+		public:
+			virtual Pointer<TextSearchStrategy> Copy() const override;
+			virtual int Search(const char* text, int textLength, const char* search, int searchLength, CaseSensitivity sensitivity) const override;
+		private:
+			int SearchSensitive(const char* text, int textLength, const char* search, int searchLength) const;
+			int SearchInsensitive(const char* text, int textLength, const char* search, int searchLength) const;
 		};
 
 		template <typename T>

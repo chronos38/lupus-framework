@@ -19,32 +19,14 @@
 #ifndef LUPUS_LIST_HPP
 #define LUPUS_LIST_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 #include "Vector.hpp"
 #include "ISequence.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class List;
-
-		template <typename T>
-		class ListIterator : public Iterator<T>
-		{
-		public:
-			ListIterator() = delete;
-			ListIterator(const ListIterator<T>&) = delete;
-			ListIterator(ListIterator<T>&&);
-			ListIterator(const List<T>&);
-			ListIterator(const List<T>*);
-			virtual ~ListIterator();
-			virtual void First() override;
-			virtual void Next() override;
-			virtual bool IsDone() const override;
-			virtual const T& CurrentItem() const override;
-			ListIterator<T>& operator=(const ListIterator<T>&) = delete;
-			ListIterator<T>& operator=(ListIterator<T>&&);
-		};
+		class ListIterator;
 
 		template <typename T>
 		class List : public Object, public ISequence<T>
@@ -59,15 +41,14 @@ namespace Lupus {
 				Node() = default;
 				Node(const Node&) = default;
 				Node(Node&&) = default;
+				Node(const T&);
 				PropertyAccess<T> Data = PropertyAccess<T>(_data);
 				PropertyAccess<Node*> Next = PropertyAccess<Node*>(_next);
 			};
 			
 			Vector<Node*> _head;
-
-			Node* _node = new Node();
+			Node* _node = nullptr;
 			int _length = 0;
-			int _capacity = 0;
 		public:
 			//! Return list length length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
@@ -99,6 +80,26 @@ namespace Lupus {
 			List<T>& operator=(List<T>&&);
 			List<T>& operator=(const ISequence<T>&);
 		private:
+		};
+
+		template <typename T>
+		class ListIterator : public Iterator<T>
+		{
+			List<T>* _list = nullptr;
+			List<T>::Node* _current = nullptr;
+		public:
+			ListIterator() = delete;
+			ListIterator(const ListIterator<T>&) = delete;
+			ListIterator(ListIterator<T>&&);
+			ListIterator(const List<T>&);
+			ListIterator(const List<T>*);
+			virtual ~ListIterator();
+			virtual void First() override;
+			virtual void Next() override;
+			virtual bool IsDone() const override;
+			virtual const T& CurrentItem() const override;
+			ListIterator<T>& operator=(const ListIterator<T>&) = delete;
+			ListIterator<T>& operator=(ListIterator<T>&&);
 		};
 	}
 }

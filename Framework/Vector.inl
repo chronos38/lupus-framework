@@ -16,9 +16,6 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Exception.hpp"
-#include "Pointer.hpp"
-
 namespace Lupus {
 	namespace System {
 		template <typename T>

@@ -20,7 +20,6 @@
 #define LUPUS_IDICTIONARY_HPP
 
 #include "Pair.hpp"
-#include "Iterator.hpp"
 #include "ICollection.hpp"
 
 namespace Lupus {
@@ -37,13 +36,11 @@ namespace Lupus {
 			virtual void Clear() = 0;
 			virtual bool Contains(const Value&) const = 0;
 			virtual bool ContainsKey(const Key&) const = 0;
-			virtual void CopyTo(ISequence<Value>&, int);
-			virtual s32 Count() = 0;
 			virtual bool Remove(const Value&) = 0;
 			virtual bool RemoveKey(const Key&) = 0;
 			virtual bool IsEmpty() const = 0;
-			Vector<Key> GetKeys();
-			Vector<Value> GetValues();
+			Vector<Key> GetKeys() const = 0;
+			Vector<Value> GetValues() const = 0;
 		};
 	}
 }

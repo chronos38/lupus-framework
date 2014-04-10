@@ -19,7 +19,7 @@
 #ifndef LUPUS_CHAR_HPP
 #define LUPUS_CHAR_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 
 namespace Lupus {
 	namespace System {
