@@ -65,6 +65,15 @@
     <ClInclude Include="List.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ICollection.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IComparable.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -117,7 +126,7 @@
     <None Include="Utility.inl">
       <Filter>Inline Files</Filter>
     </None>
-    <None Include="Iterator.inl">
+    <None Include="Pointer.inl">
       <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>

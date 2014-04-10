@@ -17,8 +17,6 @@
  */
 
 #include "String.hpp"
-#include "ISequence.hpp"
-#include "Iterator.hpp"
 #include "Vector.hpp"
 #include "Exception.hpp"
 #include <cstring>
@@ -223,6 +221,33 @@ namespace Lupus {
 			return false;
 		}
 
+		void String::CopyTo(String& string, int startIndex) const
+		{
+			CopyTo(0, string, startIndex, string.Length);
+		}
+
+		void String::CopyTo(int sourceIndex, String& string, int destinationIndex, int count) const
+		{
+			// check argument
+			if ((sourceIndex + count) > _length) {
+				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes string length");
+			} else if (sourceIndex < 0) {
+				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
+			} else if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			} else if ((destinationIndex + count) > string.Count()) {
+				throw ArgumentOutOfRangeException("destinationIndex plus count exceedes collection length");
+			}
+
+			// variables
+			int limit = sourceIndex + count;
+
+			// copy values
+			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
+				string._data[j] = _data[i];
+			}
+		}
+
 		int String::IndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
 		{
 			// check arguments
@@ -299,7 +324,7 @@ namespace Lupus {
 					char& ch = _data[i];
 
 					foreach(item, sequence) {
-						if (ch == item.CurrentItem()) {
+						if (ch == item->CurrentItem()) {
 							return i;
 						}
 					}
@@ -310,7 +335,7 @@ namespace Lupus {
 					int ch = tolower(_data[i]);
 
 					foreach(item, sequence) {
-						if (ch == tolower(item.CurrentItem())) {
+						if (ch == tolower(item->CurrentItem())) {
 							return i;
 						}
 					}
@@ -496,12 +521,12 @@ namespace Lupus {
 			return (*this);
 		}
 		
-		Vector<String> String::Split(const Vector<Char>& delimiter, StringSplitOptions splitOptions) const
+		Vector<String> String::Split(const Vector<char>& delimiter, StringSplitOptions splitOptions) const
 		{
 			return Split(delimiter, _length, splitOptions);
 		}
 
-		Vector<String> String::Split(const Vector<Char>& delimiter, int count, StringSplitOptions splitOptions) const
+		Vector<String> String::Split(const Vector<char>& delimiter, int count, StringSplitOptions splitOptions) const
 		{
 			// check argument
 			if (count < 0) {
@@ -823,9 +848,9 @@ namespace Lupus {
 			return operator[](_length - 1);
 		}
 
-		Iterator<char> String::GetIterator() const
+		Pointer<Iterator<char>> String::GetIterator() const
 		{
-			return StringIterator(this);
+			return new StringIterator(this);
 		}
 
 		void String::Clear()
@@ -845,12 +870,12 @@ namespace Lupus {
 			return false;
 		}
 
-		void String::CopyTo(ISequence<char>& sequence, int startIndex) const
+		void String::CopyTo(Vector<char>& vector, int startIndex) const
 		{
-			CopyTo(0, sequence, startIndex, _length);
+			CopyTo(0, vector, startIndex, vector.Length);
 		}
 
-		void String::CopyTo(int sourceIndex, ISequence<char>& sequence, int destinationIndex, int count) const
+		void String::CopyTo(int sourceIndex, Vector<char>& vector, int destinationIndex, int count) const
 		{
 			// check argument
 			if ((sourceIndex + count) > _length) {
@@ -859,6 +884,8 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
 			} else if (count < 0) {
 				throw ArgumentOutOfRangeException("count must be greater than zero");
+			} else if ((destinationIndex + count) > vector.Count()) {
+				throw ArgumentOutOfRangeException("destinationIndex plus count exceedes collection length");
 			}
 
 			// variables
@@ -866,7 +893,7 @@ namespace Lupus {
 
 			// copy values
 			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
-				sequence[j] = _data[i];
+				vector[j] = _data[i];
 			}
 		}
 
@@ -950,6 +977,11 @@ namespace Lupus {
 				_data = buffer;
 				_length = _capacity = count;
 			}
+		}
+
+		int String::Compare(const String& string) const
+		{
+			return Compare(string, CaseSensitivity::CaseSensitive);
 		}
 
 		String::String(int capacity) :
@@ -1093,7 +1125,7 @@ namespace Lupus {
 			return (result == -1 ? -1 : result);
 		}
 
-		Vector<String> String::SplitEmptyEntries(const String& string, const Vector<Char>& delimiter, int count)
+		Vector<String> String::SplitEmptyEntries(const String& string, const Vector<char>& delimiter, int count)
 		{
 			// variables
 			int lastIndex = -1;
@@ -1102,7 +1134,7 @@ namespace Lupus {
 			// compute result
 			for (int i = 0; i < string._length; i++) {
 				foreach(item, delimiter) {
-					if (string._data[i] != item.CurrentItem()) {
+					if (string._data[i] != item->CurrentItem()) {
 						continue;
 					} else if (i == lastIndex + 1) {
 						vector.Add(String());
@@ -1128,7 +1160,7 @@ namespace Lupus {
 			return vector;
 		}
 
-		Vector<String> String::SplitNoEmptyEntries(const String& string, const Vector<Char>& delimiter, int count)
+		Vector<String> String::SplitNoEmptyEntries(const String& string, const Vector<char>& delimiter, int count)
 		{
 			// variables
 			int lastIndex = -1;
@@ -1137,7 +1169,7 @@ namespace Lupus {
 			// compute result
 			for (int i = 0; i < string._length; i++) {
 				foreach(item, delimiter) {
-					if (string._data[i] != item.CurrentItem()) {
+					if (string._data[i] != item->CurrentItem()) {
 						continue;
 					} else if (i != lastIndex + 1) {
 						vector.Add(String(string._data, lastIndex + 1, i - lastIndex - 1));

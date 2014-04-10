@@ -28,7 +28,7 @@
  *			// do things with 'item'
  *		}
  */
-#define foreach(item, container) for (auto item = container.GetIterator(); !(item.IsDone()); item.Next())
+#define foreach(item, container) for (auto item = container.GetIterator(); !(item->IsDone()); item->Next())
 
 namespace Lupus {
 	/**

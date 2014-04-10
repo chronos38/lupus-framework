@@ -53,6 +53,14 @@ namespace Lupus {
 		template <typename T>
 		List<T>::~List()
 		{
+			Node* node = _node->Next;
+			delete _node;
+
+			for (int i = 1; i < _length; i++) {
+				Node swap = node;
+				node = node->Next;
+				delete swap;
+			}
 		}
 
 		template <typename T>
@@ -71,13 +79,9 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		SequenceIterator<T> List<T>::ForwardIterator() const
+		Pointer<Iterator<T>> List<T>::GetIterator() const
 		{
-		}
-
-		template <typename T>
-		ReverseSequenceIterator<T> List<T>::ReverseIterator() const
-		{
+			return new ListIterator<T>(this);
 		}
 
 		template <typename T>

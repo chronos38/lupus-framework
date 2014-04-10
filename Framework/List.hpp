@@ -55,18 +55,15 @@ namespace Lupus {
 			{
 				T _data = T();
 				Node* _next = nullptr;
-				Node* _prev = nullptr;
 			public:
 				PropertyAccess<T> Data = PropertyAccess<T>(_data);
 				PropertyAccess<Node*> Next = PropertyAccess<Node*>(_next);
-				PropertyAccess<Node*> Previous = PropertyAccess<Node*>(_prev);
 			};
 			
-			Node* _head[32];
+			Vector<Node*> _head;
 
-			Node _first;
-			Node _last;
-			int _length;
+			Node* _node = new Node();
+			int _length = 0;
 		public:
 			//! Return list length length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
@@ -80,11 +77,11 @@ namespace Lupus {
 			virtual void Add(const T&) override;
 			virtual T& Back() override;
 			virtual const T& Back() const override;
-			virtual Iterator<T> GetIterator() const override;
+			virtual Pointer<Iterator<T>> GetIterator() const override;
 			virtual void Clear() override;
 			virtual bool Contains(const T&) const override;
-			virtual void CopyTo(ISequence<T>&, int) const override;
-			virtual void CopyTo(int, ISequence<T>&, int, int) const override;
+			virtual void CopyTo(Vector<T>&, int) const override;
+			virtual void CopyTo(int, Vector<T>&, int, int) const override;
 			virtual int Count() const override;
 			virtual T& Front() override;
 			virtual const T& Front() const override;

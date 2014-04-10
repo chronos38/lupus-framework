@@ -16,30 +16,34 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_ITERATOR_HPP
-#define LUPUS_ITERATOR_HPP
+#ifndef LUPUS_ICOLLECTION_HPP
+#define LUPUS_ICOLLECTION_HPP
+
+#include "Iterator.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class Pointer;
+		class Vector;
 
 		template <typename T>
-		class Iterator
+		class ICollection : public Iterable<T>
 		{
 		public:
-			virtual ~Iterator(){}
-			virtual void First() = 0;
-			virtual void Next() = 0;
-			virtual bool IsDone() const = 0;
-			virtual const T& CurrentItem() const = 0;
-		};
-
-		template <typename T>
-		class Iterable
-		{
-		public:
-			virtual Pointer<Iterator<T>> GetIterator() const = 0;
+			/**
+			 * Copy content from this instance to a sequence container
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param sourceIndex starting index for this instance
+			 * @param sequence container to copy into
+			 * @param destinationIndex starting index in container
+			 * @param count how many chars get copied
+			 */
+			virtual void CopyTo(int sourceIndex, Vector<T>& vector, int destinationIndex, int count) const = 0;
+			virtual void CopyTo(Vector<T>& vector, int startIndex) const = 0;
+			virtual int Count() const = 0;
 		};
 	}
 }

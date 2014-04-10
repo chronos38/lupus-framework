@@ -20,12 +20,12 @@
 #define LUPUS_ISEQUENCE_HPP
 
 #include "Object.hpp"
-#include "Iterator.hpp"
+#include "ICollection.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class ISequence : public Iterable<T>
+		class ISequence : public ICollection<T>
 		{
 		public:
 			virtual ~ISequence() { }
@@ -34,20 +34,6 @@ namespace Lupus {
 			virtual const T& Back() const = 0;
 			virtual void Clear() = 0;
 			virtual bool Contains(const T&) const = 0;
-			virtual void CopyTo(ISequence<T>&, int) const = 0;
-			/**
-			 * Copy content from this instance to a sequence container
-			 *
-			 * \b Exceptions
-			 * - ArgumentOutOfRangeException
-			 *
-			 * @param sourceIndex starting index for this instance
-			 * @param sequence container to copy into
-			 * @param destinationIndex starting index in container
-			 * @param count how many chars get copied
-			 */
-			virtual void CopyTo(int sourceIndex, ISequence<T>& sequence, int destinationIndex, int count) const = 0;
-			virtual int Count() const = 0;
 			virtual T& Front() = 0;
 			virtual const T& Front() const = 0;
 			virtual void Insert(int, const T&) = 0;

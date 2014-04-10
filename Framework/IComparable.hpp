@@ -16,30 +16,22 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_ITERATOR_HPP
-#define LUPUS_ITERATOR_HPP
+#ifndef LUPUS_ICOMPARABLE_HPP
+#define LUPUS_ICOMPARABLE_HPP
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		class Pointer;
-
-		template <typename T>
-		class Iterator
+		class IComparable
 		{
 		public:
-			virtual ~Iterator(){}
-			virtual void First() = 0;
-			virtual void Next() = 0;
-			virtual bool IsDone() const = 0;
-			virtual const T& CurrentItem() const = 0;
-		};
-
-		template <typename T>
-		class Iterable
-		{
-		public:
-			virtual Pointer<Iterator<T>> GetIterator() const = 0;
+			/**
+			 * Compare given object to this instance
+			 *
+			 * @param object given object to compare to
+			 * @return <0 this instance preceeds object; =0 this instance is equal to object; >0 this instance follows object
+			 */
+			virtual int Compare(const T& object) const = 0;
 		};
 	}
 }

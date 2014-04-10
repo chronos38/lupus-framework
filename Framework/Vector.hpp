@@ -31,7 +31,7 @@ namespace Lupus {
 		template <typename T>
 		class VectorIterator : public Object, public Iterator<T>
 		{
-			const ISequence<T>* _sequence = nullptr;
+			const Vector<T>* _sequence = nullptr;
 			int _current = 0;
 		public:
 			VectorIterator() = delete;
@@ -74,11 +74,11 @@ namespace Lupus {
 			virtual void Add(const T&) override;
 			virtual T& Back() override;
 			virtual const T& Back() const override;
-			virtual Iterator<T> GetIterator() const override;
+			virtual Pointer<Iterator<T>> GetIterator() const override;
 			virtual void Clear() override;
 			virtual bool Contains(const T&) const override;
-			virtual void CopyTo(ISequence<T>&, int) const override;
-			virtual void CopyTo(int, ISequence<T>&, int, int) const override;
+			virtual void CopyTo(Vector<T>&, int) const override;
+			virtual void CopyTo(int, Vector<T>&, int, int) const override;
 			virtual int Count() const override;
 			virtual T& Front() override;
 			virtual const T& Front() const override;

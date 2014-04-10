@@ -16,32 +16,32 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Exception.hpp"
+#ifndef LUPUS_POINTER_HPP
+#define LUPUS_POINTER_HPP
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		const T& Iterator<T>::CurrentItem() const
+		class Pointer
 		{
-			throw NotSupportedException("iterator does not support this method");
-		}
-
-		template <typename T>
-		bool Iterator<T>::IsDone() const
-		{
-			throw NotSupportedException("iterator does not support this method");
-		}
-
-		template <typename T>
-		void Iterator<T>::First()
-		{
-			throw NotSupportedException("iterator does not support this method");
-		}
-
-		template <typename T>
-		void Iterator<T>::Next()
-		{
-			throw NotSupportedException("iterator does not support this method");
-		}
+			T* _pointer = nullptr;
+		public:
+			Pointer() = delete;
+			Pointer(const Pointer<T>&) = delete;
+			Pointer(Pointer<T>&&);
+			Pointer(T* pointer);
+			~Pointer();
+			T& operator*();
+			const T& operator*() const;
+			T* operator->();
+			const T* operator->() const;
+			Pointer<T>& operator=(const Pointer<T>&) = delete;
+			Pointer<T>& operator=(Pointer<T>&&);
+			Pointer<T>& operator=(T*);
+		};
 	}
 }
+
+#include "Pointer.inl"
+
+#endif

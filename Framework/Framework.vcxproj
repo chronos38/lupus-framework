@@ -80,6 +80,8 @@
     <ClInclude Include="Char.hpp" />
     <ClInclude Include="Exception.hpp" />
     <ClInclude Include="Float.hpp" />
+    <ClInclude Include="ICollection.hpp" />
+    <ClInclude Include="IComparable.hpp" />
     <ClInclude Include="IDictionary.hpp" />
     <ClInclude Include="ISequence.hpp" />
     <ClInclude Include="Iterator.hpp" />
@@ -87,6 +89,7 @@
     <ClInclude Include="List.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="Pair.hpp" />
+    <ClInclude Include="Pointer.hpp" />
     <ClInclude Include="Property.hpp" />
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
@@ -106,9 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Char.inl" />
-    <None Include="Iterator.inl" />
     <None Include="List.inl" />
     <None Include="Pair.inl" />
+    <None Include="Pointer.inl" />
     <None Include="Property.inl" />
     <None Include="String.inl" />
     <None Include="Utility.inl" />

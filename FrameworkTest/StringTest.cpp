@@ -90,7 +90,7 @@ namespace FrameworkTest
 			// operator+=
 			string += "abc";
 			Assert::AreEqual(3, (int)string.Length, L"operator+=", LINE_INFO());
-			Assert::AreEqual(63, (int)string.Capacity, L"operator+=", LINE_INFO());
+			Assert::AreEqual(31, (int)string.Capacity, L"operator+=", LINE_INFO());
 			Assert::AreEqual('a', string[0], L"operator+=", LINE_INFO());
 			Assert::AreEqual('b', string[1], L"operator+=", LINE_INFO());
 			Assert::AreEqual('c', string[2], L"operator+=", LINE_INFO());
@@ -98,7 +98,7 @@ namespace FrameworkTest
 			// Append
 			string.Append("def");
 			Assert::AreEqual(6, (int)string.Length, L"Append", LINE_INFO());
-			Assert::AreEqual(63, (int)string.Capacity, L"Append", LINE_INFO());
+			Assert::AreEqual(31, (int)string.Capacity, L"Append", LINE_INFO());
 			Assert::AreEqual('a', string[0], L"Append", LINE_INFO());
 			Assert::AreEqual('b', string[1], L"Append", LINE_INFO());
 			Assert::AreEqual('c', string[2], L"Append", LINE_INFO());
@@ -262,7 +262,7 @@ namespace FrameworkTest
 		{
 			// variables
 			String string("ABCDABCDABCD");
-			Vector<Char> delimiter = { 'C' };
+			Vector<char> delimiter = { 'C' };
 			Vector<String> result;
 
 			// test
@@ -341,7 +341,7 @@ namespace FrameworkTest
 		{
 			// variables
 			String string("ABCDABCDABCD");
-			Vector<Char> delimiter = { 'C' };
+			Vector<char> delimiter = { 'C' };
 			Vector<String> result;
 
 			// test

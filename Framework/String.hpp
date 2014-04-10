@@ -23,6 +23,7 @@
 #include "Char.hpp"
 #include "ISequence.hpp"
 #include "Iterator.hpp"
+#include "IComparable.hpp"
 
 namespace Lupus {
 	namespace System {
@@ -57,7 +58,7 @@ namespace Lupus {
 		};
 
 		//! String class used for internal string operations
-		class LUPUS_API String : public Object, public ISequence<char>
+		class LUPUS_API String : public Object, public ISequence<char>, public IComparable<String>
 		{
 			//! native string
 			char* _data;
@@ -137,7 +138,7 @@ namespace Lupus {
 			 * @param sensitivity flag for case sensitivity
 			 * @return zero if the two strings are equal, else the difference at the first deviation
 			 */
-			int Compare(const String& string, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			int Compare(const String& string, CaseSensitivity sensitivity) const;
 			/**
 			 * Check if this instance contains a specific value
 			 *
@@ -158,6 +159,8 @@ namespace Lupus {
 			 * @return index of first match or -1 if no such char was found
 			 */
 			int IndexOf(const Char& ch, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
+			void CopyTo(String&, int) const;
+			void CopyTo(int sourceIndex, String& sequence, int destinationIndex, int count) const;
 			/**
 			 * Search for given string within this instance
 			 *
@@ -259,8 +262,8 @@ namespace Lupus {
 			 * @return reference to this instance
 			 */
 			String& Reverse();
-			Vector<String> Split(const Vector<Char>&, StringSplitOptions = StringSplitOptions::None) const;
-			Vector<String> Split(const Vector<Char>&, int, StringSplitOptions = StringSplitOptions::None) const;
+			Vector<String> Split(const Vector<char>&, StringSplitOptions = StringSplitOptions::None) const;
+			Vector<String> Split(const Vector<char>&, int, StringSplitOptions = StringSplitOptions::None) const;
 			Vector<String> Split(const String&, StringSplitOptions = StringSplitOptions::None) const;
 			Vector<String> Split(const String&, int, StringSplitOptions = StringSplitOptions::None) const;
 			/**
@@ -382,11 +385,11 @@ namespace Lupus {
 			virtual void Add(const char&) override;
 			virtual char& Back() override;
 			virtual const char& Back() const override;
-			virtual Iterator<char> GetIterator() const override;
+			virtual Pointer<Iterator<char>> GetIterator() const override;
 			virtual void Clear() override;
 			virtual bool Contains(const char&) const override;
-			virtual void CopyTo(ISequence<char>&, int) const override;
-			virtual void CopyTo(int sourceIndex, ISequence<char>& sequence, int destinationIndex, int count) const override;
+			virtual void CopyTo(Vector<char>&, int) const override;
+			virtual void CopyTo(int sourceIndex, Vector<char>& sequence, int destinationIndex, int count) const override;
 			virtual int Count() const override;
 			virtual char& Front() override;
 			virtual const char& Front() const override;
@@ -394,6 +397,7 @@ namespace Lupus {
 			virtual bool IsEmpty() const override;
 			virtual bool RemoveAt(int) override;
 			virtual void Resize(int) override;
+			virtual int Compare(const String& string) const override;
 		private:
 			explicit String(int);
 			static String CreateWithExistingBuffer(char*);
@@ -402,8 +406,8 @@ namespace Lupus {
 			static int KnuthMorrisPrattLast(const char*, int, const char*, int, int);
 			static int KnuthMorrisPrattInsensitive(const char*, int, const char*, int);
 			static int KnuthMorrisPrattInsensitiveLast(const char*, int, const char*, int, int);
-			static Vector<String> SplitEmptyEntries(const String&, const Vector<Char>&, int);
-			static Vector<String> SplitNoEmptyEntries(const String&, const Vector<Char>&, int);
+			static Vector<String> SplitEmptyEntries(const String&, const Vector<char>&, int);
+			static Vector<String> SplitNoEmptyEntries(const String&, const Vector<char>&, int);
 			static Vector<String> SplitEmptyEntries(const String&, const String&, int);
 			static Vector<String> SplitNoEmptyEntries(const String&, const String&, int);
 #if defined(LUPUS_WINDOWS_PLATFORM)

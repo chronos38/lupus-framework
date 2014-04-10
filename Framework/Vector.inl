@@ -17,6 +17,7 @@
  */
 
 #include "Exception.hpp"
+#include "Pointer.hpp"
 
 namespace Lupus {
 	namespace System {
@@ -127,14 +128,9 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		Iterator<T> Vector<T>::GetIterator() const
+		Pointer<Iterator<T>> Vector<T>::GetIterator() const
 		{
-			// validate
-			if (_length <= 0) {
-				throw InvalidOperationException();
-			}
-
-			return VectorIterator<T>(this);
+			return new VectorIterator<T>(this);
 		}
 
 		template <typename T>
@@ -156,16 +152,16 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		void Vector<T>::CopyTo(ISequence<T>& sequence, int startIndex) const
+		void Vector<T>::CopyTo(Vector<T>& vector, int startIndex) const
 		{
 			// copy items
 			for (int i = 0, j = startIndex; i < _length; i++, j++) {
-				sequence[j] = _data[i];
+				vector[j] = _data[i];
 			}
 		}
 
 		template <typename T>
-		void Vector<T>::CopyTo(int sourceIndex, ISequence<T>& sequence, int destinationIndex, int count) const
+		void Vector<T>::CopyTo(int sourceIndex, Vector<T>& vector, int destinationIndex, int count) const
 		{
 			// check argument
 			if ((sourceIndex + count) > _length) {
@@ -181,7 +177,7 @@ namespace Lupus {
 
 			// copy items
 			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
-				sequence[j] = _data[i];
+				vector[j] = _data[i];
 			}
 		}
 
