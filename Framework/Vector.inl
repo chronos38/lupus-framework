@@ -52,8 +52,10 @@ namespace Lupus {
 			_length(sequence.Count()),
 			_capacity(sequence.Count())
 		{
-			for (int i = _length - 1; i >= 0; i--) {
-				_data[i] = sequence[i];
+			int i = 0;
+
+			foreach (item, sequence) {
+				_data[i++] = item->CurrentItem();
 			}
 		}
 

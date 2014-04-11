@@ -25,7 +25,8 @@
 namespace Lupus {
 	namespace System {
 		Pointer<TextSearchStrategy> String::_defaultStrategy = new KnuthMorrisPratt();
-		PropertyWriter<Pointer<TextSearchStrategy>> String::DefaultTextSearchAlgorithm = PropertyWriter<Pointer<TextSearchStrategy>>(String::_defaultStrategy);
+		PropertyWriter<Pointer<TextSearchStrategy>> String::DefaultTextSearchAlgorithm = 
+			PropertyWriter<Pointer<TextSearchStrategy>>(String::_defaultStrategy);
 
 		String::String() :
 			_data(new char[DEFAULT_ARRAY_SIZE]),

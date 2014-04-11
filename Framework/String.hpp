@@ -67,7 +67,7 @@ namespace Lupus {
 			PropertyReader<int> Capacity = PropertyReader<int>(_capacity);
 			//! Return native string
 			PropertyReader<char*> Data = PropertyReader<char*>(_data);
-			//! Get or set text search algorithm
+			//! Set text search algorithm
 			PropertyWriter<Pointer<TextSearchStrategy>> TextSearchAlgorithm = PropertyWriter<Pointer<TextSearchStrategy>>(_strategy);
 			//! Set default serach algorithm
 			static PropertyWriter<Pointer<TextSearchStrategy>> DefaultTextSearchAlgorithm;
@@ -304,14 +304,14 @@ namespace Lupus {
 			 *
 			 * @return Char at given index
 			 */
-			virtual char& operator[](int) final;
+			char& operator[](int);
 			/**
 			 * \b Exceptions
 			 * - ArgumentOutOfRangeException
 			 *
 			 * @return Char at given index
 			 */
-			virtual const char& operator[](int) const final;
+			const char& operator[](int) const;
 			/**
 			 * copy native string to this instance
 			 *

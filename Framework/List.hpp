@@ -20,18 +20,28 @@
 #define LUPUS_LIST_HPP
 
 #include "Types.hpp"
-#include "Vector.hpp"
 #include "ISequence.hpp"
+#include "ICopyable.hpp"
 
 namespace Lupus {
 	namespace System {
 		template <typename T>
+		class List;
+		template <typename T>
 		class ListIterator;
+
+		template <typename T>
+		class ListSortStrategy : public ICopyable<ListSortStrategy<T>>
+		{
+		public:
+			virtual void Sort(List<T>& list) = 0;
+		};
 
 		template <typename T>
 		class List : public Object, public ISequence<T>
 		{
 			friend class ListIterator<T>;
+			friend class ListSortStrategy<T>;
 
 			class Node
 			{
@@ -46,12 +56,21 @@ namespace Lupus {
 				PropertyAccess<Node*> Next = PropertyAccess<Node*>(_next);
 			};
 			
-			Vector<Node*> _head;
+			// first entry
 			Node* _node = nullptr;
+			//! length of list
 			int _length = 0;
+			//! default sort algorithm
+			static Pointer<ListSortStrategy<T>> _defaultStrategy;
+			//! list sort algorithm
+			Pointer<ListSortStrategy<T>> _strategy = _defaultStrategy->Copy();
 		public:
 			//! Return list length length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
+			//! Set list sort algorithm
+			PropertyWriter<Pointer<ListSortStrategy<T>>> ListSortAlgorithm = PropertyWriter<Pointer<TextSearchStrategy>>(_strategy);
+			//! Set default sort algorithm
+			static PropertyWriter<Pointer<ListSortStrategy<T>>> DefaultListSortAlgorithm;
 			List();
 			List(const List<T>&);
 			List(List<T>&&);
@@ -100,6 +119,14 @@ namespace Lupus {
 			virtual const T& CurrentItem() const override;
 			ListIterator<T>& operator=(const ListIterator<T>&) = delete;
 			ListIterator<T>& operator=(ListIterator<T>&&);
+		};
+
+		template <typename T>
+		class ListQuickSort : public ListSortStrategy<T>
+		{
+		public:
+			virtual Pointer<ListSortStrategy<T>> Copy() const override;
+			virtual void Sort(List<T>& list) override;
 		};
 	}
 }

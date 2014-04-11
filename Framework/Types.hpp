@@ -39,14 +39,9 @@
 
 // headers
 #include <initializer_list>
-#include "Utility.hpp"
+#include <cmath>
 
 namespace Lupus {
-	// declarations
-	namespace System {
-		class String;
-	}
-
 	//! single signed byte
 	typedef signed char sbyte;
 	//! unsingle unsigned byte
@@ -67,6 +62,9 @@ namespace Lupus {
 	static const int DEFAULT_ARRAY_SIZE = 32;
 
 	namespace System {
+		// declarations
+		class String;
+
 		//! sensitivity flag
 		enum class CaseSensitivity {
 			CaseSensitive,
@@ -179,6 +177,7 @@ namespace Lupus {
 }
 
 #include "Exception.hpp"
+#include "Utility.hpp"
 #include "Pointer.inl"
 #include "Property.inl"
 

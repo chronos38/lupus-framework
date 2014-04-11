@@ -67,8 +67,8 @@ namespace Lupus {
 			virtual bool RemoveAt(int) override;
 			virtual void Resize(int) override;
 			virtual void ShrinkToFit() final;
-			virtual T& operator[](int) override;
-			virtual const T& operator[](int) const override;
+			T& operator[](int);
+			const T& operator[](int) const;
 			Vector<T>& operator=(const Vector<T>&);
 			Vector<T>& operator=(Vector<T>&&);
 			Vector<T>& operator=(const ISequence<T>&);

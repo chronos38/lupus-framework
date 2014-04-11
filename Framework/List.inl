@@ -19,131 +19,68 @@
 namespace Lupus {
 	namespace System {
 		template <typename T>
+		Pointer<ListSortStrategy<T>> List<T>::_defaultStrategy = new ListQuickSort<T>();
+		template <typename T>
+		PropertyWriter<Pointer<ListSortStrategy<T>>> List<T>::DefaultListSortAlgorithm =
+			PropertyWriter<Pointer<ListSortStrategy<T>>>(List<T>::_defaultStrategy);
+
+		template <typename T>
 		List<T>::List()
 		{
 		}
 
 		template <typename T>
-		List<T>::List(const List<T>& list) :
-			_length(list.Count())
+		List<T>::List(const List<T>& list)
 		{
-			if (!_length) {
-				return;
-			}
-
-			_node = new Node(list._node->Data);
-
-			for (Node* it = list._node->Next, node = _node; it; node = node->Next) {
-				node->Next = new Node(it->Data);
-			}
+			throw NotImplementedException();
 		}
 
 		template <typename T>
 		List<T>::List(List<T>&& list)
 		{
-			Swap(list._node, _node);
-			Swap(list._head, _head);
-			Swap(list._length, _length);
+			throw NotImplementedException();
 		}
 
 		template <typename T>
-		List<T>::List(const ISequence<T>& sequence) :
-			_length(sequence.Count())
+		List<T>::List(const ISequence<T>& sequence)
 		{
-			if (!_length) {
-				return;
-			}
-
-			Node* node = _node;
-			_node->Date = sequence[1];
-
-			for (int i = 1; i < _length; i++, node = node->Next) {
-				node->Next = new Node(sequence[i]);
-			}
+			throw NotImplementedException();
 		}
 
 		template <typename T>
-		List<T>::List(const std::initializer_list<T>& list) :
-			_length((int)list.size())
+		List<T>::List(const std::initializer_list<T>& list)
 		{
-			if (!_length) {
-				return;
-			}
-
-			auto it = list.begin();
-			Node* node = _node;
-			_node->Date = (*it);
-
-			for (int i = 1; i < _length; i++, node = node->Next) {
-				node->Next = new Node(*(it + i));
-			}
+			throw NotImplementedException();
 		}
 
 		template <typename T>
-		List<T>::List(int count) :
-			_length(count)
+		List<T>::List(int count)
 		{
-			if (count < 0) {
-				throw ArgumentOutOfRangeException("count must be greate or equal to zero");
-			} else if (!_length) {
-				return;
-			}
-
-			_node = new Node();
-			Node* node = _node;
-
-			for (int i = 1; i < count; i++, node = node->Next) {
-				node->Next = new Node();
-			}
+			throw NotImplementedException();
 		}
 
 		template <typename T>
 		List<T>::~List()
 		{
-			for (Node* node = _node; node; ) {
-				Node* next = node->Next;
-				delete node;
-				node = next;
-			}
+			Clear();
 		}
 
 		template <typename T>
 		void List<T>::Add(const T& value)
 		{
-			if (!_node) {
-				_node = new Node(value);
-				_length = 1;
-				return;
-			}
-
-			Node* it = _head.Back();
-			for (; it->Next; it = it->Next);
-			it->Next = new Node(value);
-			_length++;
+			throw NotImplementedException();
 		}
 
 		template <typename T>
 		T& List<T>::Back()
 		{
-			if (!_length) {
-				throw InvalidOperationException();
-			}
-
-			Node* it = _head.Back();
-			for (; it->Next; it = it->Next);
-			return it->Data;
+			throw NotImplementedException();
 		}
 
 		template <typename T>
 		const T& List<T>::Back() const
 		{
-			if (!_length) {
-				throw InvalidOperationException();
-			}
-
-			Node* it = _head.Back();
-			for (; it->Next; it = it->Next);
-			return it->Data;
+			throw NotImplementedException();
 		}
 
 		template <typename T>
@@ -167,13 +104,7 @@ namespace Lupus {
 		template <typename T>
 		bool List<T>::Contains(const T& value) const
 		{
-			for (Node* node = _node; node; node = node->Next) {
-				if (node->Data == value) {
-					return true;
-				}
-			}
-
-			return false;
+			throw NotImplementedException();
 		}
 
 		template <typename T>
@@ -197,23 +128,13 @@ namespace Lupus {
 		template <typename T>
 		T& List<T>::Front()
 		{
-			// validate
-			if (!_length) {
-				throw InvalidOperationException();
-			}
-
-			return _node->Data;
+			throw NotImplementedException();
 		}
 
 		template <typename T>
 		const T& List<T>::Front() const
 		{
-			// validate
-			if (!_length) {
-				throw InvalidOperationException();
-			}
-
-			return _node->Data;
+			throw NotImplementedException();
 		}
 
 		template <typename T>
@@ -337,6 +258,18 @@ namespace Lupus {
 			Swap(iterator._sequence, _sequence);
 			Swap(iterator._current, _current);
 			return (*this);
+		}
+
+		template <typename T>
+		Pointer<ListSortStrategy<T>> ListQuickSort<T>::Copy() const
+		{
+			return new ListQuickSort();
+		}
+
+		template <typename T>
+		void ListQuickSort<T>::Sort(List<T>& list)
+		{
+			throw NotImplementedException();
 		}
 	}
 }
