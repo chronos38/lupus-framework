@@ -75,7 +75,7 @@ namespace Lupus {
 		template <typename T>
 		Vector<T>::Vector(int count) :
 			_data(new T[count]),
-			_length(0),
+			_length(count),
 			_capacity(count)
 		{
 		}
@@ -90,7 +90,7 @@ namespace Lupus {
 		void Vector<T>::Add(const T& item)
 		{
 			if (_length < _capacity) {
-				_data[_length] = item;
+				_data[_length++] = item;
 			} else {
 				T* buffer = new T[_capacity + 1];
 
@@ -98,10 +98,8 @@ namespace Lupus {
 					buffer[i] = _data[i];
 				}
 
-				buffer[_length] = item;
+				buffer[_length++] = item;
 			}
-
-			_length += 1;
 		}
 
 		template <typename T>
@@ -153,10 +151,7 @@ namespace Lupus {
 		template <typename T>
 		void Vector<T>::CopyTo(Vector<T>& vector, int startIndex) const
 		{
-			// copy items
-			for (int i = 0, j = startIndex; i < _length; i++, j++) {
-				vector[j] = _data[i];
-			}
+			CopyTo(0, vector, startIndex, _length);
 		}
 
 		template <typename T>
@@ -164,11 +159,15 @@ namespace Lupus {
 		{
 			// check argument
 			if ((sourceIndex + count) > _length) {
-				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes string length");
+				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes vector length");
 			} else if (sourceIndex < 0) {
 				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
 			} else if (count < 0) {
 				throw ArgumentOutOfRangeException("count must be greater than zero");
+			} else if ((destinationIndex + count) > vector._length) {
+				throw ArgumentOutOfRangeException("destinationIndex plus count exceedes vector length");
+			} else if (destinationIndex < 0) {
+				throw ArgumentOutOfRangeException("destinationIndex must be greater than zero");
 			}
 
 			// variables
@@ -253,18 +252,47 @@ namespace Lupus {
 		template <typename T>
 		void Vector<T>::Resize(int count)
 		{
-			_length = count;
+			// check argument
+			if (count <= 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			}
+
+			// check if count is less than length
+			if (count <= _length) {
+				_length = count;
+				return;
+			}
+
+			// variables
+			T* swap = new T[count];
+
+			for (int i = 0; i < count; i++) {
+				if (i < _length) {
+					swap[i] = _data[i];
+				} else {
+					swap[i] = T();
+				}
+			}
+
+			// set new length
+			_length = _capacity = count;
 		}
 
 		template <typename T>
 		void Vector<T>::ShrinkToFit()
 		{
+			// check length
+			if (_length <= 0) {
+				throw InvalidOperationException();
+			}
+
 			T* swap = new T[_length];
 
 			for (int i = 0; i < _length; i++) {
 				swap[i] = _data[i];
 			}
 
+			_capacity = _length;
 			Swap(swap, _data);
 			delete swap;
 		}

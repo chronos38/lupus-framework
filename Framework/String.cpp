@@ -226,7 +226,7 @@ namespace Lupus {
 
 		void String::CopyTo(String& string, int startIndex) const
 		{
-			CopyTo(0, string, startIndex, string.Length);
+			CopyTo(0, string, startIndex, _length);
 		}
 
 		void String::CopyTo(int sourceIndex, String& string, int destinationIndex, int count) const
@@ -238,17 +238,14 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
 			} else if (count < 0) {
 				throw ArgumentOutOfRangeException("count must be greater than zero");
-			} else if ((destinationIndex + count) > string.Count()) {
-				throw ArgumentOutOfRangeException("destinationIndex plus count exceedes collection length");
+			} else if ((destinationIndex + count) > string._length) {
+				throw ArgumentOutOfRangeException("destinationIndex plus count exceedes string length");
+			} else if (destinationIndex < 0) {
+				throw ArgumentOutOfRangeException("destinationIndex must be greater than zero");
 			}
-
-			// variables
-			int limit = sourceIndex + count;
 
 			// copy values
-			for (int i = sourceIndex, j = destinationIndex; i < limit; i++, j++) {
-				string._data[j] = _data[i];
-			}
+			strncpy(string._data + destinationIndex, _data + sourceIndex, count);
 		}
 
 		int String::IndexOf(const Char& ch, int startIndex, CaseSensitivity sensitivity) const
@@ -516,14 +513,15 @@ namespace Lupus {
 
 		void String::ShrinkToFit()
 		{
-			char* swap = new char[_length];
-
-			for (int i = 0; i < _length; i++) {
-				swap[i] = _data[i];
-			}
-
+			char* swap = new char[_length + 1];
+			strncpy(swap, _data, _length);
+			_capacity = _length;
 			Swap(swap, _data);
 			delete swap;
+
+			if (_capacity <= 0) {
+				_data[0] = 0;
+			}
 		}
 		
 		Vector<String> String::Split(const Vector<char>& delimiter, StringSplitOptions splitOptions) const
@@ -891,6 +889,8 @@ namespace Lupus {
 				throw ArgumentOutOfRangeException("count must be greater than zero");
 			} else if ((destinationIndex + count) > vector.Count()) {
 				throw ArgumentOutOfRangeException("destinationIndex plus count exceedes collection length");
+			} else if (destinationIndex < 0) {
+				throw ArgumentOutOfRangeException("destinationIndex must be greater than zero");
 			}
 
 			// variables

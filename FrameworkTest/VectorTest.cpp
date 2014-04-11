@@ -39,7 +39,7 @@ namespace FrameworkTest {
 			Assert::AreEqual(0, (int)Vector<int>().Length, L"Vector()", LINE_INFO());
 
 			// filled vector
-			Assert::AreEqual(0, (int)Vector<int>(8).Length, L"Vector(int)", LINE_INFO());
+			Assert::AreEqual(8, (int)Vector<int>(8).Length, L"Vector(int)", LINE_INFO());
 			Assert::AreEqual(8, (int)Vector<int>(8).Capacity, L"Vector(int)", LINE_INFO());
 
 			// initializer list
@@ -54,6 +54,160 @@ namespace FrameworkTest {
 				Assert::IsTrue(vec1[i] == vec2[i], L"Vector(copy)", LINE_INFO());
 				Assert::IsTrue(vec1[i] == vec3[i], L"Vector(sequence)", LINE_INFO());
 			}
+		}
+
+		TEST_METHOD(VectorAddTest)
+		{
+			// variables
+			Vector<int> vec;
+
+			// add 1
+			vec.Add(1);
+			Assert::AreEqual(1, (int)vec.Length, L"", LINE_INFO());
+			Assert::AreEqual(1, vec[0], L"", LINE_INFO());
+
+			// add 2
+			vec.Add(2);
+			Assert::AreEqual(2, (int)vec.Length, L"", LINE_INFO());
+			Assert::AreEqual(1, vec[0], L"", LINE_INFO());
+			Assert::AreEqual(2, vec[1], L"", LINE_INFO());
+
+			// add 3
+			vec.Add(3);
+			Assert::AreEqual(3, (int)vec.Length, L"", LINE_INFO());
+			Assert::AreEqual(1, vec[0], L"", LINE_INFO());
+			Assert::AreEqual(2, vec[1], L"", LINE_INFO());
+			Assert::AreEqual(3, vec[2], L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorFrontBackTest)
+		{
+			// variables
+			Vector<int> vec({ 1, 2, 3 });
+
+			// front
+			Assert::AreEqual(1, vec.Front(), L"", LINE_INFO());
+			// back
+			Assert::AreEqual(3, vec.Back(), L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorClearTest)
+		{
+			// variables
+			Vector<int> vec({ 1, 2, 3 });
+
+			// clear
+			vec.Clear();
+
+			Assert::AreEqual(0, (int)vec.Length, L"", LINE_INFO());
+
+			try {
+				vec[0];
+			} catch (ArgumentOutOfRangeException&) {
+			}
+		}
+
+		TEST_METHOD(VectorContainsTest)
+		{
+			// variables
+			Vector<int> vec({ 1, 2, 3 });
+
+			// contains
+			Assert::IsTrue(vec.Contains(1), L"", LINE_INFO());
+			Assert::IsTrue(vec.Contains(2), L"", LINE_INFO());
+			Assert::IsTrue(vec.Contains(3), L"", LINE_INFO());
+			Assert::IsFalse(vec.Contains(4), L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorCopyToTest)
+		{
+			// variables
+			Vector<int> source({ 1, 2, 3 });
+			Vector<int> target(6);
+
+			// copy
+			source.CopyTo(target, 0);
+			Assert::AreEqual(1, target[0], L"", LINE_INFO());
+			Assert::AreEqual(2, target[1], L"", LINE_INFO());
+			Assert::AreEqual(3, target[2], L"", LINE_INFO());
+
+			// copy
+			source.CopyTo(0, target, 3, 3);
+			Assert::AreEqual(1, target[0], L"", LINE_INFO());
+			Assert::AreEqual(2, target[1], L"", LINE_INFO());
+			Assert::AreEqual(3, target[2], L"", LINE_INFO());
+			Assert::AreEqual(1, target[3], L"", LINE_INFO());
+			Assert::AreEqual(2, target[4], L"", LINE_INFO());
+			Assert::AreEqual(3, target[5], L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorInsertTest)
+		{
+			// variables
+			Vector<int> vec({ 1, 2, 3 });
+
+			// insert
+			vec.Insert(0, 4);
+			Assert::AreEqual(4, vec[0], L"", LINE_INFO());
+
+			vec.Insert(1, 5);
+			Assert::AreEqual(5, vec[1], L"", LINE_INFO());
+
+			vec.Insert(2, 6);
+			Assert::AreEqual(6, (int)vec.Length, L"", LINE_INFO());
+			Assert::AreEqual(4, vec[0], L"", LINE_INFO());
+			Assert::AreEqual(5, vec[1], L"", LINE_INFO());
+			Assert::AreEqual(6, vec[2], L"", LINE_INFO());
+			Assert::AreEqual(1, vec[3], L"", LINE_INFO());
+			Assert::AreEqual(2, vec[4], L"", LINE_INFO());
+			Assert::AreEqual(3, vec[5], L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorRemoveAtTest)
+		{
+			// variables
+			Vector<int> vec({ 1, 2, 3 });
+
+			// remove
+			Assert::IsTrue(vec.RemoveAt(1), L"", LINE_INFO());
+			Assert::AreEqual(2, (int)vec.Length, L"", LINE_INFO());
+			Assert::AreEqual(1, vec[0], L"", LINE_INFO());
+			Assert::AreEqual(3, vec[1], L"", LINE_INFO());
+
+			Assert::IsFalse(vec.RemoveAt(3), L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorResizeTest)
+		{
+			// variables
+			Vector<int> vec(8);
+
+			// resize
+			vec.Resize(4);
+			Assert::AreEqual(4, (int)vec.Length, L"", LINE_INFO());
+			Assert::AreEqual(8, (int)vec.Capacity, L"", LINE_INFO());
+
+			// resize
+			vec.Resize(16);
+			Assert::AreEqual(16, (int)vec.Length, L"", LINE_INFO());
+			Assert::AreEqual(16, (int)vec.Capacity, L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorShrinkTest)
+		{
+			// variables
+			Vector<int> vec({ 1, 2, 3 });
+
+			// shrink
+			vec.Resize(100);
+			vec.Resize(3);
+			vec.ShrinkToFit();
+			Assert::AreEqual(3, (int)vec.Capacity, L"", LINE_INFO());
+		}
+
+		TEST_METHOD(VectorOperatorTest)
+		{
+			throw NotImplementedException();
 		}
 	};
 }
