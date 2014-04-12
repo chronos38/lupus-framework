@@ -19,10 +19,12 @@
 #ifndef LUPUS_PAIR_HPP
 #define LUPUS_PAIR_HPP
 
-#include "Object.hpp"
+#include "Types.hpp"
 
 namespace Lupus {
 	namespace System {
+
+		//! pair class for dictionary types
 		template <typename KeyT, typename ValueT>
 		class Pair : public Object
 		{

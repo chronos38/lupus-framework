@@ -72,6 +72,7 @@ namespace Lupus {
 		};
 	}
 
+	//! unique pointer type for memory allocation
 	template <typename T>
 	class Pointer
 	{
@@ -92,6 +93,7 @@ namespace Lupus {
 		Pointer<T>& operator=(T*);
 	};
 
+	//! provides a reading interface for class members
 	template <typename T>
 	class PropertyReader
 	{
@@ -104,6 +106,7 @@ namespace Lupus {
 		operator T() const;
 	};
 
+	//! provides a writing interface for class members
 	template <typename T>
 	class PropertyWriter
 	{
@@ -116,6 +119,7 @@ namespace Lupus {
 		T operator=(const T& value);
 	};
 
+	// provides a reading and writing interface for class members
 	template <typename T>
 	class PropertyAccess
 	{
@@ -129,15 +133,23 @@ namespace Lupus {
 		operator T() const;
 	};
 
+	//! base class for every type in this library
 	class LUPUS_API Object
 	{
 	public:
+		//! allocate system resources
 		Object();
+		//! free system resources
 		virtual ~Object();
+		//! get unique hash code for this instance 
 		virtual ulong GetHashCode() const;
+		//! get name from in inherited class
 		virtual System::String GetName() const final;
+		//! get ownership for this instance
 		virtual void Lock() final;
+		//! try to get ownership for this instance
 		virtual bool TryLock() final;
+		//! release ownership from this instance
 		virtual void Unlock() final;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 	private:

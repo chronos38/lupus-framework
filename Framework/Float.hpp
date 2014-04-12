@@ -25,15 +25,55 @@ namespace Lupus {
 	namespace System {
 		class String;
 
-		class LUPUS_API Float : public Object
+		//! provides conversion routines for floating-point numbers
+		class LUPUS_API Float
 		{
 		public:
-			static String ToString(float);
-			static String ToString(double);
-			static String ToString(real);
-			static bool TryParse(const String&, float&);
-			static bool TryParse(const String&, double&);
-			static bool TryParse(const String&, real&);
+			/**
+			 * convert a single precision floating-point numbers to a string
+			 *
+			 * @param f floating-point number
+			 * @return conversion result as a string
+			 */
+			static String ToString(float f);
+			/**
+			 * convert a double precision floating-point numbers to a string
+			 *
+			 * @param d double precision floating-point number
+			 * @return conversion result as a string
+			 */
+			static String ToString(double d);
+			/**
+			 * convert a 128-bit floating-point numbers to a string
+			 *
+			 * @param r 128-bit floating-point number
+			 * @return conversion result as a string
+			 */
+			static String ToString(real r);
+			/**
+			 * convert a string to a single precision floating-point number
+			 *
+			 * @param string string for conversion
+			 * @param result output argument for conversion
+			 * @return true if successful, otherwise false
+			 */
+			static bool TryParse(const String& string, float& result);
+			/**
+			 * convert a string to a double precision floating-point number
+			 *
+			 * @param string string for conversion
+			 * @param result output argument for conversion
+			 * @return true if successful, otherwise false
+			 */
+			static bool TryParse(const String& string, double& result);
+			/**
+			 * convert a string to a 128-bit floating-point numbers
+			 *
+			 * @param string string for conversion
+			 * @param result output argument for conversion
+			 * @return true if successful, otherwise false
+			 */
+			static bool TryParse(const String& string, real& result);
 		};
 	}
 }

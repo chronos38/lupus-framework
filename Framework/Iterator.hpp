@@ -24,21 +24,28 @@ namespace Lupus {
 	class Pointer;
 
 	namespace System {
+		//! interface for iterator types
 		template <typename T>
 		class Iterator
 		{
 		public:
 			virtual ~Iterator(){}
+			//! set iterator to first entry
 			virtual void First() = 0;
+			//! set iterator to next value
 			virtual void Next() = 0;
+			//! check if iterator is done
 			virtual bool IsDone() const = 0;
+			//! get current item pointed by iterator
 			virtual const T& CurrentItem() const = 0;
 		};
 
+		//! interface for iterable types
 		template <typename T>
 		class Iterable
 		{
 		public:
+			//! get iterator from inherited type
 			virtual Pointer<Iterator<T>> GetIterator() const = 0;
 		};
 	}

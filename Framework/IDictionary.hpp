@@ -27,19 +27,29 @@ namespace Lupus {
 		template <typename T>
 		class Vector;
 
+		//! interface for dictionary types
 		template <typename Key, typename Value>
 		class IDictionary : public ICollection<Pair<Key, Value>>
 		{
 		public:
 			virtual ~IDictionary() { }
+			//! add a new key value pair
 			virtual void Add(const Key&, const Value&) = 0;
+			//! clear entire content
 			virtual void Clear() = 0;
+			//! check if dictionary contains given value
 			virtual bool Contains(const Value&) const = 0;
+			//! check if dictionary contains given key
 			virtual bool ContainsKey(const Key&) const = 0;
+			//! remove all entries equal to given value
 			virtual bool Remove(const Value&) = 0;
+			//! remove all entries equal to given key
 			virtual bool RemoveKey(const Key&) = 0;
+			//! check if dictionary is empty
 			virtual bool IsEmpty() const = 0;
+			//! get all keys from this dictionary
 			Vector<Key> GetKeys() const = 0;
+			//! get all values from this dictionary
 			Vector<Value> GetValues() const = 0;
 		};
 	}

@@ -24,22 +24,51 @@
 
 namespace Lupus {
 	namespace System {
+		//! interface for sequence types
 		template <typename T>
 		class ISequence : public ICollection<T>
 		{
 		public:
 			virtual ~ISequence() { }
+			//! add a new entry
 			virtual void Add(const T&) = 0;
+			//! get last entry
 			virtual T& Back() = 0;
+			//! get last entry
 			virtual const T& Back() const = 0;
+			//! clear entire content
 			virtual void Clear() = 0;
+			//! check if sequence contains given value
 			virtual bool Contains(const T&) const = 0;
+			//! get first entry
 			virtual T& Front() = 0;
+			//! get first entry
 			virtual const T& Front() const = 0;
-			virtual void Insert(int, const T&) = 0;
+			/**
+			 * insert at given index new entry with provided value
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param index position within this instance for insertion
+			 * @param value value for new entry
+			 */
+			virtual void Insert(int index, const T& value) = 0;
+			//! check if container ist empty
 			virtual bool IsEmpty() const = 0;
+			//! try to remove entry at given index
 			virtual bool RemoveAt(int) = 0;
-			virtual void Resize(int) = 0;
+			/**
+			 * resize container to given value.
+			 * if count is smaller than current length, than all content between count and length is deleted
+			 * if count is greater than current capacity, than new space will be allocated
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param count new size for this container
+			 */
+			virtual void Resize(int count) = 0;
 		};
 	}
 }

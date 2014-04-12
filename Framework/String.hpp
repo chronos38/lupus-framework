@@ -38,6 +38,16 @@ namespace Lupus {
 		class TextSearchStrategy : public ICopyable<TextSearchStrategy>
 		{
 		public:
+			/**
+			 * searches for a pattern in a text and return index to its first occurrence
+			 *
+			 * @param text native search string
+			 * @param textLength length of search string without the null char
+			 * @param search native search pattern string
+			 * @param searchLength lenght of search pattern string
+			 * @param sensitivity search case sensitive or case insensitive
+			 * @return index at first occurrence or -1 if search pattern don't exist within given string
+			 */
 			virtual int Search(const char* text, int textLength, const char* search, int searchLength, CaseSensitivity sensitivity) const = 0;
 		};
 
@@ -407,14 +417,15 @@ namespace Lupus {
 			static Vector<String> SplitNoEmptyEntries(const String&, const String&, int);
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
-			//! @sa String::String(const char*)
+			//! \sa String::String(const char*)
 			String(const wchar_t*);
-			//! @sa String::String(const char*, int, int)
+			//! \sa String::String(const char*, int, int)
 			String(const wchar_t*, int startIndex, int length);
 #endif
 		};
 
-		class LUPUS_API StringIterator : public Object, public Iterator<char>
+		//! \sa Iterator
+		class LUPUS_API StringIterator : public Iterator<char>
 		{
 			const String* _sequence = nullptr;
 			int _current = 0;
@@ -433,10 +444,13 @@ namespace Lupus {
 			StringIterator& operator=(StringIterator&&);
 		};
 
+		//! implements knuth-morris-pratt text search algorithm
 		class LUPUS_API KnuthMorrisPratt : public TextSearchStrategy
 		{
 		public:
+			//! \sa ICopyable::Copy
 			virtual Pointer<TextSearchStrategy> Copy() const override;
+			//! \sa TextSearchStrategy::Search
 			virtual int Search(const char* text, int textLength, const char* search, int searchLength, CaseSensitivity sensitivity) const override;
 		private:
 			int SearchSensitive(const char* text, int textLength, const char* search, int searchLength) const;

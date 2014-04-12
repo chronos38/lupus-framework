@@ -24,10 +24,12 @@ namespace Lupus {
 	class Pointer;
 
 	namespace System {
+		//! interface for copyable types
 		template <typename T>
 		class ICopyable
 		{
 		public:
+			//! get pointer to copied instance
 			virtual Pointer<T> Copy() const = 0;
 		};
 	}

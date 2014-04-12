@@ -210,10 +210,18 @@ namespace FrameworkTest {
 		{
 			// variables
 			Vector<int> source({ 1, 2, 3 });
-			Vector<int> copy, move, sequ;
+			Vector<int> copy, move, sequ(source);
+			ISequence<int>& ref = sequ;
 
 			// operator= copy
 			copy = source;
+			Assert::AreEqual(3, (int)copy.Length, L"", LINE_INFO());
+			Assert::AreEqual(1, copy[0], L"", LINE_INFO());
+			Assert::AreEqual(2, copy[1], L"", LINE_INFO());
+			Assert::AreEqual(3, copy[2], L"", LINE_INFO());
+
+			// operator= copy sequence
+			copy = ref;
 			Assert::AreEqual(3, (int)copy.Length, L"", LINE_INFO());
 			Assert::AreEqual(1, copy[0], L"", LINE_INFO());
 			Assert::AreEqual(2, copy[1], L"", LINE_INFO());
@@ -226,8 +234,6 @@ namespace FrameworkTest {
 			Assert::AreEqual(1, move[0], L"", LINE_INFO());
 			Assert::AreEqual(2, move[1], L"", LINE_INFO());
 			Assert::AreEqual(3, move[2], L"", LINE_INFO());
-
-			// TODO: add sequence operator=
 		}
 	};
 }

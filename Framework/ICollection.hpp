@@ -26,23 +26,34 @@ namespace Lupus {
 		template <typename T>
 		class Vector;
 
+		//! interface for collection types
 		template <typename T>
 		class ICollection : public Iterable<T>
 		{
 		public:
 			/**
-			 * Copy content from this instance to a sequence container
+			 * Copy content from this instance to a collection container
 			 *
 			 * \b Exceptions
 			 * - ArgumentOutOfRangeException
 			 *
 			 * @param sourceIndex starting index for this instance
-			 * @param sequence container to copy into
+			 * @param vector container to copy into
 			 * @param destinationIndex starting index in container
 			 * @param count how many chars get copied
 			 */
 			virtual void CopyTo(int sourceIndex, Vector<T>& vector, int destinationIndex, int count) const = 0;
+			/**
+			 * Copy content from this instance to a collection container
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param vector container to copy into
+			 * @param startIndex starts copying within this instance at given index
+			 */
 			virtual void CopyTo(Vector<T>& vector, int startIndex) const = 0;
+			//! get current entry count
 			virtual int Count() const = 0;
 		};
 	}

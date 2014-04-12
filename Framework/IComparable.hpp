@@ -21,6 +21,7 @@
 
 namespace Lupus {
 	namespace System {
+		//! interface for comparable types
 		template <typename T>
 		class IComparable
 		{

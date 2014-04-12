@@ -34,29 +34,62 @@ namespace Lupus {
 		};
 
 		//! conversion class for integer types
-		class LUPUS_API Integer : public Object
+		class LUPUS_API Integer
 		{
 		public:
-			static String ToString(sbyte, IntegerBase = IntegerBase::Decimal);
-			static String ToString(short, IntegerBase = IntegerBase::Decimal);
-			static String ToString(int, IntegerBase = IntegerBase::Decimal);
-			static String ToString(long, IntegerBase = IntegerBase::Decimal);
-			static String ToString(llong, IntegerBase = IntegerBase::Decimal);
-			static String ToString(ubyte, IntegerBase = IntegerBase::Decimal);
-			static String ToString(ushort, IntegerBase = IntegerBase::Decimal);
-			static String ToString(uint, IntegerBase = IntegerBase::Decimal);
-			static String ToString(ulong, IntegerBase = IntegerBase::Decimal);
-			static String ToString(ullong, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, sbyte&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, short&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, int&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, long&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, llong&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, ubyte&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, ushort&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, uint&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, ulong&, IntegerBase = IntegerBase::Decimal);
-			static bool TryParse(const String&, ullong&, IntegerBase = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(sbyte value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(short value, IntegerBase base = IntegerBase::Decimal);
+			/**
+			 * convert an integer to its respective string
+			 *
+			 * @param value integer to convert
+			 * @param base either octal, decimal or hexadecimal
+			 * @return conversion result as a string
+			 */
+			static String ToString(int value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(long value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(llong value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(ubyte value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(ushort value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(uint value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(ulong value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::ToString(int, IntegerBase)
+			static String ToString(ullong value, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, sbyte& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, short& result, IntegerBase base = IntegerBase::Decimal);
+			/**
+			 * convert a string to its respective integer value
+			 *
+			 * @param string string to convert
+			 * @param result output argument where the conversion result is written to
+			 * @param base either octal, decimal or hexadecimal
+			 * @return true if successful, otherwise false
+			 */
+			static bool TryParse(const String& string, int& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, long& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, llong& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, ubyte& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, ushort& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, uint& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, ulong& result, IntegerBase base = IntegerBase::Decimal);
+			//! \sa Integer::TryParse(String&, int, IntegerBase)
+			static bool TryParse(const String& string, ullong& result, IntegerBase base = IntegerBase::Decimal);
 		};
 	}
 }

@@ -28,6 +28,7 @@ namespace Lupus {
 		template <typename T>
 		class VectorIterator;
 
+		//! simple vector class for easy and fast access
 		template <typename T>
 		class Vector : public Object, public ISequence<T>
 		{
@@ -42,40 +43,69 @@ namespace Lupus {
 			PropertyReader<int> Length = PropertyReader<int>(_length);
 			//! Return vector capacity
 			PropertyReader<int> Capacity = PropertyReader<int>(_capacity);
-			//! Return vector string
+			//! Return vector array
 			PropertyReader<T*> Data = PropertyReader<T*>(_data);
+			//! create default instance
 			Vector();
+			//! copy from given instance
 			Vector(const Vector<T>&);
+			//! move from given instance
 			Vector(Vector<T>&&);
+			//! copy from given sequence
 			Vector(const ISequence<T>&);
+			//! read from given initializer list
 			Vector(const std::initializer_list<T>&);
+			//! define allocation size for internal array
 			Vector(int);
+			//! free all allocated resources
 			virtual ~Vector();
+			//! \sa ISequence::Add
 			virtual void Add(const T&) override;
+			//! \sa ISequence::Back
 			virtual T& Back() override;
+			//! \sa ISequence::Back
 			virtual const T& Back() const override;
+			//! \sa Iterable::GetIterator
 			virtual Pointer<Iterator<T>> GetIterator() const override;
+			//! \sa ISequence::Clear
 			virtual void Clear() override;
+			//! \sa ISequence::Contains
 			virtual bool Contains(const T&) const override;
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(Vector<T>&, int) const override;
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(int, Vector<T>&, int, int) const override;
+			//! \sa ICollection::Count
 			virtual int Count() const override;
+			//! \sa ISequence::Front
 			virtual T& Front() override;
+			//! \sa ISequence::Front
 			virtual const T& Front() const override;
+			//! \sa ISequence::Insert
 			virtual void Insert(int, const T&) override;
+			//! \sa ISequence::IsEmpty
 			virtual bool IsEmpty() const override;
+			//! \sa ISequence::RemoveAt
 			virtual bool RemoveAt(int) override;
+			//! \sa ISequence::Resize
 			virtual void Resize(int) override;
+			//! shrink capacity to fit length
 			virtual void ShrinkToFit() final;
+			//! get value at given index
 			T& operator[](int);
+			//! get value at given index
 			const T& operator[](int) const;
+			//! assign given vector
 			Vector<T>& operator=(const Vector<T>&);
+			//! swap vectors
 			Vector<T>& operator=(Vector<T>&&);
+			//! assign given sequence
 			Vector<T>& operator=(const ISequence<T>&);
 		};
 
+		//! \sa Iterator
 		template <typename T>
-		class VectorIterator : public Object, public Iterator<T>
+		class VectorIterator : public Iterator<T>
 		{
 			const Vector<T>* _sequence = nullptr;
 			int _current = 0;

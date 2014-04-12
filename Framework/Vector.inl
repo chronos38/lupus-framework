@@ -73,11 +73,14 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		Vector<T>::Vector(int count) :
-			_data(new T[count]),
-			_length(count),
-			_capacity(count)
+		Vector<T>::Vector(int count)
 		{
+			if (count <= 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			}
+
+			_data = new T[count];
+			_length = _capacity = count;
 		}
 
 		template <typename T>
@@ -353,11 +356,12 @@ namespace Lupus {
 		{
 			// copy content
 			if (_capacity < sequence.Count()) {
+				int i = 0;
 				T* buffer = new T[sequence.Count()];
 				_capacity = _length = sequence.Count();
 
-				for (int i = 0; i < _length; i++) {
-					buffer[i] = sequence[i];
+				foreach (item, sequence) {
+					buffer[i++] = item->CurrentItem();
 				}
 
 				// swap content
@@ -372,6 +376,8 @@ namespace Lupus {
 
 				_length = sequence.Count();
 			}
+
+			return (*this);
 		}
 
 		template <typename T>

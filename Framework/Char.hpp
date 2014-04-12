@@ -168,9 +168,9 @@ namespace Lupus {
 			virtual operator char() const final;
 #if defined(LUPUS_WINDOWS_PLATFORM)
 		public:
-			//! @sa Char::Char(char)
+			//! \sa Char::Char(char)
 			Char(wchar_t);
-			//! @sa Char::operator=(char)
+			//! \sa Char::operator=(char)
 			Char& operator=(wchar_t);
 #endif
 		};
