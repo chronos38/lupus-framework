@@ -391,21 +391,37 @@ namespace Lupus {
 			 * @return true if this instance is not equal to given string, otherwise false
 			 */
 			bool operator!=(const String&) const;
+			//! \sa ISequence::Add
 			virtual void Add(const char&) override;
+			//! \sa ISequence::Back
 			virtual char& Back() override;
+			//! \sa ISequence::Back
 			virtual const char& Back() const override;
+			//! \sa Iterable::GetIterator
 			virtual Pointer<Iterator<char>> GetIterator() const override;
+			//! \sa ISequence::Clear
 			virtual void Clear() override;
+			//! \sa ISequence::Contains
 			virtual bool Contains(const char&) const override;
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(Vector<char>&, int) const override;
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(int sourceIndex, Vector<char>& sequence, int destinationIndex, int count) const override;
+			//! \sa ICollection::Count
 			virtual int Count() const override;
+			//! \sa ISequence::Front
 			virtual char& Front() override;
+			//! \sa ISequence::Front
 			virtual const char& Front() const override;
+			//! \sa ISequence::Insert
 			virtual void Insert(int, const char&) override;
+			//! \sa ISequence::IsEmpty
 			virtual bool IsEmpty() const override;
+			//! \sa ISequence::RemoveAt
 			virtual bool RemoveAt(int) override;
+			//! \sa ISequence::Resize
 			virtual void Resize(int) override;
+			//! \sa ISequence::Compare
 			virtual int Compare(const String& string) const override;
 		private:
 			explicit String(int);
