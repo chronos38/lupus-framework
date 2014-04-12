@@ -207,7 +207,26 @@ namespace FrameworkTest {
 
 		TEST_METHOD(VectorOperatorTest)
 		{
-			throw NotImplementedException();
+			// variables
+			Vector<int> source({ 1, 2, 3 });
+			Vector<int> copy, move, sequ;
+
+			// operator= copy
+			copy = source;
+			Assert::AreEqual(3, (int)copy.Length, L"", LINE_INFO());
+			Assert::AreEqual(1, copy[0], L"", LINE_INFO());
+			Assert::AreEqual(2, copy[1], L"", LINE_INFO());
+			Assert::AreEqual(3, copy[2], L"", LINE_INFO());
+
+			// operator= move
+			move = std::move(source);
+			Assert::AreEqual(0, (int)source.Length, L"", LINE_INFO());
+			Assert::AreEqual(3, (int)move.Length, L"", LINE_INFO());
+			Assert::AreEqual(1, move[0], L"", LINE_INFO());
+			Assert::AreEqual(2, move[1], L"", LINE_INFO());
+			Assert::AreEqual(3, move[2], L"", LINE_INFO());
+
+			// TODO: add sequence operator=
 		}
 	};
 }

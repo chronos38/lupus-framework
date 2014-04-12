@@ -352,9 +352,9 @@ namespace Lupus {
 		Vector<T>& Vector<T>::operator=(const ISequence<T>& sequence)
 		{
 			// copy content
-			if (_length < sequence.Count()) {
+			if (_capacity < sequence.Count()) {
 				T* buffer = new T[sequence.Count()];
-				_length = sequence.Count();
+				_capacity = _length = sequence.Count();
 
 				for (int i = 0; i < _length; i++) {
 					buffer[i] = sequence[i];
@@ -364,11 +364,13 @@ namespace Lupus {
 				delete[] _data;
 				_data = buffer;
 			} else {
-				_length = sequence.Count();
+				int i = 0;
 
-				for (int i = 0; i < _length; i++) {
-					_data[i] = sequence[i];
+				foreach (item, sequence) {
+					_data[i++] = item->CurrentItem();
 				}
+
+				_length = sequence.Count();
 			}
 		}
 
