@@ -56,8 +56,8 @@ namespace Lupus {
 			virtual void Insert(int index, const T& value) = 0;
 			//! check if container ist empty
 			virtual bool IsEmpty() const = 0;
-			//! try to remove entry at given index
-			virtual bool RemoveAt(int) = 0;
+			//! remove entry at given index
+			virtual void RemoveAt(int) = 0;
 			/**
 			 * resize container to given value.
 			 * if count is smaller than current length, than all content between count and length is deleted

@@ -170,12 +170,20 @@ namespace FrameworkTest {
 			Vector<int> vec({ 1, 2, 3 });
 
 			// remove
-			Assert::IsTrue(vec.RemoveAt(1), L"", LINE_INFO());
+			try {
+				vec.RemoveAt(1);
+			} catch (ArgumentOutOfRangeException&) {
+				Assert::Fail(L"", LINE_INFO());
+			}
+
 			Assert::AreEqual(2, (int)vec.Length, L"", LINE_INFO());
 			Assert::AreEqual(1, vec[0], L"", LINE_INFO());
 			Assert::AreEqual(3, vec[1], L"", LINE_INFO());
 
-			Assert::IsFalse(vec.RemoveAt(3), L"", LINE_INFO());
+			try {
+				vec.RemoveAt(3);
+			} catch (ArgumentOutOfRangeException&) {
+			}
 		}
 
 		TEST_METHOD(VectorResizeTest)

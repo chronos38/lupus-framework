@@ -32,55 +32,152 @@ namespace Lupus {
 		template <typename T>
 		List<T>::List(const List<T>& list)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (list.Count() == 0) {
+				return;
+			}
+
+			// variables
+			Node* node = nullptr;
+
+			// copy values
+			foreach (item, list) {
+				if (!node) {
+					_head = _tail = node = new Node(item->CurrentItem());
+					continue;
+				}
+
+				node->Next = new Node(item->CurrentItem());
+				_tail = node = node->Next;
+			}
+
+			_length = list.Count();
 		}
 
 		template <typename T>
 		List<T>::List(List<T>&& list)
 		{
-			throw NotImplementedException();
+			Swap(_head, list._head);
+			Swap(_tail, list._tail);
+			Swap(_length, list._length);
 		}
 
 		template <typename T>
-		List<T>::List(const ISequence<T>& sequence)
+		List<T>::List(const ICollection<T>& collection)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (collection.Count() == 0) {
+				return;
+			}
+
+			// variables
+			Node* node = nullptr;
+
+			// copy values
+			foreach (item, collection) {
+				if (!node) {
+					_head = _tail = node = new Node(item->CurrentItem());
+					continue;
+				}
+
+				node->Next = new Node(item->CurrentItem());
+				_tail = node = node->Next;
+			}
+
+			_length = collection.Count();
 		}
 
 		template <typename T>
 		List<T>::List(const std::initializer_list<T>& list)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (list.size() == 0) {
+				return;
+			}
+
+			// variables
+			Node* node = nullptr;
+
+			// copy values
+			for (const T& item : list) {
+				if (!node) {
+					_head = _tail = node = new Node(item);
+					continue;
+				}
+
+				node->Next = new Node(item);
+				_tail = node = node->Next;
+			}
+
+			_length = static_cast<int>(list.size());
 		}
 
 		template <typename T>
 		List<T>::List(int count)
 		{
-			throw NotImplementedException();
+			// check arguments
+			if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be positive or zero");
+			} else if (count == 0) {
+				return;
+			}
+
+			// variables
+			Node* node = nullptr;
+
+			// allocate memory
+			for (int i = 0; i < count; i++) {
+				if (!node) {
+					_head = _tail = node = new Node();
+					continue;
+				}
+
+				node->Next = new Node();
+				_tail = node = node->Next;
+			}
+
+			_length = count;
 		}
 
 		template <typename T>
 		List<T>::~List()
 		{
-			Clear();
+			if (_head) {
+				delete _head;
+			}
 		}
 
 		template <typename T>
 		void List<T>::Add(const T& value)
 		{
-			throw NotImplementedException();
+			if (!_head) {
+				_head = _tail = new Node(value);
+				return;
+			}
+
+			_tail->Next = new Node(value);
+			_tail = _tail->Next;
+			_length += 1;
 		}
 
 		template <typename T>
 		T& List<T>::Back()
 		{
-			throw NotImplementedException();
+			if (!_tail) {
+				throw NullPointerException();
+			}
+
+			return _tail->Data;
 		}
 
 		template <typename T>
 		const T& List<T>::Back() const
 		{
-			throw NotImplementedException();
+			if (!_tail) {
+				throw NullPointerException();
+			}
+
+			return _tail->Data;
 		}
 
 		template <typename T>
@@ -92,30 +189,60 @@ namespace Lupus {
 		template <typename T>
 		void List<T>::Clear()
 		{
-			for (Node* node = _node, *swap = node->Next; node; node = swap, swap = swap->Next) {
-				delete node;
+			if (_head) {
+				delete _head;
+				_head = _tail = nullptr;
+				_length = 0;
 			}
-
-			_node = nullptr;
-			_length = 0;
 		}
 
 		template <typename T>
 		bool List<T>::Contains(const T& value) const
 		{
-			throw NotImplementedException();
+			for (Node* node = _head; node; node = node->Next) {
+				if (node->Data == value) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		template <typename T>
-		void List<T>::CopyTo(Vector<T>&, int) const
+		void List<T>::CopyTo(Vector<T>& vector, int startIndex) const
 		{
-			throw NotImplementedException();
+			CopyTo(0, vector, startIndex, _length);
 		}
 
 		template <typename T>
-		void List<T>::CopyTo(int, Vector<T>&, int, int) const
+		void List<T>::CopyTo(int sourceIndex, Vector<T>& vector, int destinationIndex, int count) const
 		{
-			throw NotImplementedException();
+			// check argument
+			if ((sourceIndex + count) > _length) {
+				throw ArgumentOutOfRangeException("sourceIndex plus count exceedes vector length");
+			} else if (sourceIndex < 0) {
+				throw ArgumentOutOfRangeException("sourceIndex must be greater than zero");
+			} else if (count < 0) {
+				throw ArgumentOutOfRangeException("count must be greater than zero");
+			} else if ((destinationIndex + count) > vector.Length) {
+				throw ArgumentOutOfRangeException("destinationIndex plus count exceedes vector length");
+			} else if (destinationIndex < 0) {
+				throw ArgumentOutOfRangeException("destinationIndex must be greater than zero");
+			}
+
+			// variables
+			int limit = sourceIndex + count;
+			int i = 0;
+			int j = destinationIndex;
+
+			// copy
+			for (Node* node = _head; node && i < limit; node = node->Next, i++) {
+				if (i < sourceIndex) {
+					continue;
+				}
+
+				vector[j] = node->Data;
+			}
 		}
 
 		template <typename T>
@@ -127,19 +254,59 @@ namespace Lupus {
 		template <typename T>
 		T& List<T>::Front()
 		{
-			throw NotImplementedException();
+			if (!_head) {
+				throw NullPointerException();
+			}
+
+			return _head->Data;
 		}
 
 		template <typename T>
 		const T& List<T>::Front() const
 		{
-			throw NotImplementedException();
+			if (!_head) {
+				throw NullPointerException();
+			}
+
+			return _head->Data;
 		}
 
 		template <typename T>
-		void List<T>::Insert(int, const T&)
+		void List<T>::Insert(int index, const T& item)
 		{
-			throw NotImplementedException();
+			// check arguments
+			if (index > _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
+			}
+
+			// increment length
+			_length += 1;
+
+			// check if insertion ist at the beginning or end
+			if (index == 0) {
+				Node* node = _head;
+				_head = new Node(item);
+				_head->Next = node;
+				return;
+			} else if (index == _length) {
+				_tail->Next = new Node(item);
+				_tail = _tail->Next;
+				return;
+			}
+
+			// variables
+			int i = 1;
+
+			// insert
+			for (Node* node = _head->Next, *prev = _head; node; prev = node, node = node->Next, i++) {
+				if (i == index) {
+					prev->Next = new Node(item);
+					prev->Next->Next = node;
+					return;
+				}
+			}
 		}
 
 		template <typename T>
@@ -149,9 +316,36 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		bool List<T>::RemoveAt(int)
+		void List<T>::RemoveAt(int index)
 		{
-			throw NotImplementedException();
+			// check arguments
+			if (index >= _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
+			}
+
+			// decrement length
+			_length -= 1;
+
+			// check if insertion ist at the beginning or end
+			if (index == 0) {
+				Node* node = _head->Next;
+				delete _head;
+				_head = node;
+				return;
+			}
+
+			// variables
+			int i = 1;
+
+			for (Node* node = _head->Next, *prev = _head; node; prev = node, node = node->Next, i++) {
+				if (i == index) {
+					prev->Next = node->Next;
+					delete node;
+					return;
+				}
+			}
 		}
 
 		template <typename T>
@@ -161,39 +355,145 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		T& List<T>::operator[](int)
+		T& List<T>::operator[](int index)
 		{
-			throw NotImplementedException();
+			// check arguments
+			if (index >= _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
+			}
+
+			// check if head or tail
+			if (index == 0) {
+				return _head->Data;
+			} else if (index == _length - 1) {
+				return _tail->Data;
+			}
+
+			// variables
+			int i = 1;
+
+			for (Node* node = _head->Next; node; node = node->Next) {
+				if (index == i) {
+					return node->Data;
+				}
+			}
 		}
 
 		template <typename T>
-		const T& List<T>::operator[](int) const
+		const T& List<T>::operator[](int index) const
 		{
-			throw NotImplementedException();
+			// check arguments
+			if (index >= _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
+			}
+
+			// check if head or tail
+			if (index == 0) {
+				return _head->Data;
+			} else if (index == _length - 1) {
+				return _tail->Data;
+			}
+
+			// variables
+			int i = 1;
+
+			for (Node* node = _head->Next; node; node = node->Next) {
+				if (index == i) {
+					return node->Data;
+				}
+			}
 		}
 
 		template <typename T>
-		List<T>& List<T>::operator=(const List<T>&)
+		List<T>& List<T>::operator=(const List<T>& list)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (list.Length == 0) {
+				delete _head;
+				_head = _tail = nullptr;
+				_length = 0;
+				return (*this);
+			}
+
+			// variables
+			Node* node = nullptr;
+
+			// copy values
+			foreach (item, list) {
+				if (!node) {
+					_head = _tail = node = new Node(item->CurrentItem());
+					continue;
+				}
+
+				node->Next = new Node(item->CurrentItem());
+				_tail = node = node->Next;
+			}
+
+			_length = list._length;
+			return (*this);
 		}
 
 		template <typename T>
-		List<T>& List<T>::operator=(List<T>&&)
+		List<T>& List<T>::operator=(List<T>&& list)
 		{
-			throw NotImplementedException();
+			Swap(_head, list._head);
+			Swap(_tail, list._tail);
+			Swap(_length, list._length);
+			return (*this);
 		}
 
 		template <typename T>
-		List<T>& List<T>::operator=(const ISequence<T>&)
+		List<T>& List<T>::operator=(const ICollection<T>& collection)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (collection.Count() == 0) {
+				delete _head;
+				_head = _tail = nullptr;
+				_length = 0;
+				return (*this);
+			}
+
+			// variables
+			Node* node = nullptr;
+
+			// copy values
+			foreach (item, collection) {
+				if (!node) {
+					_head = _tail = node = new Node(item->CurrentItem());
+					continue;
+				}
+
+				node->Next = new Node(item->CurrentItem());
+				_tail = node = node->Next;
+			}
+
+			_length = collection.Count();
+			return (*this);
+		}
+
+		template <typename T>
+		List<T>::Node::Node(Node&& node)
+		{
+			Swap(Data, node.Data);
+			Swap(Next, node.Next);
 		}
 
 		template <typename T>
 		List<T>::Node::Node(const T& data)
 		{
-			_data = data;
+			Data = data;
+		}
+
+		template <typename T>
+		List<T>::Node::~Node()
+		{
+			if (Next) {
+				delete Next;
+			}
 		}
 
 		template <typename T>
@@ -207,6 +507,7 @@ namespace Lupus {
 		ListIterator<T>::ListIterator(const List<T>& list) :
 			_list(&list)
 		{
+			_current = _list->_head;
 		}
 
 		template <typename T>
@@ -216,6 +517,8 @@ namespace Lupus {
 			if (!list) {
 				throw ArgumentNullException();
 			}
+
+			_current = _list->_head;
 		}
 
 		template <typename T>
@@ -226,19 +529,21 @@ namespace Lupus {
 		template <typename T>
 		void ListIterator<T>::First()
 		{
-			_current = _list->_node;
+			_current = _list->_head;
 		}
 
 		template <typename T>
 		void ListIterator<T>::Next()
 		{
-			_current = _current->Next;
+			if (_current) {
+				_current = _current->Next;
+			}
 		}
 
 		template <typename T>
 		bool ListIterator<T>::IsDone() const
 		{
-			return (_current != nullptr);
+			return (_current == nullptr);
 		}
 
 		template <typename T>
@@ -248,7 +553,7 @@ namespace Lupus {
 				throw IteratorOutOfBoundException();
 			}
 
-			return (_node->Data);
+			return (_current->Data);
 		}
 
 		template <typename T>

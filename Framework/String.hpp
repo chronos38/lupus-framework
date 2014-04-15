@@ -171,8 +171,28 @@ namespace Lupus {
 			 * @return index of first match or -1 if no such char was found
 			 */
 			int IndexOf(const Char& ch, int startIndex = 0, CaseSensitivity sensitivity = CaseSensitivity::CaseSensitive) const;
-			void CopyTo(String&, int) const;
-			void CopyTo(int sourceIndex, String& sequence, int destinationIndex, int count) const;
+			/**
+			 * Copy content from this string to given string
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param string destination string
+			 * @param startIndex destination index for copying
+			 */
+			void CopyTo(String& string, int startIndex) const;
+			/**
+			 * Copy content from this string to given string
+			 *
+			 * \b Exceptions
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param sourceIndex starting index from this string
+			 * @param string destination string
+			 * @param destinationIndex destination index for copying
+			 * @param count how many chars are copied
+			 */
+			void CopyTo(int sourceIndex, String& string, int destinationIndex, int count) const;
 			/**
 			 * Search for given string within this instance
 			 *
@@ -407,9 +427,9 @@ namespace Lupus {
 			virtual void Clear() override;
 			//! \sa ISequence::Contains
 			virtual bool Contains(const char&) const override;
-			//! \sa ICollection::CopyTo
+			//! \sa ICollection::CopyTo(Vector<T>&, int)
 			virtual void CopyTo(Vector<char>&, int) const override;
-			//! \sa ICollection::CopyTo
+			//! \sa ICollection::CopyTo(int, Vector<T>&, int, int)
 			virtual void CopyTo(int, Vector<char>&, int, int) const override;
 			//! \sa ICollection::Count
 			virtual int Count() const override;
@@ -422,7 +442,7 @@ namespace Lupus {
 			//! \sa ISequence::IsEmpty
 			virtual bool IsEmpty() const override;
 			//! \sa ISequence::RemoveAt
-			virtual bool RemoveAt(int) override;
+			virtual void RemoveAt(int) override;
 			//! \sa ISequence::Resize
 			virtual void Resize(int) override;
 			//! \sa ISequence::Compare

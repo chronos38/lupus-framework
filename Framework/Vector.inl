@@ -27,11 +27,16 @@ namespace Lupus {
 		}
 		
 		template <typename T>
-		Vector<T>::Vector(const Vector<T>& vector) :
-			_data(new T[vector.Count()]),
-			_length(vector.Count()),
-			_capacity(vector.Count())
+		Vector<T>::Vector(const Vector<T>& vector)
 		{
+			if (vector._length == 0) {
+				Vector<T>::Vector();
+				return;
+			}
+
+			_data = new T[vector._length];
+			_length = _capacity = vector._length;
+
 			for (int i = _length - 1; i >= 0; i--) {
 				_data[i] = vector[i];
 			}
@@ -47,14 +52,18 @@ namespace Lupus {
 		}
 		
 		template <typename T>
-		Vector<T>::Vector(const ISequence<T>& sequence) :
-			_data(new T[sequence.Count()]),
-			_length(sequence.Count()),
-			_capacity(sequence.Count())
+		Vector<T>::Vector(const ICollection<T>& collection)
 		{
-			int i = 0;
+			if (collection.Count() == 0) {
+				Vector<T>::Vector();
+				return;
+			}
 
-			foreach (item, sequence) {
+			int i = 0;
+			_data = new T[collection.Count()];
+			_capacity = _length = collection.Count();
+
+			foreach (item, collection) {
 				_data[i++] = item->CurrentItem();
 			}
 		}
@@ -66,9 +75,10 @@ namespace Lupus {
 			_capacity((int)list.size())
 		{
 			auto it = list.begin();
+			int i = 0;
 
-			for (int i = 0; i < _length; i++) {
-				_data[i] = *(it + i);
+			for (const T& item : list) {
+				_data[i++] = item;
 			}
 		}
 
@@ -237,11 +247,13 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		bool Vector<T>::RemoveAt(int index)
+		void Vector<T>::RemoveAt(int index)
 		{
 			// check arguments
-			if (index >= _length || index < 0) {
-				return false;
+			if (index >= _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
 			}
 
 			for (int i = index; i < _length; i++) {
@@ -249,7 +261,6 @@ namespace Lupus {
 			}
 
 			_length -= 1;
-			return true;
 		}
 
 		template <typename T>
@@ -286,7 +297,11 @@ namespace Lupus {
 		{
 			// check length
 			if (_length <= 0) {
-				throw InvalidOperationException();
+				delete _data;
+				_data = new T[1];
+				_length = 0;
+				_capacity = 1;
+				return;
 			}
 
 			T* swap = new T[_length];
@@ -352,15 +367,15 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		Vector<T>& Vector<T>::operator=(const ISequence<T>& sequence)
+		Vector<T>& Vector<T>::operator=(const ICollection<T>& collection)
 		{
 			// copy content
-			if (_capacity < sequence.Count()) {
+			if (_capacity < collection.Count()) {
 				int i = 0;
-				T* buffer = new T[sequence.Count()];
-				_capacity = _length = sequence.Count();
+				T* buffer = new T[collection.Count()];
+				_capacity = _length = collection.Count();
 
-				foreach (item, sequence) {
+				foreach (item, collection) {
 					buffer[i++] = item->CurrentItem();
 				}
 
@@ -370,11 +385,11 @@ namespace Lupus {
 			} else {
 				int i = 0;
 
-				foreach (item, sequence) {
+				foreach (item, collection) {
 					_data[i++] = item->CurrentItem();
 				}
 
-				_length = sequence.Count();
+				_length = collection.Count();
 			}
 
 			return (*this);

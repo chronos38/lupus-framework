@@ -51,13 +51,13 @@ namespace Lupus {
 			Vector(const Vector<T>&);
 			//! move from given instance
 			Vector(Vector<T>&&);
-			//! copy from given sequence
-			Vector(const ISequence<T>&);
+			//! copy from given collection
+			Vector(const ICollection<T>&);
 			//! read from given initializer list
 			Vector(const std::initializer_list<T>&);
 			//! define allocation size for internal array
 			Vector(int);
-			//! free all allocated resources
+			//! free allocated resources
 			virtual ~Vector();
 			//! \sa ISequence::Add
 			virtual void Add(const T&) override;
@@ -71,9 +71,9 @@ namespace Lupus {
 			virtual void Clear() override;
 			//! \sa ISequence::Contains
 			virtual bool Contains(const T&) const override;
-			//! \sa ICollection::CopyTo
+			//! \sa ICollection::CopyTo(Vector<T>&, int)
 			virtual void CopyTo(Vector<T>&, int) const override;
-			//! \sa ICollection::CopyTo
+			//! \sa ICollection::CopyTo(int, Vector<T>&, int, int)
 			virtual void CopyTo(int, Vector<T>&, int, int) const override;
 			//! \sa ICollection::Count
 			virtual int Count() const override;
@@ -86,7 +86,7 @@ namespace Lupus {
 			//! \sa ISequence::IsEmpty
 			virtual bool IsEmpty() const override;
 			//! \sa ISequence::RemoveAt
-			virtual bool RemoveAt(int) override;
+			virtual void RemoveAt(int) override;
 			//! \sa ISequence::Resize
 			virtual void Resize(int) override;
 			//! shrink capacity to fit length
@@ -99,8 +99,8 @@ namespace Lupus {
 			Vector<T>& operator=(const Vector<T>&);
 			//! swap vectors
 			Vector<T>& operator=(Vector<T>&&);
-			//! assign given sequence
-			Vector<T>& operator=(const ISequence<T>&);
+			//! assign given collection
+			Vector<T>& operator=(const ICollection<T>&);
 		};
 
 		//! \sa Iterator

@@ -22,6 +22,7 @@
 #include "Types.hpp"
 #include "ISequence.hpp"
 #include "ICopyable.hpp"
+#include "Vector.hpp"
 
 namespace Lupus {
 	namespace System {
@@ -43,21 +44,20 @@ namespace Lupus {
 			friend class ListIterator<T>;
 			friend class ListSortStrategy<T>;
 
-			class Node
-			{
-				T _data = T();
-				Node* _next = nullptr;
-			public:
+			struct Node {
 				Node() = default;
 				Node(const Node&) = default;
-				Node(Node&&) = default;
+				Node(Node&&);
 				Node(const T&);
-				PropertyAccess<T> Data = PropertyAccess<T>(_data);
-				PropertyAccess<Node*> Next = PropertyAccess<Node*>(_next);
+				~Node();
+				T Data = T();
+				Node* Next = nullptr;
 			};
 			
 			//! first entry
-			Node* _node = nullptr;
+			Node* _head = nullptr;
+			//! last entry
+			Node* _tail = nullptr;
 			//! length of list
 			int _length = 0;
 			//! default sort algorithm
@@ -68,45 +68,93 @@ namespace Lupus {
 			//! Return list length length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
 			//! Set list sort algorithm
-			PropertyWriter<Pointer<ListSortStrategy<T>>> ListSortAlgorithm = PropertyWriter<Pointer<TextSearchStrategy>>(_strategy);
+			PropertyWriter<Pointer<ListSortStrategy<T>>> ListSortAlgorithm = PropertyWriter<Pointer<ListSortStrategy<T>>>(_strategy);
 			//! Set default sort algorithm
 			static PropertyWriter<Pointer<ListSortStrategy<T>>> DefaultListSortAlgorithm;
+			//! create empty list
 			List();
+			//! copy from existing list
 			List(const List<T>&);
+			//! swap content between lists
 			List(List<T>&&);
-			List(const ISequence<T>&);
+			//! copy content from collection
+			List(const ICollection<T>&);
+			//! read from given initializer list
 			List(const std::initializer_list<T>&);
+			//! pre allocate memory
 			List(int);
+			//! free all allocated memory
 			virtual ~List();
+			//! \sa ISequence::Add
 			virtual void Add(const T&) override;
+			//! \sa ISequence::Back
 			virtual T& Back() override;
+			//! \sa ISequence::Back
 			virtual const T& Back() const override;
+			//! \sa Iterable::GetIterator
 			virtual Pointer<Iterator<T>> GetIterator() const override;
+			//! \sa ISequence::Clear
 			virtual void Clear() override;
+			//! \sa ISequence::Contains
 			virtual bool Contains(const T&) const override;
+			//! \sa ICollection::CopyTo(Vector<T>&, int)
 			virtual void CopyTo(Vector<T>&, int) const override;
+			//! \sa ICollection::CopyTo(int, Vector<T>&, int, int)
 			virtual void CopyTo(int, Vector<T>&, int, int) const override;
+			//! \sa ICollection::Count
 			virtual int Count() const override;
+			//! \sa ISequence::Front
 			virtual T& Front() override;
+			//! \sa ISequence::Front
 			virtual const T& Front() const override;
+			//! \sa ISequence::Insert
 			virtual void Insert(int, const T&) override;
+			//! \sa ISequence::IsEmtpy
 			virtual bool IsEmpty() const override;
-			virtual bool RemoveAt(int) override;
+			//! \sa ISequence::RemoveAt
+			virtual void RemoveAt(int) override;
+			//! \sa ISequence::Resize
 			virtual void Resize(int) override;
+			//! sorts list entries
 			void Sort();
-			T& operator[](int);
-			const T& operator[](int) const;
+			/**
+			 * gets item at given index.
+			 *
+			 * \b Complexity: \a O(n)
+			 *
+			 * \b Exceptions:
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param index search for entry at given index
+			 * @return entry at given index
+			 */
+			T& operator[](int index);
+			/**
+			 * gets item at given index.
+			 *
+			 * \b Complexity: \a O(n)
+			 *
+			 * \b Exceptions:
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param index search for entry at given index
+			 * @return entry at given index
+			 */
+			const T& operator[](int index) const;
+			//! assign given list
 			List<T>& operator=(const List<T>&);
+			//! swap lists
 			List<T>& operator=(List<T>&&);
-			List<T>& operator=(const ISequence<T>&);
+			//! assign given collection
+			List<T>& operator=(const ICollection<T>&);
 		private:
 		};
 
 		template <typename T>
 		class ListIterator : public Iterator<T>
 		{
-			List<T>* _list = nullptr;
-			List<T>::Node* _current = nullptr;
+			const List<T>* _list = nullptr;
+			typename List<T>::Node* _current = nullptr;
 		public:
 			ListIterator() = delete;
 			ListIterator(const ListIterator<T>&) = delete;

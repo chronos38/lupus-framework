@@ -941,11 +941,13 @@ namespace Lupus {
 			return (_data[0] == 0);
 		}
 
-		bool String::RemoveAt(int index)
+		void String::RemoveAt(int index)
 		{
 			// check arguments
-			if (index >= _length || index < 0) {
-				return false;
+			if (index >= _length) {
+				throw ArgumentOutOfRangeException("index exceeds string length");
+			} else if (index < 0) {
+				throw ArgumentOutOfRangeException("index must be greater than zero");
 			}
 
 			for (int i = index; i < _length; i++) {
@@ -953,7 +955,6 @@ namespace Lupus {
 			}
 
 			_length -= 1;
-			return true;
 		}
 
 		void String::Resize(int count)

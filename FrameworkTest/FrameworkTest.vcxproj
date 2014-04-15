@@ -89,6 +89,7 @@
     <ClCompile Include="CharTest.cpp" />
     <ClCompile Include="FloatTest.cpp" />
     <ClCompile Include="IntegerTest.cpp" />
+    <ClCompile Include="ListTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
