@@ -125,6 +125,10 @@ namespace Lupus {
 			String(const String& string);
 			//! Move string from given instance to this instance
 			String(String&& string);
+			//! \sa String::String(const char*)
+			String(const wchar_t*);
+			//! \sa String::String(const char*, int, int)
+			String(const wchar_t*, int startIndex, int length);
 			//! Destructor
 			virtual ~String();
 			/**
@@ -406,7 +410,7 @@ namespace Lupus {
 			//! \sa ICollection::CopyTo
 			virtual void CopyTo(Vector<char>&, int) const override;
 			//! \sa ICollection::CopyTo
-			virtual void CopyTo(int sourceIndex, Vector<char>& sequence, int destinationIndex, int count) const override;
+			virtual void CopyTo(int, Vector<char>&, int, int) const override;
 			//! \sa ICollection::Count
 			virtual int Count() const override;
 			//! \sa ISequence::Front
@@ -431,13 +435,6 @@ namespace Lupus {
 			static Vector<String> SplitNoEmptyEntries(const String&, const Vector<char>&, int);
 			static Vector<String> SplitEmptyEntries(const String&, const String&, int);
 			static Vector<String> SplitNoEmptyEntries(const String&, const String&, int);
-#if defined(LUPUS_WINDOWS_PLATFORM)
-		public:
-			//! \sa String::String(const char*)
-			String(const wchar_t*);
-			//! \sa String::String(const char*, int, int)
-			String(const wchar_t*, int startIndex, int length);
-#endif
 		};
 
 		//! \sa Iterator

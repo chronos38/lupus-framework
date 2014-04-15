@@ -39,12 +39,11 @@
 
 // headers
 #include <initializer_list>
-#include <cmath>
 
 namespace Lupus {
 	//! single signed byte
 	typedef signed char sbyte;
-	//! unsingle unsigned byte
+	//! single unsigned byte
 	typedef unsigned char ubyte;
 	//! unsigned integer
 	typedef unsigned short ushort;

@@ -40,7 +40,7 @@ namespace Lupus {
 			 * @param sourceIndex starting index for this instance
 			 * @param vector container to copy into
 			 * @param destinationIndex starting index in container
-			 * @param count how many chars get copied
+			 * @param count how many values get copied
 			 */
 			virtual void CopyTo(int sourceIndex, Vector<T>& vector, int destinationIndex, int count) const = 0;
 			/**

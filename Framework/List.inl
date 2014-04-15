@@ -92,12 +92,11 @@ namespace Lupus {
 		template <typename T>
 		void List<T>::Clear()
 		{
-			for (Node* node = _node; node;) {
-				Node* swap = node->Next;
+			for (Node* node = _node, *swap = node->Next; node; node = swap, swap = swap->Next) {
 				delete node;
-				node = swap;
 			}
 
+			_node = nullptr;
 			_length = 0;
 		}
 

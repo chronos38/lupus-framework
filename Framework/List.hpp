@@ -56,7 +56,7 @@ namespace Lupus {
 				PropertyAccess<Node*> Next = PropertyAccess<Node*>(_next);
 			};
 			
-			// first entry
+			//! first entry
 			Node* _node = nullptr;
 			//! length of list
 			int _length = 0;
@@ -93,8 +93,9 @@ namespace Lupus {
 			virtual bool IsEmpty() const override;
 			virtual bool RemoveAt(int) override;
 			virtual void Resize(int) override;
-			virtual T& operator[](int) override;
-			virtual const T& operator[](int) const override;
+			void Sort();
+			T& operator[](int);
+			const T& operator[](int) const;
 			List<T>& operator=(const List<T>&);
 			List<T>& operator=(List<T>&&);
 			List<T>& operator=(const ISequence<T>&);
