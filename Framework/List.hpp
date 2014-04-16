@@ -28,8 +28,6 @@ namespace Lupus {
 	namespace System {
 		template <typename T>
 		class List;
-		template <typename T>
-		class ListIterator;
 
 		//! list sort algorithm interface
 		template <typename T>
@@ -44,7 +42,8 @@ namespace Lupus {
 		class List : public Object, public ISequence<T>
 		{
 			// declarations
-			friend class ListIterator<T>;
+			class ListIterator;
+			friend class ListIterator;
 			friend class ListSortStrategy<T>;
 			struct Node;
 			//! first entry

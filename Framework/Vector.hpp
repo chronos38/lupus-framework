@@ -25,9 +25,6 @@
 
 namespace Lupus {
 	namespace System {
-		template <typename T>
-		class VectorIterator;
-
 		//! simple vector class for easy and fast access
 		template <typename T>
 		class Vector : public Object, public ISequence<T>
