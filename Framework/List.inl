@@ -322,7 +322,7 @@ namespace Lupus {
 			if (index >= _length) {
 				throw ArgumentOutOfRangeException("index exceeds string length");
 			} else if (index < 0) {
-				throw ArgumentOutOfRangeException("index must be greater than zero");
+				throw ArgumentOutOfRangeException("index must be greater than or equal to zero");
 			}
 
 			// decrement length
@@ -349,9 +349,41 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		void List<T>::Resize(int)
+		void List<T>::Resize(int count)
 		{
-			throw NotImplementedException();
+			// check argument
+			if (count < 0) {
+				throw ArgumentOutOfRangeException("count should be a positive number");
+			}
+
+			_length = count;
+
+			// check cases for count
+			if (count == 0) {
+				delete _head;
+				_head = _tail = nullptr;
+			} else if (count > _length) {
+				for (int i = _length; i < count; i++) {
+					_tail->Next = new Node();
+					_tail = _tail->Next;
+				}
+			} else if (count < _length) {
+				int i = 1;
+
+				for (Node* node = _head; node; node = node->Next, i++) {
+					if (i == count) {
+						delete node->Next;
+						_tail = node;
+						return;
+					}
+				}
+			}
+		}
+
+		template <typename T>
+		void List<T>::Sort()
+		{
+			_strategy->Sort(this);
 		}
 
 		template <typename T>

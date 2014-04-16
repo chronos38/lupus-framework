@@ -125,10 +125,10 @@ namespace Lupus {
 			 * \b Exceptions:
 			 * - ArgumentOutOfRangeException
 			 *
-			 * @param index search for entry at given index
+			 * @param n search for entry at given index
 			 * @return entry at given index
 			 */
-			T& operator[](int index);
+			T& operator[](int n);
 			/**
 			 * gets item at given index.
 			 *
@@ -137,10 +137,10 @@ namespace Lupus {
 			 * \b Exceptions:
 			 * - ArgumentOutOfRangeException
 			 *
-			 * @param index search for entry at given index
+			 * @param n search for entry at given index
 			 * @return entry at given index
 			 */
-			const T& operator[](int index) const;
+			const T& operator[](int n) const;
 			//! assign given list
 			List<T>& operator=(const List<T>&);
 			//! swap lists
