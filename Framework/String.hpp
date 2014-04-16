@@ -383,7 +383,7 @@ namespace Lupus {
 			/**
 			 * Append given native string to this instance
 			 *
-			 * @param string native string for appending
+			 * @param str native string for appending
 			 * @return reference to this instance
 			 */
 			String& operator+=(const char*);
@@ -427,9 +427,9 @@ namespace Lupus {
 			virtual void Clear() override;
 			//! \sa ISequence::Contains
 			virtual bool Contains(const char&) const override;
-			//! \sa ICollection::CopyTo(Vector<T>&, int)
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(Vector<char>&, int) const override;
-			//! \sa ICollection::CopyTo(int, Vector<T>&, int, int)
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(int, Vector<char>&, int, int) const override;
 			//! \sa ICollection::Count
 			virtual int Count() const override;
@@ -447,7 +447,7 @@ namespace Lupus {
 			virtual void Resize(int) override;
 			//! \sa ISequence::Compare
 			virtual int Compare(const String& string) const override;
-		private:
+		protected:
 			explicit String(int);
 			static String CreateWithExistingBuffer(char*);
 			static int GetLength(const Char*);
@@ -455,26 +455,24 @@ namespace Lupus {
 			static Vector<String> SplitNoEmptyEntries(const String&, const Vector<char>&, int);
 			static Vector<String> SplitEmptyEntries(const String&, const String&, int);
 			static Vector<String> SplitNoEmptyEntries(const String&, const String&, int);
-		};
-
-		//! \sa Iterator
-		class LUPUS_API StringIterator : public Iterator<char>
-		{
-			const String* _sequence = nullptr;
-			int _current = 0;
-		public:
-			StringIterator() = delete;
-			StringIterator(const StringIterator&) = delete;
-			StringIterator(StringIterator&&);
-			StringIterator(const String&);
-			StringIterator(const String*);
-			virtual ~StringIterator();
-			virtual void First() override;
-			virtual void Next() override;
-			virtual bool IsDone() const override;
-			virtual const char& CurrentItem() const override;
-			StringIterator& operator=(const StringIterator&) = delete;
-			StringIterator& operator=(StringIterator&&);
+		private:
+			class StringIterator : public Iterator<char>
+			{
+				const String* _string = nullptr;
+				int _current = 0;
+			public:
+				StringIterator() = delete;
+				StringIterator(const StringIterator&) = delete;
+				StringIterator(StringIterator&&) = delete;
+				StringIterator(const String*);
+				virtual ~StringIterator();
+				virtual void First() override;
+				virtual void Next() override;
+				virtual bool IsDone() const override;
+				virtual const char& CurrentItem() const override;
+				StringIterator& operator=(const StringIterator&) = delete;
+				StringIterator& operator=(StringIterator&&) = delete;
+			};
 		};
 
 		//! implements knuth-morris-pratt text search algorithm

@@ -1150,58 +1150,40 @@ namespace Lupus {
 			}
 		}
 
-		StringIterator::StringIterator(StringIterator&& iterator)
+		String::StringIterator::StringIterator(const String* string) :
+			_string(string)
 		{
-			Swap(iterator._sequence, _sequence);
-			Swap(iterator._current, _current);
-		}
-
-		StringIterator::StringIterator(const String& sequence) :
-			_sequence(&sequence)
-		{
-		}
-
-		StringIterator::StringIterator(const String* sequence) :
-			_sequence(sequence)
-		{
-			if (!sequence) {
+			if (!string) {
 				throw ArgumentNullException();
 			}
 		}
 
-		StringIterator::~StringIterator()
+		String::StringIterator::~StringIterator()
 		{
 		}
 
-		void StringIterator::First()
+		void String::StringIterator::First()
 		{
 			_current = 0;
 		}
 
-		void StringIterator::Next()
+		void String::StringIterator::Next()
 		{
 			_current++;
 		}
 
-		bool StringIterator::IsDone() const
+		bool String::StringIterator::IsDone() const
 		{
-			return (_current >= _sequence->Count());
+			return (_current >= _string->Count());
 		}
 
-		const char& StringIterator::CurrentItem() const
+		const char& String::StringIterator::CurrentItem() const
 		{
 			if (IsDone()) {
 				throw IteratorOutOfBoundException();
 			}
 
-			return (_sequence->operator[](_current));
-		}
-
-		StringIterator& StringIterator::operator=(StringIterator&& iterator)
-		{
-			Swap(iterator._sequence, _sequence);
-			Swap(iterator._current, _current);
-			return (*this);
+			return (_string->operator[](_current));
 		}
 
 		Pointer<TextSearchStrategy> KnuthMorrisPratt::Copy() const

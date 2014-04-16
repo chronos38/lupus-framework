@@ -71,9 +71,9 @@ namespace Lupus {
 			virtual void Clear() override;
 			//! \sa ISequence::Contains
 			virtual bool Contains(const T&) const override;
-			//! \sa ICollection::CopyTo(Vector<T>&, int)
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(Vector<T>&, int) const override;
-			//! \sa ICollection::CopyTo(int, Vector<T>&, int, int)
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(int, Vector<T>&, int, int) const override;
 			//! \sa ICollection::Count
 			virtual int Count() const override;
@@ -101,27 +101,24 @@ namespace Lupus {
 			Vector<T>& operator=(Vector<T>&&);
 			//! assign given collection
 			Vector<T>& operator=(const ICollection<T>&);
-		};
-
-		//! \sa Iterator
-		template <typename T>
-		class VectorIterator : public Iterator<T>
-		{
-			const Vector<T>* _sequence = nullptr;
-			int _current = 0;
-		public:
-			VectorIterator() = delete;
-			VectorIterator(const VectorIterator<T>&) = delete;
-			VectorIterator(VectorIterator<T>&&);
-			VectorIterator(const Vector<T>&);
-			VectorIterator(const Vector<T>*);
-			virtual ~VectorIterator();
-			virtual void First() override;
-			virtual void Next() override;
-			virtual bool IsDone() const override;
-			virtual const T& CurrentItem() const override;
-			VectorIterator<T>& operator=(const VectorIterator<T>&) = delete;
-			VectorIterator<T>& operator=(VectorIterator<T>&&);
+		private:
+			class VectorIterator : public Iterator<T>
+			{
+				const Vector<T>* _vector = nullptr;
+				int _current = 0;
+			public:
+				VectorIterator() = delete;
+				VectorIterator(const VectorIterator&) = delete;
+				VectorIterator(VectorIterator&&) = delete;
+				VectorIterator(const Vector<T>*);
+				virtual ~VectorIterator();
+				virtual void First() override;
+				virtual void Next() override;
+				virtual bool IsDone() const override;
+				virtual const T& CurrentItem() const override;
+				VectorIterator& operator=(const VectorIterator&) = delete;
+				VectorIterator& operator=(VectorIterator&&) = delete;
+			};
 		};
 	}
 }

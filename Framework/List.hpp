@@ -31,6 +31,7 @@ namespace Lupus {
 		template <typename T>
 		class ListIterator;
 
+		//! list sort algorithm interface
 		template <typename T>
 		class ListSortStrategy : public ICopyable<ListSortStrategy<T>>
 		{
@@ -38,22 +39,14 @@ namespace Lupus {
 			virtual void Sort(List<T>& list) = 0;
 		};
 
+		//! simple list class
 		template <typename T>
 		class List : public Object, public ISequence<T>
 		{
+			// declarations
 			friend class ListIterator<T>;
 			friend class ListSortStrategy<T>;
-
-			struct Node {
-				Node() = default;
-				Node(const Node&) = default;
-				Node(Node&&);
-				Node(const T&);
-				~Node();
-				T Data = T();
-				Node* Next = nullptr;
-			};
-			
+			struct Node;
 			//! first entry
 			Node* _head = nullptr;
 			//! last entry
@@ -97,9 +90,9 @@ namespace Lupus {
 			virtual void Clear() override;
 			//! \sa ISequence::Contains
 			virtual bool Contains(const T&) const override;
-			//! \sa ICollection::CopyTo(Vector<T>&, int)
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(Vector<T>&, int) const override;
-			//! \sa ICollection::CopyTo(int, Vector<T>&, int, int)
+			//! \sa ICollection::CopyTo
 			virtual void CopyTo(int, Vector<T>&, int, int) const override;
 			//! \sa ICollection::Count
 			virtual int Count() const override;
@@ -111,8 +104,17 @@ namespace Lupus {
 			virtual void Insert(int, const T&) override;
 			//! \sa ISequence::IsEmtpy
 			virtual bool IsEmpty() const override;
-			//! \sa ISequence::RemoveAt
-			virtual void RemoveAt(int) override;
+			/**
+			 * \sa ISequence::RemoveAt
+			 * 
+			 * \b Complexity: \a O(n)
+			 *
+			 * \b Exceptions:
+			 * - ArgumentOutOfRangeException
+			 *
+			 * @param n remove entry at given index
+			 */
+			virtual void RemoveAt(int n) override;
 			//! \sa ISequence::Resize
 			virtual void Resize(int) override;
 			//! sorts list entries
@@ -132,7 +134,8 @@ namespace Lupus {
 			/**
 			 * gets item at given index.
 			 *
-			 * \b Complexity: \a O(n)
+			 * \b Complexity:
+			 * \a O(n)
 			 *
 			 * \b Exceptions:
 			 * - ArgumentOutOfRangeException
@@ -148,33 +151,45 @@ namespace Lupus {
 			//! assign given collection
 			List<T>& operator=(const ICollection<T>&);
 		private:
+			struct Node
+			{
+				Node() = default;
+				Node(const Node&) = default;
+				Node(Node&&);
+				Node(const T&);
+				~Node();
+				T Data = T();
+				Node* Next = nullptr;
+			};
+
+			class ListIterator : public Iterator<T>
+			{
+				const List<T>* _list = nullptr;
+				typename List<T>::Node* _current = nullptr;
+			public:
+				ListIterator() = delete;
+				ListIterator(const ListIterator&) = delete;
+				ListIterator(ListIterator&&) = delete;
+				ListIterator(const List<T>*);
+				virtual ~ListIterator();
+				virtual void First() override;
+				virtual void Next() override;
+				virtual bool IsDone() const override;
+				virtual const T& CurrentItem() const override;
+				ListIterator& operator=(const ListIterator&) = delete;
+				ListIterator& operator=(ListIterator&&) = delete;
+			};
+
 		};
 
-		template <typename T>
-		class ListIterator : public Iterator<T>
-		{
-			const List<T>* _list = nullptr;
-			typename List<T>::Node* _current = nullptr;
-		public:
-			ListIterator() = delete;
-			ListIterator(const ListIterator<T>&) = delete;
-			ListIterator(ListIterator<T>&&);
-			ListIterator(const List<T>&);
-			ListIterator(const List<T>*);
-			virtual ~ListIterator();
-			virtual void First() override;
-			virtual void Next() override;
-			virtual bool IsDone() const override;
-			virtual const T& CurrentItem() const override;
-			ListIterator<T>& operator=(const ListIterator<T>&) = delete;
-			ListIterator<T>& operator=(ListIterator<T>&&);
-		};
-
+		//! implements quick sort algorithm
 		template <typename T>
 		class ListQuickSort : public ListSortStrategy<T>
 		{
 		public:
+			//! \sa ICopyable::Copy
 			virtual Pointer<ListSortStrategy<T>> Copy() const override;
+			//! \sa ListSortStrategy::Sort
 			virtual void Sort(List<T>& list) override;
 		};
 	}

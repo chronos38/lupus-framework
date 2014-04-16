@@ -183,7 +183,7 @@ namespace Lupus {
 		template <typename T>
 		Pointer<Iterator<T>> List<T>::GetIterator() const
 		{
-			return new ListIterator<T>(this);
+			return new ListIterator(this);
 		}
 
 		template <typename T>
@@ -405,12 +405,15 @@ namespace Lupus {
 
 			// variables
 			int i = 1;
+			Node* node = nullptr;
 
-			for (Node* node = _head->Next; node; node = node->Next) {
+			for (node = _head->Next; node; node = node->Next) {
 				if (index == i) {
-					return node->Data;
+					break;
 				}
 			}
+
+			return node->Data;
 		}
 
 		template <typename T>
@@ -432,12 +435,15 @@ namespace Lupus {
 
 			// variables
 			int i = 1;
+			Node* node = nullptr;
 
-			for (Node* node = _head->Next; node; node = node->Next) {
+			for (node = _head->Next; node; node = node->Next) {
 				if (index == i) {
-					return node->Data;
+					break;
 				}
 			}
+
+			return node->Data;
 		}
 
 		template <typename T>
@@ -529,21 +535,7 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		ListIterator<T>::ListIterator(ListIterator<T>&& iterator)
-		{
-			Swap(iterator._list, _list);
-			Swap(iterator._current, _current);
-		}
-
-		template <typename T>
-		ListIterator<T>::ListIterator(const List<T>& list) :
-			_list(&list)
-		{
-			_current = _list->_head;
-		}
-
-		template <typename T>
-		ListIterator<T>::ListIterator(const List<T>* list) :
+		List<T>::ListIterator::ListIterator(const List<T>* list) :
 			_list(list)
 		{
 			if (!list) {
@@ -554,18 +546,18 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		ListIterator<T>::~ListIterator()
+		List<T>::ListIterator::~ListIterator()
 		{
 		}
 
 		template <typename T>
-		void ListIterator<T>::First()
+		void List<T>::ListIterator::First()
 		{
 			_current = _list->_head;
 		}
 
 		template <typename T>
-		void ListIterator<T>::Next()
+		void List<T>::ListIterator::Next()
 		{
 			if (_current) {
 				_current = _current->Next;
@@ -573,27 +565,19 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		bool ListIterator<T>::IsDone() const
+		bool List<T>::ListIterator::IsDone() const
 		{
 			return (_current == nullptr);
 		}
 
 		template <typename T>
-		const T& ListIterator<T>::CurrentItem() const
+		const T& List<T>::ListIterator::CurrentItem() const
 		{
 			if (IsDone()) {
 				throw IteratorOutOfBoundException();
 			}
 
 			return (_current->Data);
-		}
-
-		template <typename T>
-		ListIterator<T>& ListIterator<T>::operator=(ListIterator<T>&& iterator)
-		{
-			Swap(iterator._sequence, _sequence);
-			Swap(iterator._current, _current);
-			return (*this);
 		}
 
 		template <typename T>

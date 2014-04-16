@@ -140,7 +140,7 @@ namespace Lupus {
 		template <typename T>
 		Pointer<Iterator<T>> Vector<T>::GetIterator() const
 		{
-			return new VectorIterator<T>(this);
+			return new VectorIterator(this);
 		}
 
 		template <typename T>
@@ -396,66 +396,45 @@ namespace Lupus {
 		}
 
 		template <typename T>
-		VectorIterator<T>::VectorIterator(VectorIterator<T>&& iterator)
+		Vector<T>::VectorIterator::VectorIterator(const Vector<T>* vector) :
+			_vector(vector)
 		{
-			Swap(iterator._sequence, _sequence);
-			Swap(iterator._current, _current);
-		}
-
-		template <typename T>
-		VectorIterator<T>::VectorIterator(const Vector<T>& sequence) :
-			_sequence(&sequence)
-		{
-		}
-
-		template <typename T>
-		VectorIterator<T>::VectorIterator(const Vector<T>* sequence) :
-			_sequence(sequence)
-		{
-			if (!sequence) {
+			if (!vector) {
 				throw ArgumentNullException();
 			}
 		}
 
 		template <typename T>
-		VectorIterator<T>::~VectorIterator()
+		Vector<T>::VectorIterator::~VectorIterator()
 		{
 		}
 
 		template <typename T>
-		void VectorIterator<T>::First()
+		void Vector<T>::VectorIterator::First()
 		{
 			_current = 0;
 		}
 
 		template <typename T>
-		void VectorIterator<T>::Next()
+		void Vector<T>::VectorIterator::Next()
 		{
 			_current++;
 		}
 
 		template <typename T>
-		bool VectorIterator<T>::IsDone() const
+		bool Vector<T>::VectorIterator::IsDone() const
 		{
-			return (_current >= _sequence->Count());
+			return (_current >= _vector->Count());
 		}
 
 		template <typename T>
-		const T& VectorIterator<T>::CurrentItem() const
+		const T& Vector<T>::VectorIterator::CurrentItem() const
 		{
 			if (IsDone()) {
 				throw IteratorOutOfBoundException();
 			}
 
-			return (_sequence->operator[](_current));
-		}
-
-		template <typename T>
-		VectorIterator<T>& VectorIterator<T>::operator=(VectorIterator<T>&& iterator)
-		{
-			Swap(iterator._sequence, _sequence);
-			Swap(iterator._current, _current);
-			return (*this);
+			return (_vector->operator[](_current));
 		}
 	}
 }
