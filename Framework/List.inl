@@ -16,13 +16,15 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "MergeSort.hpp"
+
 namespace Lupus {
 	namespace System {
 		template <typename T>
-		Pointer<ListSortStrategy<T>> List<T>::_defaultStrategy = new ListQuickSort<T>();
+		Pointer<ISortStrategy<T>> List<T>::_defaultStrategy = new MergeSort<T>();
 		template <typename T>
-		PropertyWriter<Pointer<ListSortStrategy<T>>> List<T>::DefaultListSortAlgorithm =
-			PropertyWriter<Pointer<ListSortStrategy<T>>>(List<T>::_defaultStrategy);
+		PropertyWriter<Pointer<ISortStrategy<T>>> List<T>::DefaultListSortAlgorithm =
+			PropertyWriter<Pointer<ISortStrategy<T>>>(List<T>::_defaultStrategy);
 
 		template <typename T>
 		List<T>::List()
@@ -57,9 +59,9 @@ namespace Lupus {
 		template <typename T>
 		List<T>::List(List<T>&& list)
 		{
-			Swap(_head, list._head);
-			Swap(_tail, list._tail);
-			Swap(_length, list._length);
+			Lupus::Swap(_head, list._head);
+			Lupus::Swap(_tail, list._tail);
+			Lupus::Swap(_length, list._length);
 		}
 
 		template <typename T>
@@ -144,6 +146,39 @@ namespace Lupus {
 		{
 			if (_head) {
 				delete _head;
+			}
+		}
+
+		template <typename T>
+		void List<T>::Swap(Pointer<Iterator<T>>& lhs, Pointer<Iterator<T>>& rhs)
+		{
+			try {
+				ListIterator& first = dynamic_cast<ListIterator&>(*lhs);
+				ListIterator& second = dynamic_cast<ListIterator&>(*rhs);
+				int counter = 0;
+
+				if (this != first._list || this != second._list) {
+					throw InvalidIteratorException();
+				} else if (lhs->IsDone() || rhs->IsDone()) {
+					throw IteratorOutOfBoundException();
+				}
+
+				for (Node* node = _head, *prev = nullptr; node && counter < 2; prev = node, node = node->Next) {
+					if (node == first._current) {
+						if (prev) prev->Next = second._current;
+						counter++;
+					}
+
+					if (node == second._current) {
+						if (prev) prev->Next = first._current;
+						counter++;
+					}
+				}
+
+				Lupus::Swap(first._current, second._current);
+				Lupus::Swap(first._current->Next, second._current->Next);
+			} catch (...) {
+				throw InvalidIteratorException();
 			}
 		}
 
@@ -383,7 +418,7 @@ namespace Lupus {
 		template <typename T>
 		void List<T>::Sort()
 		{
-			_strategy->Sort(this);
+			_strategy->Sort(*this);
 		}
 
 		template <typename T>
@@ -478,9 +513,9 @@ namespace Lupus {
 		template <typename T>
 		List<T>& List<T>::operator=(List<T>&& list)
 		{
-			Swap(_head, list._head);
-			Swap(_tail, list._tail);
-			Swap(_length, list._length);
+			Lupus::Swap(_head, list._head);
+			Lupus::Swap(_tail, list._tail);
+			Lupus::Swap(_length, list._length);
 			return (*this);
 		}
 
@@ -516,8 +551,8 @@ namespace Lupus {
 		template <typename T>
 		List<T>::Node::Node(Node&& node)
 		{
-			Swap(Data, node.Data);
-			Swap(Next, node.Next);
+			Lupus::Swap(Data, node.Data);
+			Lupus::Swap(Next, node.Next);
 		}
 
 		template <typename T>
@@ -578,18 +613,6 @@ namespace Lupus {
 			}
 
 			return (_current->Data);
-		}
-
-		template <typename T>
-		Pointer<ListSortStrategy<T>> ListQuickSort<T>::Copy() const
-		{
-			return new ListQuickSort();
-		}
-
-		template <typename T>
-		void ListQuickSort<T>::Sort(List<T>& list)
-		{
-			throw NotImplementedException();
 		}
 	}
 }

@@ -270,4 +270,19 @@ namespace Lupus {
 		Exception(message, innerException)
 	{
 	}
+
+	InvalidIteratorException::InvalidIteratorException() :
+		Exception()
+	{
+	}
+
+	InvalidIteratorException::InvalidIteratorException(const String& message) :
+		Exception(message)
+	{
+	}
+
+	InvalidIteratorException::InvalidIteratorException(const String& message, const Exception& innerException) :
+		Exception(message, innerException)
+	{
+	}
 }

@@ -45,6 +45,7 @@ namespace Lupus {
 		class Iterable
 		{
 		public:
+			virtual ~Iterable() { }
 			//! get iterator from inherited type
 			virtual Pointer<Iterator<T>> GetIterator() const = 0;
 		};

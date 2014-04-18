@@ -158,6 +158,15 @@ namespace Lupus {
 		InvalidOperationException(const System::String& message, const Exception& innerException);
 		virtual ~InvalidOperationException() = default;
 	};
+
+	class LUPUS_API InvalidIteratorException : public Exception
+	{
+	public:
+		InvalidIteratorException();
+		InvalidIteratorException(const System::String& message);
+		InvalidIteratorException(const System::String& message, const Exception& innerException);
+		virtual ~InvalidIteratorException() = default;
+	};
 }
 
 #endif

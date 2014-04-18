@@ -16,22 +16,21 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_ICOPYABLE_HPP
-#define LUPUS_ICOPYABLE_HPP
+#ifndef LUPUS_ISWAPPABLE_HPP
+#define LUPUS_ISWAPPABLE_HPP
+
+#include "Types.hpp"
+#include "Iterator.hpp"
 
 namespace Lupus {
-	template <typename T>
-	class Pointer;
-
 	namespace System {
-		//! interface for copyable types
 		template <typename T>
-		class ICopyable
+		class ISwappable
 		{
 		public:
-			virtual ~ICopyable() { }
-			//! get pointer to copied instance
-			virtual Pointer<T> Copy() const = 0;
+			virtual ~ISwappable() { }
+			//! swaps the two values given by iterator
+			virtual void Swap(Pointer<Iterator<T>>& lhs, Pointer<Iterator<T>>& rhs) = 0;
 		};
 	}
 }

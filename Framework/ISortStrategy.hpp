@@ -16,22 +16,23 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_ICOPYABLE_HPP
-#define LUPUS_ICOPYABLE_HPP
+#ifndef LUPUS_ISORTSTRATEGY_HPP
+#define LUPUS_ISORTSTRATEGY_HPP
+
+#include "ICopyable.hpp"
+#include "ISequence.hpp"
 
 namespace Lupus {
-	template <typename T>
-	class Pointer;
-
 	namespace System {
-		//! interface for copyable types
+		//! list sort algorithm interface
 		template <typename T>
-		class ICopyable
+		class ISortStrategy : public ICopyable<ISortStrategy<T>>
 		{
 		public:
-			virtual ~ICopyable() { }
-			//! get pointer to copied instance
-			virtual Pointer<T> Copy() const = 0;
+			virtual ~ISortStrategy() { }
+			//! sorts the sequence in ascending order
+			virtual void Sort(ISequence<T>&) = 0;
+			//! TODO: add runtim comparison method
 		};
 	}
 }

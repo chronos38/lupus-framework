@@ -26,6 +26,7 @@ namespace Lupus {
 		class IComparable
 		{
 		public:
+			virtual ~IComparable() { }
 			/**
 			 * Compare given object to this instance
 			 *

@@ -24,9 +24,9 @@
 
 namespace Lupus {
 	namespace System {
-		Pointer<TextSearchStrategy> String::_defaultStrategy = new KnuthMorrisPratt();
-		PropertyWriter<Pointer<TextSearchStrategy>> String::DefaultTextSearchAlgorithm = 
-			PropertyWriter<Pointer<TextSearchStrategy>>(String::_defaultStrategy);
+		Pointer<ITextSearchStrategy> String::_defaultStrategy = new KnuthMorrisPratt();
+		PropertyWriter<Pointer<ITextSearchStrategy>> String::DefaultTextSearchAlgorithm = 
+			PropertyWriter<Pointer<ITextSearchStrategy>>(String::_defaultStrategy);
 
 		String::String() :
 			_data(new char[DEFAULT_ARRAY_SIZE]),
@@ -157,9 +157,9 @@ namespace Lupus {
 		String::String(String&& string) :
 			String()
 		{
-			Swap(_data, string._data);
-			Swap(_length, string._length);
-			Swap(_capacity, string._capacity);
+			Lupus::Swap(_data, string._data);
+			Lupus::Swap(_length, string._length);
+			Lupus::Swap(_capacity, string._capacity);
 		}
 
 		String::~String()
@@ -516,7 +516,7 @@ namespace Lupus {
 			char* swap = new char[_length + 1];
 			strncpy(swap, _data, _length);
 			_capacity = _length;
-			Swap(swap, _data);
+			Lupus::Swap(swap, _data);
 			delete swap;
 
 			if (_capacity <= 0) {
@@ -704,9 +704,9 @@ namespace Lupus {
 
 		String& String::operator=(String&& string)
 		{
-			Swap(_data, string._data);
-			Swap(_length, string._length);
-			Swap(_capacity, string._capacity);
+			Lupus::Swap(_data, string._data);
+			Lupus::Swap(_length, string._length);
+			Lupus::Swap(_capacity, string._capacity);
 			return (*this);
 		}
 
@@ -836,6 +836,25 @@ namespace Lupus {
 			return (Compare(string) != 0);
 		}
 
+		void String::Swap(Pointer<Iterator<char>>& lhs, Pointer<Iterator<char>>& rhs)
+		{
+			try {
+				StringIterator& first = dynamic_cast<StringIterator&>(*lhs);
+				StringIterator& second = dynamic_cast<StringIterator&>(*rhs);
+
+				if (this != first._string || this != second._string) {
+					throw InvalidIteratorException();
+				} else if (lhs->IsDone() || rhs->IsDone()) {
+					throw IteratorOutOfBoundException();
+				}
+
+				Lupus::Swap(_data[first._current], _data[second._current]);
+
+			} catch (...) {
+				throw InvalidIteratorException();
+			}
+		}
+
 		void String::Add(const char& ch)
 		{
 			operator+=(ch);
@@ -933,7 +952,7 @@ namespace Lupus {
 			CopyTo(0, string, 0, index);
 			string[index] = ch;
 			CopyTo(index, string, index + 1, _length - index);
-			Swap(string, *this);
+			Lupus::Swap(string, *this);
 		}
 
 		bool String::IsEmpty() const
@@ -1186,7 +1205,7 @@ namespace Lupus {
 			return (_string->operator[](_current));
 		}
 
-		Pointer<TextSearchStrategy> KnuthMorrisPratt::Copy() const
+		Pointer<ITextSearchStrategy> KnuthMorrisPratt::Copy() const
 		{
 			return new KnuthMorrisPratt();
 		}

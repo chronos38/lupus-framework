@@ -22,6 +22,7 @@
 #include "Types.hpp"
 #include "ISequence.hpp"
 #include "Iterator.hpp"
+#include "ISortStrategy.hpp"
 
 namespace Lupus {
 	namespace System {
@@ -56,6 +57,8 @@ namespace Lupus {
 			Vector(int);
 			//! free allocated resources
 			virtual ~Vector();
+			//! \sa ISwappable::Swap
+			virtual void Swap(Pointer<Iterator<T>>& lhs, Pointer<Iterator<T>>& rhs) override;
 			//! \sa ISequence::Add
 			virtual void Add(const T&) override;
 			//! \sa ISequence::Back
@@ -101,6 +104,7 @@ namespace Lupus {
 		private:
 			class VectorIterator : public Iterator<T>
 			{
+				friend class Vector<T>;
 				const Vector<T>* _vector = nullptr;
 				int _current = 0;
 			public:

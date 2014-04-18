@@ -90,11 +90,14 @@
     <ClInclude Include="ICopyable.hpp" />
     <ClInclude Include="IDictionary.hpp" />
     <ClInclude Include="ISequence.hpp" />
+    <ClInclude Include="ISwappable.hpp" />
     <ClInclude Include="Iterator.hpp" />
     <ClInclude Include="Integer.hpp" />
     <ClInclude Include="List.hpp" />
+    <ClInclude Include="MergeSort.hpp" />
     <ClInclude Include="Pair.hpp" />
     <ClInclude Include="Preprocessor.hpp" />
+    <ClInclude Include="ISortStrategy.hpp" />
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="Utility.hpp" />
@@ -114,6 +117,7 @@
   <ItemGroup>
     <None Include="Char.inl" />
     <None Include="List.inl" />
+    <None Include="MergeSort.inl" />
     <None Include="Pair.inl" />
     <None Include="Pointer.inl" />
     <None Include="Property.inl" />

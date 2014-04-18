@@ -71,6 +71,15 @@
     <ClInclude Include="Preprocessor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ISortStrategy.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ISwappable.hpp">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="MergeSort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object.cpp">
@@ -124,6 +133,9 @@
       <Filter>Inline Files</Filter>
     </None>
     <None Include="Pointer.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="MergeSort.inl">
       <Filter>Inline Files</Filter>
     </None>
   </ItemGroup>

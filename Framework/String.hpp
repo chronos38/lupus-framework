@@ -35,9 +35,10 @@ namespace Lupus {
 		class StringIterator;
 
 		//! text search algorithm interface
-		class TextSearchStrategy : public ICopyable<TextSearchStrategy>
+		class LUPUS_API ITextSearchStrategy : public ICopyable<ITextSearchStrategy>
 		{
 		public:
+			virtual ~ITextSearchStrategy() { }
 			/**
 			 * searches for a pattern in a text and return index to its first occurrence
 			 *
@@ -67,9 +68,9 @@ namespace Lupus {
 			//! string capacity
 			int _capacity;
 			//! text search algorithm
-			Pointer<TextSearchStrategy> _strategy;
+			Pointer<ITextSearchStrategy> _strategy;
 			//! default search algorithm
-			static Pointer<TextSearchStrategy> _defaultStrategy;
+			static Pointer<ITextSearchStrategy> _defaultStrategy;
 		public:
 			//! Return string length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
@@ -78,9 +79,9 @@ namespace Lupus {
 			//! Return native string
 			PropertyReader<char*> Data = PropertyReader<char*>(_data);
 			//! Set text search algorithm
-			PropertyWriter<Pointer<TextSearchStrategy>> TextSearchAlgorithm = PropertyWriter<Pointer<TextSearchStrategy>>(_strategy);
+			PropertyWriter<Pointer<ITextSearchStrategy>> TextSearchAlgorithm = PropertyWriter<Pointer<ITextSearchStrategy>>(_strategy);
 			//! Set default serach algorithm
-			static PropertyWriter<Pointer<TextSearchStrategy>> DefaultTextSearchAlgorithm;
+			static PropertyWriter<Pointer<ITextSearchStrategy>> DefaultTextSearchAlgorithm;
 			//! Create an empty string
 			String();
 			/**
@@ -415,6 +416,8 @@ namespace Lupus {
 			 * @return true if this instance is not equal to given string, otherwise false
 			 */
 			bool operator!=(const String&) const;
+			//! \sa ISwappable::Swap
+			virtual void Swap(Pointer<Iterator<char>>& lhs, Pointer<Iterator<char>>& rhs) override;
 			//! \sa ISequence::Add
 			virtual void Add(const char&) override;
 			//! \sa ISequence::Back
@@ -458,6 +461,7 @@ namespace Lupus {
 		private:
 			class StringIterator : public Iterator<char>
 			{
+				friend class String;
 				const String* _string = nullptr;
 				int _current = 0;
 			public:
@@ -476,11 +480,11 @@ namespace Lupus {
 		};
 
 		//! implements knuth-morris-pratt text search algorithm
-		class LUPUS_API KnuthMorrisPratt : public TextSearchStrategy
+		class LUPUS_API KnuthMorrisPratt : public ITextSearchStrategy
 		{
 		public:
 			//! \sa ICopyable::Copy
-			virtual Pointer<TextSearchStrategy> Copy() const override;
+			virtual Pointer<ITextSearchStrategy> Copy() const override;
 			//! \sa TextSearchStrategy::Search
 			virtual int Search(const char* text, int textLength, const char* search, int searchLength, CaseSensitivity sensitivity) const override;
 		private:

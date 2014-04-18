@@ -46,9 +46,9 @@ namespace Lupus {
 		Vector<T>::Vector(Vector<T>&& vector) :
 			Vector()
 		{
-			Swap(_data, vector._data);
-			Swap(_length, vector._length);
-			Swap(_capacity, vector._capacity);
+			Lupus::Swap(_data, vector._data);
+			Lupus::Swap(_length, vector._length);
+			Lupus::Swap(_capacity, vector._capacity);
 		}
 		
 		template <typename T>
@@ -97,6 +97,26 @@ namespace Lupus {
 		Vector<T>::~Vector()
 		{
 			delete[] _data;
+		}
+
+		template <typename T>
+		void Vector<T>::Swap(Pointer<Iterator<T>>& lhs, Pointer<Iterator<T>>& rhs)
+		{
+			try {
+				VectorIterator& first = dynamic_cast<VectorIterator&>(*lhs);
+				VectorIterator& second = dynamic_cast<VectorIterator&>(*rhs);
+
+				if (this != first._vector || this != second._vector) {
+					throw InvalidIteratorException();
+				} else if (lhs->IsDone() || rhs->IsDone()) {
+					throw IteratorOutOfBoundException();
+				}
+
+				Lupus::Swap(_data[first._current], _data[second._current]);
+
+			} catch (...) {
+				throw InvalidIteratorException();
+			}
 		}
 
 		template <typename T>
@@ -237,7 +257,7 @@ namespace Lupus {
 			CopyTo(0, vector, 0, index);
 			vector[index] = item;
 			CopyTo(index, vector, index + 1, _length - index);
-			Swap(vector, *this);
+			Lupus::Swap(vector, *this);
 		}
 
 		template <typename T>
@@ -311,7 +331,7 @@ namespace Lupus {
 			}
 
 			_capacity = _length;
-			Swap(swap, _data);
+			Lupus::Swap(swap, _data);
 			delete swap;
 		}
 
@@ -360,9 +380,9 @@ namespace Lupus {
 		template <typename T>
 		Vector<T>& Vector<T>::operator=(Vector<T>&& vector)
 		{
-			Swap(_data, vector._data);
-			Swap(_length, vector._length);
-			Swap(_capacity, vector._capacity);
+			Lupus::Swap(_data, vector._data);
+			Lupus::Swap(_length, vector._length);
+			Lupus::Swap(_capacity, vector._capacity);
 			return (*this);
 		}
 

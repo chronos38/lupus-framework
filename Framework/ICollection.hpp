@@ -31,6 +31,7 @@ namespace Lupus {
 		class ICollection : public Iterable<T>
 		{
 		public:
+			virtual ~ICollection() { }
 			/**
 			 * Copy content from this instance to a collection container
 			 *

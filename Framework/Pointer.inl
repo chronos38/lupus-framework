@@ -46,6 +46,30 @@ namespace Lupus {
 	}
 
 	template <typename T>
+	T& Pointer<T>::operator[](int index)
+	{
+		if (!_pointer) {
+			throw NullPointerException();
+		} else if (index < 0) {
+			throw ArgumentOutOfRangeException("index must have a positive value");
+		}
+
+		return _pointer[index];
+	}
+
+	template <typename T>
+	const T& Pointer<T>::operator[](int index) const
+	{
+		if (!_pointer) {
+			throw NullPointerException();
+		} else if (index < 0) {
+			throw ArgumentOutOfRangeException("index must have a positive value");
+		}
+
+		return _pointer[index];
+	}
+
+	template <typename T>
 	T& Pointer<T>::operator*()
 	{
 		if (!_pointer) {
@@ -68,12 +92,20 @@ namespace Lupus {
 	template <typename T>
 	T* Pointer<T>::operator->()
 	{
+		if (!_pointer) {
+			throw NullPointerException();
+		}
+
 		return _pointer;
 	}
 
 	template <typename T>
 	const T* Pointer<T>::operator->() const
 	{
+		if (!_pointer) {
+			throw NullPointerException();
+		}
+
 		return _pointer;
 	}
 

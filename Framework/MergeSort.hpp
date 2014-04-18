@@ -16,24 +16,26 @@
  * along with LupusFramwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LUPUS_ICOPYABLE_HPP
-#define LUPUS_ICOPYABLE_HPP
+#ifndef LUPUS_MERGESORT_HPP
+#define LUPUS_MERGESORT_HPP
+
+#include "ISortStrategy.hpp"
 
 namespace Lupus {
-	template <typename T>
-	class Pointer;
-
 	namespace System {
-		//! interface for copyable types
 		template <typename T>
-		class ICopyable
+		class MergeSort : public ISortStrategy<T>
 		{
 		public:
-			virtual ~ICopyable() { }
-			//! get pointer to copied instance
-			virtual Pointer<T> Copy() const = 0;
+			virtual ~MergeSort() { }
+			//! \sa ICopyable::Copy
+			virtual Pointer<ISortStrategy<T>> Copy() const override;
+			//! \sa ISortStrategy::Sort
+			virtual void Sort(ISequence<T>&) override;
 		};
 	}
 }
+
+#include "MergeSort.inl"
 
 #endif

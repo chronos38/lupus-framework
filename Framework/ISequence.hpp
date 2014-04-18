@@ -21,12 +21,13 @@
 
 #include "Types.hpp"
 #include "ICollection.hpp"
+#include "ISwappable.hpp"
 
 namespace Lupus {
 	namespace System {
 		//! interface for sequence types
 		template <typename T>
-		class ISequence : public ICollection<T>
+		class ISequence : public ICollection<T>, public ISwappable<T>
 		{
 		public:
 			virtual ~ISequence() { }
@@ -57,7 +58,7 @@ namespace Lupus {
 			//! check if container ist empty
 			virtual bool IsEmpty() const = 0;
 			//! remove entry at given index
-			virtual void RemoveAt(int) = 0;
+			virtual void RemoveAt(int index) = 0;
 			/**
 			 * resize container to given value.
 			 * if count is smaller than current length, than all content between count and length is deleted

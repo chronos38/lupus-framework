@@ -77,12 +77,14 @@ namespace Lupus {
 	{
 		T* _pointer = nullptr;
 	public:
-		Pointer() = delete;
+		Pointer();
 		Pointer(const Pointer<T>&) = delete;
 		Pointer(Pointer<T>&&);
 		Pointer(T* pointer);
 		~Pointer();
 		T* Release();
+		T& operator[](int);
+		const T& operator[](int) const;
 		T& operator*();
 		const T& operator*() const;
 		T* operator->();

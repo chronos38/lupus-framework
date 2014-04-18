@@ -26,17 +26,6 @@
 
 namespace Lupus {
 	namespace System {
-		template <typename T>
-		class List;
-
-		//! list sort algorithm interface
-		template <typename T>
-		class ListSortStrategy : public ICopyable<ListSortStrategy<T>>
-		{
-		public:
-			virtual void Sort(List<T>& list) = 0;
-		};
-
 		//! simple list class
 		template <typename T>
 		class List : public Object, public ISequence<T>
@@ -44,7 +33,7 @@ namespace Lupus {
 			// declarations
 			class ListIterator;
 			friend class ListIterator;
-			friend class ListSortStrategy<T>;
+			friend class ISortStrategy<T>;
 			struct Node;
 			//! first entry
 			Node* _head = nullptr;
@@ -53,16 +42,16 @@ namespace Lupus {
 			//! length of list
 			int _length = 0;
 			//! default sort algorithm
-			static Pointer<ListSortStrategy<T>> _defaultStrategy;
+			static Pointer<ISortStrategy<T>> _defaultStrategy;
 			//! list sort algorithm
-			Pointer<ListSortStrategy<T>> _strategy = _defaultStrategy->Copy();
+			Pointer<ISortStrategy<T>> _strategy = _defaultStrategy->Copy();
 		public:
 			//! Return list length length
 			PropertyReader<int> Length = PropertyReader<int>(_length);
 			//! Set list sort algorithm
-			PropertyWriter<Pointer<ListSortStrategy<T>>> ListSortAlgorithm = PropertyWriter<Pointer<ListSortStrategy<T>>>(_strategy);
+			PropertyWriter<Pointer<ISortStrategy<T>>> ListSortAlgorithm = PropertyWriter<Pointer<ISortStrategy<T>>>(_strategy);
 			//! Set default sort algorithm
-			static PropertyWriter<Pointer<ListSortStrategy<T>>> DefaultListSortAlgorithm;
+			static PropertyWriter<Pointer<ISortStrategy<T>>> DefaultListSortAlgorithm;
 			//! create empty list
 			List();
 			//! copy from existing list
@@ -77,6 +66,8 @@ namespace Lupus {
 			List(int);
 			//! free all allocated memory
 			virtual ~List();
+			//! \sa ISwappable::Swap
+			virtual void Swap(Pointer<Iterator<T>>& lhs, Pointer<Iterator<T>>& rhs) override;
 			//! \sa ISequence::Add
 			virtual void Add(const T&) override;
 			//! \sa ISequence::Back
@@ -163,6 +154,7 @@ namespace Lupus {
 
 			class ListIterator : public Iterator<T>
 			{
+				friend class List<T>;
 				const List<T>* _list = nullptr;
 				typename List<T>::Node* _current = nullptr;
 			public:
@@ -179,17 +171,6 @@ namespace Lupus {
 				ListIterator& operator=(ListIterator&&) = delete;
 			};
 
-		};
-
-		//! implements quick sort algorithm
-		template <typename T>
-		class ListQuickSort : public ListSortStrategy<T>
-		{
-		public:
-			//! \sa ICopyable::Copy
-			virtual Pointer<ListSortStrategy<T>> Copy() const override;
-			//! \sa ListSortStrategy::Sort
-			virtual void Sort(List<T>& list) override;
 		};
 	}
 }
